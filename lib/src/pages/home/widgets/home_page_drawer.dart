@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:time_sense/src/pages/home/widgets/drawer_icon.dart';
+
+import 'package:time_sense/src/pages/home/widgets/widgets.dart';
+import 'package:time_sense/src/shared/widgets/widgets.dart';
 
 import '../../../shared/utils/utils.dart';
 
@@ -36,19 +38,11 @@ class HomePageDrawer extends StatelessWidget {
             GestureDetector(
               child: Row(
                 children: [
-                  Container(
+                  const UserCircleAvatar(
+                    urlImage:
+                        'https://lh3.googleusercontent.com/a/ACg8ocLaTq8NZFKl6beN5lRJwu5wUK7oumdHghVdQBwVEuZMayw=s288-c-no',
                     width: 44,
                     height: 44,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: primaryColor, width: 2.5),
-                    ),
-                    child: const CircleAvatar(
-                      radius: 20,
-                      backgroundImage: NetworkImage(
-                        'https://lh3.googleusercontent.com/a/ACg8ocLaTq8NZFKl6beN5lRJwu5wUK7oumdHghVdQBwVEuZMayw=s288-c-no',
-                      ),
-                    ),
                   ),
                   Container(
                     margin: const EdgeInsets.only(left: 8),
