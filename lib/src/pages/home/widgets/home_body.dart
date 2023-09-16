@@ -27,24 +27,43 @@ class _HomeBodyState extends State<HomeBody> {
     return SizedBox(
       height: size.height,
       width: double.infinity,
-      child: Column(
+      child: Stack(
         children: [
-          PrimaryButton(
-            color: primaryColor,
-            press: () {},
-            text: 'Selecionar uma tarefa',
+          Positioned(
+            top: 10,
+            left: 0,
+            right: 0,
+            child: PrimaryButton(
+              color: primaryColor,
+              press: () {},
+              text: 'Selecionar uma tarefa',
+              height: 15,
+            ),
           ),
-          const SizedBox(height: 50),
-          const TimerWidget(
-            timer: Duration(minutes: 10),
+          Positioned(
+            top: size.height * 0.2,
+            left: 0,
+            right: 0,
+            child: const TimerWidget(
+              timer: Duration(minutes: 10),
+            ),
           ),
-          const SizedBox(height: 30),
-          SessionsWidget(sessions: userSessions),
-          const SizedBox(height: 50),
-          PrimaryButton(
-            color: primaryColor,
-            press: () {},
-            text: 'Começar foco',
+          Positioned(
+            bottom: 150,
+            left: 0,
+            right: 0,
+            child: SessionsWidget(sessions: userSessions),
+          ),
+          Positioned(
+            bottom: 50,
+            left: 0,
+            right: 0,
+            child: PrimaryButton(
+              color: primaryColor,
+              press: () {},
+              text: 'Começar foco',
+              height: 13,
+            ),
           ),
         ],
       ),

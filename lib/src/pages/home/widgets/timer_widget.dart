@@ -9,9 +9,12 @@ class TimerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final size = MediaQuery.of(context).size;
+    
     return Container(
-      width: 275,
-      height: 275,
+      width: size.width * 0.8,
+      height: size.height * 0.35,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: backgroundColor,
@@ -20,11 +23,11 @@ class TimerWidget extends StatelessWidget {
           width: 8,
         ),
       ),
-      child:  Center(
+      child: Center(
         child: Text(
           '10:00',
           style: textBold.copyWith(
-            fontSize: 40,
+            fontSize: size.height * 0.06,
           ),
         ),
       ),
