@@ -11,7 +11,14 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+    void openDrawer() {
+      scaffoldKey.currentState?.openDrawer();
+    }
+    
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: backgroundColor,
@@ -21,10 +28,13 @@ class HomePage extends StatelessWidget {
             'assets/icons/menu-icon.svg',
             color: primaryColor,
           ),
-          onPressed: () {},
+          onPressed: () {
+            openDrawer();
+          },
         ),
       ),
       body: const HomeBody(),
+      drawer: const HomePageDrawer(),
     );
   }
 }
