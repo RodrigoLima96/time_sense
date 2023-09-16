@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:time_sense/src/pages/home/widgets/widgets.dart';
 import 'package:time_sense/src/shared/widgets/widgets.dart';
 
-import '../../../shared/utils/utils.dart';
+import '../../../../shared/utils/utils.dart';
 
 class HomePageDrawer extends StatelessWidget {
   const HomePageDrawer({super.key});

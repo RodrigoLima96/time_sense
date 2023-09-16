@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
     void openDrawer() {
       scaffoldKey.currentState?.openDrawer();
     }
-    
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: backgroundColor,

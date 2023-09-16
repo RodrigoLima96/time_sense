@@ -37,7 +37,9 @@ class _HomeBodyState extends State<HomeBody> {
             right: 0,
             child: PrimaryButton(
               color: primaryColor,
-              press: () {},
+              press: () {
+                showHomeBottomSheet(context);
+              },
               text: 'Selecionar uma tarefa',
               height: 15,
             ),
@@ -69,6 +71,16 @@ class _HomeBodyState extends State<HomeBody> {
           ),
         ],
       ),
+    );
+  }
+
+  PersistentBottomSheetController<dynamic> showHomeBottomSheet(
+      BuildContext context) {
+    return showBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return HomeBottomSheet();
+      },
     );
   }
 }
