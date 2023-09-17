@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:time_sense/src/pages/home/widgets/widgets.dart';
 import 'package:time_sense/src/pages/settings/settings_page.dart';
+import 'package:time_sense/src/pages/user/user_page.dart';
 import 'package:time_sense/src/shared/widgets/widgets.dart';
 
 import '../../../../shared/utils/utils.dart';
@@ -44,6 +45,7 @@ class HomePageDrawer extends StatelessWidget {
                         'https://lh3.googleusercontent.com/a/ACg8ocLaTq8NZFKl6beN5lRJwu5wUK7oumdHghVdQBwVEuZMayw=s288-c-no',
                     width: 44,
                     height: 44,
+                    borderWidth: 2.5,
                   ),
                   Container(
                     margin: const EdgeInsets.only(left: 8),
@@ -54,7 +56,12 @@ class HomePageDrawer extends StatelessWidget {
                   )
                 ],
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const UserPage()),
+                );
+              },
             ),
             DrawerIcon(
               icon: 'assets/icons/tasks-icon.svg',
