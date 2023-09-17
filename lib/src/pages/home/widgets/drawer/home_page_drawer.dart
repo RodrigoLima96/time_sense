@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:time_sense/src/pages/home/widgets/widgets.dart';
+import 'package:time_sense/src/pages/settings/settings_page.dart';
 import 'package:time_sense/src/shared/widgets/widgets.dart';
 
 import '../../../../shared/utils/utils.dart';
@@ -63,7 +64,12 @@ class HomePageDrawer extends StatelessWidget {
             DrawerIcon(
               icon: 'assets/icons/settings-icon.svg',
               text: 'Configurações',
-              press: () {},
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                );
+              },
             ),
             const Spacer(),
             Container(

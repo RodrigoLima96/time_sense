@@ -64,6 +64,7 @@ class HomeBottomSheet extends StatelessWidget {
                 press: () => Navigator.pop(context),
                 color: primaryColor,
                 height: 10,
+                width: 40,
               ),
             ),
           ],

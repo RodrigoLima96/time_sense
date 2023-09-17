@@ -31,7 +31,7 @@ class AddTaskWidget extends StatelessWidget {
           ),
         ),
         Transform.rotate(
-          angle: -44.8,
+          angle: -44.77,
           child: GestureDetector(
             child: SvgPicture.asset(
               'assets/icons/exit-icon.svg',
