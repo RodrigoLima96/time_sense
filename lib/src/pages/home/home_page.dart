@@ -1,8 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:time_sense/src/pages/user/widgets/custom_app_bar.dart';
+import 'package:time_sense/src/shared/widgets/custom_app_bar.dart';
 
 import '../../shared/utils/utils.dart';
 import 'widgets/widgets.dart';

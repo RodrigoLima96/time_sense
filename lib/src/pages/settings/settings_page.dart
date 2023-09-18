@@ -1,9 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:time_sense/src/pages/user/widgets/widgets.dart';
 
 import '../../shared/utils/utils.dart';
+import '../../shared/widgets/widgets.dart';
 import 'widgets/settings_body.dart';
 
 class SettingsPage extends StatelessWidget {

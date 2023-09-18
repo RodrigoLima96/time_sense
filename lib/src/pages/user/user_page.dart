@@ -1,9 +1,10 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'widgets/widgets.dart';
 
 import '../../shared/utils/utils.dart';
+import '../../shared/widgets/widgets.dart';
+import 'widgets/widgets.dart';
 
 class UserPage extends StatelessWidget {
   const UserPage({super.key});
