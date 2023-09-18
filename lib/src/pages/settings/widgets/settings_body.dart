@@ -10,6 +10,9 @@ class SettingsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
+    final double settignWidth = size.width * 0.9;
+    final double settignHeight = size.height * 0.06;
+
     return SizedBox(
       width: size.width,
       height: size.height,
@@ -20,24 +23,32 @@ class SettingsBody extends StatelessWidget {
             text: 'Tempo de foco',
             setting: '20 min',
             funtion: () {},
+            height: settignHeight,
+            width: settignWidth,
           ),
           const SizedBox(height: 40),
           SettingsOptionWidget(
             text: 'Pausa curta',
             setting: '5 min',
             funtion: () {},
+            height: settignHeight,
+            width: settignWidth,
           ),
           const SizedBox(height: 40),
           SettingsOptionWidget(
             text: 'Pausa longa',
             setting: '15 min',
             funtion: () {},
+            height: settignHeight,
+            width: settignWidth,
           ),
           const SizedBox(height: 40),
           SettingsOptionWidget(
             text: 'Sessões diárias',
             setting: '4',
             funtion: () {},
+            height: settignHeight,
+            width: settignWidth,
           ),
           const Spacer(),
           const SettingsOptionsButtons()

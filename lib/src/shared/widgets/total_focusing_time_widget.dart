@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../shared/utils/utils.dart';
+import '../utils/utils.dart';
 
 class TotalFocusingTimeWidget extends StatelessWidget {
   final int hours;
@@ -20,7 +20,7 @@ class TotalFocusingTimeWidget extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.only(bottom: 10),
-          child: const Text('Tempo total de foco', style: textRegular),
+          child: Text(text, style: textRegular),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

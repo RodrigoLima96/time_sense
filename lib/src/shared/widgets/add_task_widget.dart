@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../shared/utils/utils.dart';
+import '../utils/utils.dart';
 
 class AddTaskWidget extends StatelessWidget {
   const AddTaskWidget({

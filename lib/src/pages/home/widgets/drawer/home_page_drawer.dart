@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:time_sense/src/pages/home/widgets/widgets.dart';
 import 'package:time_sense/src/pages/settings/settings_page.dart';
+import 'package:time_sense/src/pages/tasks/tasks_page.dart';
 import 'package:time_sense/src/pages/user/user_page.dart';
 import 'package:time_sense/src/shared/widgets/widgets.dart';
 
@@ -66,7 +67,10 @@ class HomePageDrawer extends StatelessWidget {
             DrawerIcon(
               icon: 'assets/icons/tasks-icon.svg',
               text: 'Tarefas',
-              press: () {},
+              press: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const TasksPage()));
+              },
             ),
             DrawerIcon(
               icon: 'assets/icons/settings-icon.svg',

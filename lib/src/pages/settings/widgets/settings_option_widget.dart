@@ -9,21 +9,24 @@ class SettingsOptionWidget extends StatelessWidget {
   final String text;
   final String setting;
   final Function funtion;
+  final double height;
+  final double width;
 
   const SettingsOptionWidget({
     super.key,
     required this.text,
     required this.setting,
     required this.funtion,
+    required this.height,
+    required this.width
   });
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
 
     return Container(
-      width: size.width * 0.9,
-      height: size.height * 0.06,
+      height: height,
+      width: width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: secondaryColor,
@@ -37,10 +40,12 @@ class SettingsOptionWidget extends StatelessWidget {
               Text(text, style: textBold),
               Row(
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(right: 15),
-                    child: Text(setting, style: textBold),
-                  ),
+                  setting.isNotEmpty
+                      ? Container(
+                          margin: const EdgeInsets.only(right: 15),
+                          child: Text(setting, style: textBold),
+                        )
+                      : const SizedBox(),
                   Transform.rotate(
                     angle: 4.68,
                     child: SvgPicture.asset(
