@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
+// import 'package:time_sense/src/controllers/controllers.dart';
 
 import '../../../shared/utils/utils.dart';
 import '../../../shared/widgets/widgets.dart';
@@ -18,6 +20,8 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    // final controller = context.watch<PomodoroController>();
 
     final List<String> userSessions = [
       'complete',
@@ -48,7 +52,7 @@ class _HomeBodyState extends State<HomeBody> {
             top: size.height * 0.2,
             left: 0,
             right: 0,
-            child: const TimerWidget(
+            child: const TimerWidgetTest(
               timer: Duration(minutes: 10),
             ),
           ),
@@ -62,12 +66,7 @@ class _HomeBodyState extends State<HomeBody> {
             bottom: 50,
             left: 0,
             right: 0,
-            child: PrimaryButton(
-              color: primaryColor,
-              press: () {},
-              text: 'Começar foco',
-              height: 13,
-            ),
+            child: HomeButtons()
           ),
         ],
       ),
