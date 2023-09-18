@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:time_sense/src/pages/user/widgets/custom_app_bar.dart';
 
 import '../../shared/utils/utils.dart';
 import 'widgets/widgets.dart';
@@ -20,19 +21,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        backgroundColor: backgroundColor,
-        elevation: 0,
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            'assets/icons/menu-icon.svg',
-            color: primaryColor,
-          ),
-          onPressed: () {
+      appBar: CustomAppBar(
+          icon: 'assets/icons/menu-icon.svg',
+          function: () {
             openDrawer();
-          },
-        ),
-      ),
+          }),
       body: const HomeBody(),
       drawer: const HomePageDrawer(),
     );

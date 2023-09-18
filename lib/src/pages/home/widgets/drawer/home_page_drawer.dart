@@ -34,7 +34,7 @@ class HomePageDrawer extends StatelessWidget {
                 color: primaryColor,
                 width: 20,
               ),
-              onTap: () {},
+              onTap: () => Navigator.of(context).pop(),
             ),
             const SizedBox(height: 30),
             GestureDetector(
