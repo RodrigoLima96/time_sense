@@ -19,20 +19,15 @@ class HomeButtons extends StatelessWidget {
         PrimaryButton(
           color: primaryColor,
           press: () {
-            if (controller.state == PomodoroState.notStarted ||
-                controller.state == PomodoroState.breakTime) {
-              if (controller.state == PomodoroState.breakTime) {
-                controller.initPomodoro(breakTime: true);
-              } else {
-                controller.initPomodoro(breakTime: false);
-              }
+            if (controller.state == PomodoroState.notStarted) {
+              controller.initPomodoro();
             } else if (controller.state == PomodoroState.paused) {
               controller.resumePomodoro();
             } else if (controller.state == PomodoroState.running) {
               controller.pausePomodoro();
             }
           },
-          text: controller.buttonText,
+          text: controller.firstButtonText,
           height: 13,
           width: 25,
         ),
@@ -43,19 +38,15 @@ class HomeButtons extends StatelessWidget {
                 child: PrimaryButton(
                   color: primaryColor,
                   press: () {
-                    if (controller.state == PomodoroState.paused) {
+                    if (controller.state == PomodoroState.paused ||
+                        controller.pomodoro.shortBreak ||
+                        controller.pomodoro.longBreak) {
                       controller.cancelPomodoro();
                     } else {
-                      controller.initPomodoro(breakTime: false);
+                      controller.initPomodoro();
                     }
                   },
-                  text: controller.state == PomodoroState.paused
-                      ? controller.state == PomodoroState.breakTime
-                          ? 'Pular'
-                          : 'Cancelar'
-                      : controller.state == PomodoroState.breakTime
-                          ? 'Pular'
-                          : 'Reiniciar',
+                  text: controller.secondButtonText,
                   height: 13,
                 ),
               )

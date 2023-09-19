@@ -52,9 +52,7 @@ class _HomeBodyState extends State<HomeBody> {
             top: size.height * 0.2,
             left: 0,
             right: 0,
-            child: const TimerWidgetTest(
-              timer: Duration(minutes: 10),
-            ),
+            child: const TimerWidget(),
           ),
           Positioned(
             bottom: 150,
@@ -66,7 +64,7 @@ class _HomeBodyState extends State<HomeBody> {
             bottom: 50,
             left: 0,
             right: 0,
-            child: HomeButtons()
+            child: HomeButtons(),
           ),
         ],
       ),

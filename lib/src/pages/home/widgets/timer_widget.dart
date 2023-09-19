@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../../shared/utils/utils.dart';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:provider/provider.dart';
+import 'package:time_sense/src/controllers/controllers.dart';
+import 'package:time_sense/src/shared/utils/constants.dart';
 
 class TimerWidget extends StatefulWidget {
-  final Duration timer;
 
-  const TimerWidget({super.key, required this.timer});
+  const TimerWidget({super.key});
 
   @override
   State<TimerWidget> createState() => _TimerWidgetState();
@@ -14,26 +16,39 @@ class _TimerWidgetState extends State<TimerWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final controller = context.watch<PomodoroController>();
 
-    return Container(
+    final int pomodoroDuration = controller.getPomodoroDuration();
+    final pomodoroDurationInMinutes =
+        controller.convertSecondsToMinutes(pomodoroDuration: pomodoroDuration);
+
+    return CircularCountDownTimer(
+      duration: pomodoroDuration,
+      initialDuration: 0,
+      controller: controller.countDownController,
       width: size.width * 0.8,
       height: size.height * 0.35,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: backgroundColor,
-        border: Border.all(
-          color: primaryColor,
-          width: 8,
-        ),
+      ringColor: secondaryColor,
+      fillColor: primaryColor,
+      backgroundColor: backgroundColor,
+      strokeWidth: 13,
+      strokeCap: StrokeCap.round,
+      textStyle: textBold.copyWith(
+        fontSize: 45.0,
       ),
-      child: Center(
-        child: Text(
-          '10:00',
-          style: textBold.copyWith(
-            fontSize: size.height * 0.06,
-          ),
-        ),
-      ),
+      textFormat: CountdownTextFormat.MM_SS,
+      isReverse: true,
+      autoStart: false,
+      onComplete: () {
+        controller.cancelPomodoro();
+      },
+      timeFormatterFunction: (defaultFormatterFunction, duration) {
+        if ( controller.state == PomodoroState.notStarted) {
+          return pomodoroDurationInMinutes;
+        } else {
+          return Function.apply(defaultFormatterFunction, [duration]);
+        }
+      },
     );
   }
 }
