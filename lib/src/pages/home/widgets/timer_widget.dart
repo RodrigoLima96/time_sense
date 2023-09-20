@@ -5,7 +5,6 @@ import 'package:time_sense/src/controllers/controllers.dart';
 import 'package:time_sense/src/shared/utils/constants.dart';
 
 class TimerWidget extends StatefulWidget {
-
   const TimerWidget({super.key});
 
   @override
@@ -40,10 +39,10 @@ class _TimerWidgetState extends State<TimerWidget> {
       isReverse: true,
       autoStart: false,
       onComplete: () {
-        controller.cancelPomodoro();
+        controller.completeOrCancelPomodoro(complete: true);
       },
       timeFormatterFunction: (defaultFormatterFunction, duration) {
-        if ( controller.state == PomodoroState.notStarted) {
+        if (controller.state == PomodoroState.notStarted) {
           return pomodoroDurationInMinutes;
         } else {
           return Function.apply(defaultFormatterFunction, [duration]);

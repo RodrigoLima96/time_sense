@@ -41,7 +41,7 @@ class HomeButtons extends StatelessWidget {
                     if (controller.state == PomodoroState.paused ||
                         controller.pomodoro.shortBreak ||
                         controller.pomodoro.longBreak) {
-                      controller.cancelPomodoro();
+                      controller.completeOrCancelPomodoro(complete: false);
                     } else {
                       controller.initPomodoro();
                     }

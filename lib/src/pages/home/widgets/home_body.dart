@@ -21,8 +21,6 @@ class _HomeBodyState extends State<HomeBody> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    // final controller = context.watch<PomodoroController>();
-
     final List<String> userSessions = [
       'complete',
       'complete',

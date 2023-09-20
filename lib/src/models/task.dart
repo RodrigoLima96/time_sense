@@ -4,6 +4,7 @@ class Task {
   final String status;
   final int totalFocusingTime;
   final DateTime creationDate;
+  final DateTime completionDate;
 
   Task({
     required this.id,
@@ -11,5 +12,6 @@ class Task {
     required this.status,
     required this.totalFocusingTime,
     required this.creationDate,
+    required this.completionDate,
   });
 }
