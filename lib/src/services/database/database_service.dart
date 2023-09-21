@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 
+import '../../models/models.dart';
 import '../services.dart';
 
 class DatabaseService {
@@ -24,9 +25,21 @@ class DatabaseService {
   }
 
   getTaskById({required String taskId}) async {
-    Database db = _databaseService.database;
+    Database db = await _databaseService.database;
 
     final task = await db.query('task', where: 'id = ?', whereArgs: [taskId]);
     return task[0];
+  }
+
+  savePomodoroStatus({required Pomodoro pomodoro}) async {
+    Database db = await _databaseService.database;
+    print(pomodoro);
+
+    await db.update('pomodoro', {
+      'pomodoroSession': pomodoro.pomodoroSession,
+      'shortBreak': pomodoro.shortBreak ? 1 : 0,
+      'longBreak': pomodoro.longBreak ? 1 : 0,
+      'status': pomodoro.status
+    });
   }
 }

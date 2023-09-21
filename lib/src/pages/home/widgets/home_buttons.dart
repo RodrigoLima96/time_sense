@@ -37,11 +37,11 @@ class HomeButtons extends StatelessWidget {
                 margin: const EdgeInsets.only(left: 10),
                 child: PrimaryButton(
                   color: primaryColor,
-                  press: () {
+                  press: () async {
                     if (controller.pomodoroState == PomodoroState.paused ||
                         controller.pomodoro.shortBreak ||
-                        controller.pomodoro.longBreak) {
-                      controller.completeOrCancelPomodoro(complete: false);
+                        controller.pomodoro.longBreak)  {
+                      await controller.cancelPomodoro();
                     } else {
                       controller.initPomodoro();
                     }

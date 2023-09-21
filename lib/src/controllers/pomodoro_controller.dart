@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:time_sense/src/models/models.dart';
 import 'package:time_sense/src/repositories/repositories.dart';
 
-enum PomodoroState { notStarted, paused, running }
+enum PomodoroState { notStarted, paused, running, canceled }
 
 enum PomodoroPageState { loading, loaded }
 
 class PomodoroController extends ChangeNotifier {
   final CountDownController countDownController = CountDownController();
   final PomodoroRepository _pomodoroRepository;
-  late final Pomodoro pomodoro;
+  late Pomodoro pomodoro;
 
   PomodoroState _pomodoroState = PomodoroState.notStarted;
   PomodoroState get pomodoroState => _pomodoroState;
@@ -60,6 +60,8 @@ class PomodoroController extends ChangeNotifier {
         return 'Retomar';
       case PomodoroState.running:
         return 'Pausar';
+      case PomodoroState.canceled:
+        return '';
     }
   }
 
@@ -93,12 +95,49 @@ class PomodoroController extends ChangeNotifier {
     notifyListeners();
   }
 
-  completeOrCancelPomodoro({required bool complete}) {
+  completePomodoro() async {
+    if (_pomodoroState != PomodoroState.canceled) {
+      if (pomodoro.status == 'focus') {
+        if (pomodoro.lastBreak == 0 || pomodoro.lastBreak == 1) {
+          pomodoro.shortBreak = true;
+        } else {
+          pomodoro.longBreak = true;
+        }
+      } else if (pomodoro.status == 'break') {
+        if (pomodoro.lastBreak == 0 || pomodoro.lastBreak == 1) {
+          pomodoro.lastBreak++;
+          pomodoro.shortBreak = false;
+          pomodoro.longBreak = false;
+        } else {
+          pomodoro.lastBreak = 0;
+          pomodoro.shortBreak = false;
+          pomodoro.longBreak = false;
+        }
+      }
+
+      if (pomodoro.status != 'break') {
+        pomodoro.pomodoroSession++;
+
+        setPomodoroSessionsState();
+        await savePomodoroStatus();
+        _pomodoroState = PomodoroState.notStarted;
+
+        countDownController.reset();
+        await getPomodoroStatus();
+
+        pomodoro.status = 'break';
+      } else {
+        pomodoro.status = 'focus';
+      }
+      _pomodoroState = PomodoroState.notStarted;
+    }
+    notifyListeners();
+  }
+
+  cancelPomodoro() async {
+    _pomodoroState = PomodoroState.canceled;
     countDownController.reset();
-    _pomodoroState = PomodoroState.notStarted;
-    pomodoro.shortBreak = false;
-    pomodoro.longBreak = false;
-    complete ? setPomodoroSessionsState() : null;
+    await getPomodoroStatus();
     notifyListeners();
   }
 
@@ -150,5 +189,9 @@ class PomodoroController extends ChangeNotifier {
     setPomodoroSessionsState();
     pomodoroPageState = PomodoroPageState.loaded;
     notifyListeners();
+  }
+
+  savePomodoroStatus() async {
+    await _pomodoroRepository.savePomodoroStatus(pomodoro: pomodoro);
   }
 }

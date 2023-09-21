@@ -18,6 +18,7 @@ class PomodoroRepository {
       taskId: pomodoroResult['taskId'],
       pomodoroSession: pomodoroResult['pomodoroSession'],
       shortBreak: pomodoroResult['shortBreak'] == 1,
+      lastBreak: pomodoroResult['lastBreak'],
       longBreak: pomodoroResult['longBreak'] == 1,
       settings: null,
     );
@@ -50,5 +51,9 @@ class PomodoroRepository {
     }
 
     return pomodoro;
+  }
+
+  Future<void> savePomodoroStatus({required Pomodoro pomodoro}) async {
+    await _databaseService.savePomodoroStatus(pomodoro: pomodoro);
   }
 }

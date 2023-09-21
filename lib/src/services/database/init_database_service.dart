@@ -40,6 +40,7 @@ class InitDatabaseService {
       pomodoroSession INTEGER,
       shortBreak INTEGER,
       longBreak INTEGER,
+      lastBreak INTEGER,
       date TEXT,
       totalFocusingTime INTEGER,
       taskId TEXT
@@ -73,13 +74,15 @@ String get _initialPomodoroData => '''
     pomodoroSession,
     shortBreak,
     longBreak,
+    lastBreak,
     date,
     totalFocusingTime,
     taskId
   )
   VALUES (
-    'notStarted',
+    'focus',
     null,
+    0,
     0,
     0,
     0,
@@ -98,9 +101,9 @@ String get _initialPomodoroData => '''
   )
 
   VALUES (
-    1200, 
-    300, 
-    900, 
+    5, 
+    3, 
+    1, 
     4
   );
 ''';

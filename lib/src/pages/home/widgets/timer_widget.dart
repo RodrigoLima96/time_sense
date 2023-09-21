@@ -30,7 +30,7 @@ class _TimerWidgetState extends State<TimerWidget> {
       ringColor: secondaryColor,
       fillColor: primaryColor,
       backgroundColor: backgroundColor,
-      strokeWidth: 13,
+      strokeWidth: 10,
       strokeCap: StrokeCap.round,
       textStyle: textBold.copyWith(
         fontSize: 45.0,
@@ -38,8 +38,8 @@ class _TimerWidgetState extends State<TimerWidget> {
       textFormat: CountdownTextFormat.MM_SS,
       isReverse: true,
       autoStart: false,
-      onComplete: () {
-        controller.completeOrCancelPomodoro(complete: true);
+      onComplete: () async {
+        await controller.completePomodoro();
       },
       timeFormatterFunction: (defaultFormatterFunction, duration) {
         if (controller.pomodoroState == PomodoroState.notStarted) {
