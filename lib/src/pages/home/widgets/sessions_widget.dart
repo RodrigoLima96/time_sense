@@ -5,13 +5,11 @@ import '../../../controllers/controllers.dart';
 import 'widgets.dart';
 
 class SessionsWidget extends StatelessWidget {
-  final List<String> sessions;
-  const SessionsWidget({super.key, required this.sessions});
+  const SessionsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<PomodoroController>();
-    controller.setPomodoroSessionsState();
 
     return Container(
       alignment: Alignment.center,

@@ -1,0 +1,107 @@
+// ignore_for_file: depend_on_referenced_packages
+
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+
+class InitDatabaseService {
+  InitDatabaseService._();
+
+  static final InitDatabaseService instance = InitDatabaseService._();
+
+  static Database? _dataBase;
+
+  get database async {
+    if (_dataBase != null) return _dataBase;
+
+    return await _initDatabase();
+  }
+
+  _initDatabase() async {
+    return await openDatabase(
+      join(await getDatabasesPath(), 'time_sense.db'),
+      version: 1,
+      onCreate: _onCreate,
+    );
+  }
+
+  _onCreate(db, versao) async {
+    await db.execute(_pomodoro);
+    await db.execute(_settings);
+    await db.execute(_tasks);
+
+    await db.execute(_initialPomodoroData);
+    await db.execute(_initialSettingsData);
+  }
+
+  String get _pomodoro => '''
+    CREATE TABLE pomodoro (
+      status TEXT,
+      remainingPomodoroTime INTEGER,
+      pomodoroSession INTEGER,
+      shortBreak INTEGER,
+      longBreak INTEGER,
+      date TEXT,
+      totalFocusingTime INTEGER,
+      taskId TEXT
+    );
+  ''';
+
+  String get _settings => '''
+    CREATE TABLE settings (
+      pomodoroTime INTEGER,
+      shortBreakDuration INTEGER,
+      longBreakDuration INTEGER,
+      dailySessions INTEGER
+    );
+  ''';
+
+  String get _tasks => '''
+    CREATE TABLE tasks (
+      id TEXT,
+      text TEXT,
+      status TEXT,
+      totalFocusingTime INTEGER,
+      creationDate creationDate,
+      completionDate creationDate
+    );
+  ''';
+
+String get _initialPomodoroData => '''
+  INSERT INTO pomodoro (
+    status,
+    remainingPomodoroTime,
+    pomodoroSession,
+    shortBreak,
+    longBreak,
+    date,
+    totalFocusingTime,
+    taskId
+  )
+  VALUES (
+    'notStarted',
+    null,
+    0,
+    0,
+    0,
+    '2023-09-21 00:28:37.241415',
+    0,
+    'null'
+  );
+''';
+
+  String get _initialSettingsData => '''
+  INSERT INTO settings (
+    pomodoroTime, 
+    shortBreakDuration, 
+    longBreakDuration, 
+    dailySessions
+  )
+
+  VALUES (
+    1200, 
+    300, 
+    900, 
+    4
+  );
+''';
+}

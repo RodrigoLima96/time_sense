@@ -1,19 +1,20 @@
 import 'models.dart';
 
 class Pomodoro {
-  final int? remainingPomodoroTime;
   final String status;
+  int? remainingPomodoroTime;
   DateTime date;
   final int? totalFocusingTime;
   final int pomodoroSession;
   bool shortBreak;
   bool longBreak;
-  final Settings settings;
-  final Task? task;
+  Settings? settings;
+  String? taskId;
+  Task? task;
 
   Pomodoro({
-    required this.remainingPomodoroTime,
     required this.status,
+    required this.remainingPomodoroTime,
     required this.date,
     required this.totalFocusingTime,
     required this.task,
@@ -21,5 +22,6 @@ class Pomodoro {
     required this.shortBreak,
     required this.longBreak,
     required this.settings,
+    required this.taskId,
   });
 }

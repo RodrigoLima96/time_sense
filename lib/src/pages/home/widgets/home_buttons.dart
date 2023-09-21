@@ -19,11 +19,11 @@ class HomeButtons extends StatelessWidget {
         PrimaryButton(
           color: primaryColor,
           press: () {
-            if (controller.state == PomodoroState.notStarted) {
+            if (controller.pomodoroState == PomodoroState.notStarted) {
               controller.initPomodoro();
-            } else if (controller.state == PomodoroState.paused) {
+            } else if (controller.pomodoroState == PomodoroState.paused) {
               controller.resumePomodoro();
-            } else if (controller.state == PomodoroState.running) {
+            } else if (controller.pomodoroState == PomodoroState.running) {
               controller.pausePomodoro();
             }
           },
@@ -31,14 +31,14 @@ class HomeButtons extends StatelessWidget {
           height: 13,
           width: 25,
         ),
-        controller.state == PomodoroState.running ||
-                controller.state == PomodoroState.paused
+        controller.pomodoroState == PomodoroState.running ||
+                controller.pomodoroState == PomodoroState.paused
             ? Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: PrimaryButton(
                   color: primaryColor,
                   press: () {
-                    if (controller.state == PomodoroState.paused ||
+                    if (controller.pomodoroState == PomodoroState.paused ||
                         controller.pomodoro.shortBreak ||
                         controller.pomodoro.longBreak) {
                       controller.completeOrCancelPomodoro(complete: false);
