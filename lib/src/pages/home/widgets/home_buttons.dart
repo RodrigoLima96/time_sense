@@ -12,6 +12,7 @@ class HomeButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<PomodoroController>();
+    Map<String, Map<String, dynamic>> buttonsInfos = controller.getButtonsInfo();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -19,34 +20,21 @@ class HomeButtons extends StatelessWidget {
         PrimaryButton(
           color: primaryColor,
           press: () {
-            if (controller.pomodoroState == PomodoroState.notStarted) {
-              controller.initPomodoro();
-            } else if (controller.pomodoroState == PomodoroState.paused) {
-              controller.resumePomodoro();
-            } else if (controller.pomodoroState == PomodoroState.running) {
-              controller.pausePomodoro();
-            }
+            buttonsInfos['first_button']!['function']();
           },
-          text: controller.firstButtonText,
+          text: buttonsInfos['first_button']!['text'],
           height: 13,
           width: 25,
         ),
-        controller.pomodoroState == PomodoroState.running ||
-                controller.pomodoroState == PomodoroState.paused
+        controller.showSecondButton
             ? Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: PrimaryButton(
                   color: primaryColor,
                   press: () async {
-                    if (controller.pomodoroState == PomodoroState.paused ||
-                        controller.pomodoro.shortBreak ||
-                        controller.pomodoro.longBreak)  {
-                      await controller.cancelPomodoro();
-                    } else {
-                      controller.initPomodoro();
-                    }
+                    buttonsInfos['second_button']!['function']();
                   },
-                  text: controller.secondButtonText,
+                  text: buttonsInfos['second_button']!['text'],
                   height: 13,
                 ),
               )

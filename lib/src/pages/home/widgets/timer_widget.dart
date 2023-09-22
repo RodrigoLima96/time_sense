@@ -38,11 +38,9 @@ class _TimerWidgetState extends State<TimerWidget> {
       textFormat: CountdownTextFormat.MM_SS,
       isReverse: true,
       autoStart: false,
-      onComplete: () async {
-        await controller.completePomodoro();
-      },
+      onComplete: () async {},
       timeFormatterFunction: (defaultFormatterFunction, duration) {
-        if (controller.pomodoroState == PomodoroState.notStarted) {
+        if (duration.inSeconds == 0) {
           return pomodoroDurationInMinutes;
         } else {
           return Function.apply(defaultFormatterFunction, [duration]);

@@ -32,7 +32,7 @@ class TaskWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: size.width * 0.8,
+          width: size.width * 0.9,
           height: size.height * 0.05,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
@@ -65,7 +65,7 @@ class TaskWidget extends StatelessWidget {
                           )
                         : const SizedBox(),
                     Container(
-                      width: size.width * 0.6,
+                      width: size.width * 0.65,
                       padding: const EdgeInsets.only(left: 12),
                       child: const SingleChildScrollView(
                         scrollDirection: Axis.horizontal,

@@ -17,7 +17,9 @@ class HomePage extends StatelessWidget {
       scaffoldKey.currentState?.openDrawer();
     }
 
-    return Scaffold(
+    return 
+    // const TimerWidgetTest();
+    Scaffold(
       key: scaffoldKey,
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
