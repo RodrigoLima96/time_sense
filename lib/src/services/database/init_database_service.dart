@@ -101,7 +101,7 @@ String get _initialPomodoroData => '''
   )
 
   VALUES (
-    120, 
+    10, 
     5, 
     8, 
     4

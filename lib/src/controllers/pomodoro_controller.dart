@@ -1,12 +1,10 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'dart:async';
-
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
-import 'package:time_sense/src/controllers/helpers/helpers.dart';
-import 'package:time_sense/src/models/models.dart';
-import 'package:time_sense/src/repositories/repositories.dart';
+
+import 'helpers/helpers.dart';
+import '../models/models.dart';
+import '../repositories/repositories.dart';
 
 enum PomodoroState { notStarted, running, paused }
 
@@ -29,7 +27,6 @@ class PomodoroController extends ChangeNotifier {
     savePomodoroStatusPeriodic();
   }
 
-  // gerencia os estados atuais dos botões
   Map<String, Map<String, dynamic>> getButtonsInfo() {
     final buttonsInfo = PomodoroHelper.extractButtonsInfo(
       pomodoroState: pomodoroState,
@@ -51,10 +48,11 @@ class PomodoroController extends ChangeNotifier {
     notifyListeners();
   }
 
-  pausePomodoro() {
+  pausePomodoro() async {
     countDownController.pause();
     pomodoroState = PomodoroState.paused;
     showSecondButton = true;
+    await savePomodoroStatus(saveCurrentPomodoroTime: true);
     setPomodoroSessionsState();
     notifyListeners();
   }
@@ -78,18 +76,10 @@ class PomodoroController extends ChangeNotifier {
     countDownController.restart(duration: pomodoro.settings!.pomodoroTime);
     countDownController.pause();
 
-    pomodoro.remainingPomodoroTime = pomodoro.settings!.pomodoroTime;
+    pomodoro = PomodoroHelper.getCancelPomodoroStatus(
+        pomodoro: pomodoro, isBreak: isBreak);
 
-    if (isBreak) {
-      if (pomodoro.shortBreak) {
-        pomodoro.shortBreak = false;
-        pomodoro.lastBreak = 'shortBreak';
-      } else {
-        pomodoro.longBreak = false;
-        pomodoro.lastBreak = 'longBreak';
-      }
-      await savePomodoroStatus(periodic: false);
-    }
+    await savePomodoroStatus(saveCurrentPomodoroTime: false);
 
     pomodoroState = PomodoroState.notStarted;
     showSecondButton = false;
@@ -100,26 +90,12 @@ class PomodoroController extends ChangeNotifier {
   completePomodoro() async {
     pomodoroPageState = PomodoroPageState.loading;
 
-    if (!pomodoro.shortBreak && !pomodoro.longBreak) {
-      pomodoro.pomodoroSession++;
-      pomodoro.date = DateTime.now();
-      if (pomodoro.lastBreak == 'longBreak') {
-        pomodoro.shortBreak = true;
-      } else {
-        pomodoro.longBreak = true;
-      }
-    } else if (pomodoro.shortBreak) {
-      pomodoro.shortBreak = false;
-      pomodoro.lastBreak = 'shortBreak';
-    } else {
-      pomodoro.longBreak = false;
-      pomodoro.lastBreak = 'longBreak';
-    }
-    pomodoro.remainingPomodoroTime = null;
+    pomodoro = PomodoroHelper.getCompletePomodoroStatus(pomodoro: pomodoro);
+
     showSecondButton = false;
     pomodoroState = PomodoroState.notStarted;
 
-    await savePomodoroStatus(periodic: false);
+    await savePomodoroStatus(saveCurrentPomodoroTime: false);
     await getPomodoroStatus();
     setPomodoroSessionsState();
 
@@ -128,45 +104,16 @@ class PomodoroController extends ChangeNotifier {
   }
 
   String convertSecondsToMinutes({required int pomodoroDuration}) {
-    String minutes = (pomodoroDuration ~/ 60).toString().padLeft(2, '0');
-    String seconds = (pomodoroDuration % 60).toString().padLeft(2, '0');
-
-    return '$minutes:$seconds';
+    return PomodoroHelper.convertSecondsToMinutes(
+        pomodoroDuration: pomodoroDuration);
   }
 
   setPomodoroSessionsState() {
-    pomodoroSessions = [];
-    final bool isBreak = pomodoro.shortBreak || pomodoro.longBreak;
-
-    final int pomodoroAmount =
-        pomodoro.pomodoroSession > pomodoro.settings!.dailySessions
-            ? pomodoro.pomodoroSession
-            : pomodoro.settings!.dailySessions;
-
-    for (int index = 1; index <= pomodoroAmount; index++) {
-      String sessionState;
-
-      if (index <= pomodoro.pomodoroSession) {
-        sessionState = 'complete';
-      } else {
-        if (pomodoroState == PomodoroState.running &&
-            !pomodoroSessions.contains('running') &&
-            !isBreak) {
-          sessionState = 'running';
-        } else {
-          sessionState = 'incomplete';
-        }
-      }
-      pomodoroSessions.add(sessionState);
-
-      if (index == pomodoroAmount &&
-          pomodoroState == PomodoroState.running &&
-          !pomodoroSessions.contains('running') &&
-          !isBreak) {
-        pomodoroSessions.add('running');
-      }
-    }
-    pomodoro.settings!.dailySessions;
+    pomodoroSessions = PomodoroHelper.getPomodoroSessionsState(
+      pomodoro: pomodoro,
+      pomodoroState: pomodoroState,
+      pomodoroSessions: pomodoroSessions,
+    );
   }
 
   Future<void> getPomodoroStatus() async {
@@ -177,38 +124,21 @@ class PomodoroController extends ChangeNotifier {
     notifyListeners();
   }
 
-  int? getRemainingPomodoroTime() {
-    int remainingTime = pomodoro.remainingPomodoroTime!;
-    var formattedTime = countDownController.getTime();
-
-    if (formattedTime == "") {
-      return null;
-    }
-
-    List<String> timeParts = formattedTime!.split(':');
-
-    if (timeParts.length == 2) {
-      int minutes = int.parse(timeParts[0]);
-      int seconds = int.parse(timeParts[1]);
-
-      remainingTime = minutes * 60 + seconds;
-    } else {
-      return null;
-    }
-    return remainingTime;
-  }
-
   savePomodoroStatusPeriodic() async {
-    Timer.periodic(const Duration(minutes: 1), (timer) {
-      if (pomodoroState != PomodoroState.notStarted) {
-        savePomodoroStatus(periodic: true);
+    Timer.periodic(const Duration(seconds: 30), (timer) {
+      if (pomodoroState == PomodoroState.running) {
+        savePomodoroStatus(saveCurrentPomodoroTime: true);
       }
     });
   }
 
-  savePomodoroStatus({required bool periodic}) async {
-    periodic
-        ? pomodoro.remainingPomodoroTime = getRemainingPomodoroTime()
+  savePomodoroStatus({required bool saveCurrentPomodoroTime}) async {
+    saveCurrentPomodoroTime
+        ? pomodoro.remainingPomodoroTime =
+            PomodoroHelper.getRemainingPomodoroTime(
+            remainingPomodoroTime: pomodoro.remainingPomodoroTime!,
+            controllerRemainingPomodoroTime: countDownController.getTime(),
+          )
         : pomodoro.remainingPomodoroTime = pomodoro.remainingPomodoroTime;
 
     await _pomodoroRepository.savePomodoroStatus(pomodoro: pomodoro);

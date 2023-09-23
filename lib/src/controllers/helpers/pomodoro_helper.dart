@@ -3,13 +3,13 @@ import '../controllers.dart';
 
 class PomodoroHelper {
   static Map<String, Map<String, dynamic>> extractButtonsInfo({
-     required PomodoroState pomodoroState,
-     required Pomodoro pomodoro,
-     required Function initPomodoro,
-     required Function pausePomodoro,
-     required Function restartPomodoro,
-     required Function resumePomodoro,
-     required Function cancelPomodoro,
+    required PomodoroState pomodoroState,
+    required Pomodoro pomodoro,
+    required Function initPomodoro,
+    required Function pausePomodoro,
+    required Function restartPomodoro,
+    required Function resumePomodoro,
+    required Function cancelPomodoro,
   }) {
     switch (pomodoroState) {
       case PomodoroState.notStarted:
@@ -106,5 +106,110 @@ class PomodoroHelper {
           };
         }
     }
+  }
+
+  static Pomodoro getCompletePomodoroStatus({required Pomodoro pomodoro}) {
+    if (!pomodoro.shortBreak && !pomodoro.longBreak) {
+      pomodoro.pomodoroSession++;
+      pomodoro.date = DateTime.now();
+      if (pomodoro.lastBreak == 'longBreak') {
+        pomodoro.shortBreak = true;
+      } else {
+        pomodoro.longBreak = true;
+      }
+    } else if (pomodoro.shortBreak) {
+      pomodoro.shortBreak = false;
+      pomodoro.lastBreak = 'shortBreak';
+    } else {
+      pomodoro.longBreak = false;
+      pomodoro.lastBreak = 'longBreak';
+    }
+    pomodoro.remainingPomodoroTime = null;
+    return pomodoro;
+  }
+
+  static Pomodoro getCancelPomodoroStatus(
+      {required Pomodoro pomodoro, required bool isBreak}) {
+    pomodoro.remainingPomodoroTime = pomodoro.settings!.pomodoroTime;
+
+    if (isBreak) {
+      if (pomodoro.shortBreak) {
+        pomodoro.shortBreak = false;
+        pomodoro.lastBreak = 'shortBreak';
+      } else {
+        pomodoro.longBreak = false;
+        pomodoro.lastBreak = 'longBreak';
+      }
+    }
+
+    return pomodoro;
+  }
+
+  static String convertSecondsToMinutes({required int pomodoroDuration}) {
+    String minutes = (pomodoroDuration ~/ 60).toString().padLeft(2, '0');
+    String seconds = (pomodoroDuration % 60).toString().padLeft(2, '0');
+
+    return '$minutes:$seconds';
+  }
+
+  static List<String> getPomodoroSessionsState({
+    required Pomodoro pomodoro,
+    required PomodoroState pomodoroState,
+    required List<String> pomodoroSessions,
+  }) {
+    pomodoroSessions = [];
+
+    final bool isBreak = pomodoro.shortBreak || pomodoro.longBreak;
+
+    final int pomodoroAmount =
+        pomodoro.pomodoroSession > pomodoro.settings!.dailySessions
+            ? pomodoro.pomodoroSession
+            : pomodoro.settings!.dailySessions;
+
+    for (int index = 1; index <= pomodoroAmount; index++) {
+      String sessionState;
+
+      if (index <= pomodoro.pomodoroSession) {
+        sessionState = 'complete';
+      } else {
+        if (pomodoroState == PomodoroState.running &&
+            !pomodoroSessions.contains('running') &&
+            !isBreak) {
+          sessionState = 'running';
+        } else {
+          sessionState = 'incomplete';
+        }
+      }
+      pomodoroSessions.add(sessionState);
+
+      if (index == pomodoroAmount &&
+          pomodoroState == PomodoroState.running &&
+          !pomodoroSessions.contains('running') &&
+          !isBreak) {
+        pomodoroSessions.add('running');
+      }
+    }
+    return pomodoroSessions;
+  }
+
+  static int? getRemainingPomodoroTime({
+    required int remainingPomodoroTime,
+    required String? controllerRemainingPomodoroTime,
+  }) {
+    if (controllerRemainingPomodoroTime == "") {
+      return null;
+    }
+
+    List<String> timeParts = controllerRemainingPomodoroTime!.split(':');
+
+    if (timeParts.length == 2) {
+      int minutes = int.parse(timeParts[0]);
+      int seconds = int.parse(timeParts[1]);
+
+      remainingPomodoroTime = minutes * 60 + seconds;
+    } else {
+      return null;
+    }
+    return remainingPomodoroTime;
   }
 }
