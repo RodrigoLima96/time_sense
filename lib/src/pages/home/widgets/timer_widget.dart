@@ -17,7 +17,8 @@ class _TimerWidgetState extends State<TimerWidget> {
     final size = MediaQuery.of(context).size;
     final controller = context.watch<PomodoroController>();
 
-    final int pomodoroDuration = controller.pomodoro.remainingPomodoroTime!;
+    int pomodoroDuration = controller.pomodoro.remainingPomodoroTime!;
+
     final pomodoroDurationInMinutes =
         controller.convertSecondsToMinutes(pomodoroDuration: pomodoroDuration);
 
@@ -38,7 +39,9 @@ class _TimerWidgetState extends State<TimerWidget> {
       textFormat: CountdownTextFormat.MM_SS,
       isReverse: true,
       autoStart: false,
-      onComplete: () async {},
+      onComplete: () async {
+        await controller.completePomodoro();
+      },
       timeFormatterFunction: (defaultFormatterFunction, duration) {
         if (duration.inSeconds == 0) {
           return pomodoroDurationInMinutes;

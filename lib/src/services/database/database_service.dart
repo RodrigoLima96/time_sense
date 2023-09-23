@@ -33,13 +33,13 @@ class DatabaseService {
 
   savePomodoroStatus({required Pomodoro pomodoro}) async {
     Database db = await _databaseService.database;
-    print(pomodoro);
 
     await db.update('pomodoro', {
       'pomodoroSession': pomodoro.pomodoroSession,
       'shortBreak': pomodoro.shortBreak ? 1 : 0,
       'longBreak': pomodoro.longBreak ? 1 : 0,
-      'status': pomodoro.status
+      'status': pomodoro.status,
+      'lastBreak': pomodoro.lastBreak,
     });
   }
 }

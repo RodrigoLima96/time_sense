@@ -34,6 +34,9 @@ class PomodoroRepository {
 
     pomodoro.settings = settings;
 
+    final int pomodoroTime = getPomodoroTime(pomodoro);
+    pomodoro.remainingPomodoroTime = pomodoroTime;
+
     if (pomodoro.task != null) {
       final taskResult =
           await _databaseService.getTaskById(taskId: pomodoro.taskId!);
@@ -55,5 +58,17 @@ class PomodoroRepository {
 
   Future<void> savePomodoroStatus({required Pomodoro pomodoro}) async {
     await _databaseService.savePomodoroStatus(pomodoro: pomodoro);
+  }
+
+  int getPomodoroTime(Pomodoro pomodoro) {
+    if (pomodoro.remainingPomodoroTime != null) {
+      return pomodoro.remainingPomodoroTime!;
+    } else if (pomodoro.shortBreak) {
+      return pomodoro.settings!.shortBreakDuration;
+    } else if (pomodoro.longBreak) {
+      return pomodoro.settings!.longBreakDuration;
+    } else {
+      return pomodoro.settings!.pomodoroTime;
+    }
   }
 }

@@ -8,7 +8,7 @@ class Pomodoro {
   int pomodoroSession;
   bool shortBreak;
   bool longBreak;
-  int lastBreak;
+  String lastBreak;
   Settings? settings;
   String? taskId;
   Task? task;
