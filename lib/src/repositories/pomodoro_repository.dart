@@ -12,7 +12,9 @@ class PomodoroRepository {
     Pomodoro pomodoro = Pomodoro(
       status: pomodoroResult['status'],
       remainingPomodoroTime: pomodoroResult['remainingPomodoroTime'],
-      date: DateTime.parse(pomodoroResult['date']),
+      date: pomodoroResult['date'] != null
+          ? DateTime.parse(pomodoroResult['date'])
+          : DateTime.now(),
       totalFocusingTime: pomodoroResult['totalFocusingTime'],
       task: null,
       taskId: pomodoroResult['taskId'],

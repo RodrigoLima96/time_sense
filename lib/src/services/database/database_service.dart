@@ -36,6 +36,8 @@ class DatabaseService {
 
     await db.update('pomodoro', {
       'pomodoroSession': pomodoro.pomodoroSession,
+      'remainingPomodoroTime': pomodoro.remainingPomodoroTime,
+      'date': pomodoro.date.toString(),
       'shortBreak': pomodoro.shortBreak ? 1 : 0,
       'longBreak': pomodoro.longBreak ? 1 : 0,
       'status': pomodoro.status,

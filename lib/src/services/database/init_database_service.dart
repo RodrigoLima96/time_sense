@@ -86,7 +86,7 @@ String get _initialPomodoroData => '''
     0,
     0,
     'longBreak',
-    '2023-09-21 00:28:37.241415',
+    null,
     0,
     'null'
   );
@@ -101,7 +101,7 @@ String get _initialPomodoroData => '''
   )
 
   VALUES (
-    10, 
+    120, 
     5, 
     8, 
     4

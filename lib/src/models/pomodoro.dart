@@ -3,7 +3,7 @@ import 'models.dart';
 class Pomodoro {
   String status;
   int? remainingPomodoroTime;
-  DateTime date;
+  DateTime? date;
   final int? totalFocusingTime;
   int pomodoroSession;
   bool shortBreak;
