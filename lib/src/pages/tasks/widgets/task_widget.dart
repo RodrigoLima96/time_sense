@@ -14,6 +14,8 @@ class TaskWidget extends StatelessWidget {
   final bool showFrontIcon;
   final Color widgetColor;
   final bool showTaskDetails;
+  final Function frontFunction;
+  final Function backFunction;
 
   const TaskWidget({
     super.key,
@@ -23,7 +25,9 @@ class TaskWidget extends StatelessWidget {
     required this.showFrontIcon,
     required this.backIconColor,
     required this.widgetColor,
-    required this.showTaskDetails
+    required this.showTaskDetails,
+    required this.frontFunction,
+    required this.backFunction,
   });
 
   @override
@@ -49,28 +53,28 @@ class TaskWidget extends StatelessWidget {
                   children: [
                     showFrontIcon
                         ? GestureDetector(
-                            child: Container(
-                              height: 18,
-                              width: 18,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: secondaryColor,
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 2,
-                                ),
+                            child: SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: SvgPicture.asset(
+                                frontIcon,
+                                color: showTaskDetails
+                                    ? Colors.black
+                                    : primaryColor,
                               ),
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              frontFunction();
+                            },
                           )
                         : const SizedBox(),
                     Container(
                       width: size.width * 0.65,
                       padding: const EdgeInsets.only(left: 12),
-                      child: const SingleChildScrollView(
+                      child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Text(
-                          'Estudar programação orientada a objetos',
+                          text,
                           style: textBold,
                         ),
                       ),
@@ -87,19 +91,23 @@ class TaskWidget extends StatelessWidget {
                     color: backIconColor,
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  backFunction();
+                },
               ),
             ],
           ),
         ),
-        showTaskDetails ? Container(
-          margin: const EdgeInsets.only(top: 10),
-          child: const TotalFocusingTimeWidget(
-              hours: 2,
-              minutes: 4,
-              text: 'Tempo de foco',
-            ),
-        ) : const SizedBox(),
+        showTaskDetails
+            ? Container(
+                margin: const EdgeInsets.only(top: 10),
+                child: const TotalFocusingTimeWidget(
+                  hours: 2,
+                  minutes: 4,
+                  text: 'Tempo de foco',
+                ),
+              )
+            : const SizedBox(),
       ],
     );
   }

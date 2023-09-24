@@ -31,6 +31,7 @@ class InitDatabaseService {
 
     await db.execute(_initialPomodoroData);
     await db.execute(_initialSettingsData);
+    await db.execute(_initialTasksData);
   }
 
   String get _pomodoro => '''
@@ -67,7 +68,7 @@ class InitDatabaseService {
     );
   ''';
 
-String get _initialPomodoroData => '''
+  String get _initialPomodoroData => '''
   INSERT INTO pomodoro (
     status,
     remainingPomodoroTime,
@@ -88,7 +89,7 @@ String get _initialPomodoroData => '''
     'longBreak',
     null,
     0,
-    'null'
+    null
   );
 ''';
 
@@ -105,6 +106,26 @@ String get _initialPomodoroData => '''
     5, 
     8, 
     4
+  );
+''';
+
+  String get _initialTasksData => '''
+  INSERT INTO tasks (
+    id,
+    text,
+    status,
+    totalFocusingTime,
+    creationDate,
+    completionDate
+  )
+
+  VALUES (
+    3, 
+    'Desenvolver time sense app', 
+    'pending',
+    4233,
+    null,
+    null
   );
 ''';
 }

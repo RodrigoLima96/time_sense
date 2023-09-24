@@ -41,13 +41,15 @@ class TasksPageBody extends StatelessWidget {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 20),
                       child: TaskWidget(
-                        frontIcon: 'assets/icons/start.svg',
+                        frontIcon: 'assets/icons/circle.svg',
                         backIcon: index == 2 ? 'assets/icons/delete-icon.svg' : 'assets/icons/pending-icon.svg',
                         backIconColor: index == 2 ? Colors.red.shade300 : primaryColor,
                         showFrontIcon: index == 2 ? true : false,
                         text: 'Estudar flutter',
                         widgetColor: index == 2 ? primaryColor : secondaryColor,
                         showTaskDetails: index == 2 ? true : false,
+                        frontFunction: (){},
+                        backFunction: (){},
                       ),
                     );
                   },

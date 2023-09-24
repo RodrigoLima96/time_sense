@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:time_sense/src/controllers/controllers.dart';
+import 'package:time_sense/src/models/models.dart';
+import '../../../../controllers/task_controller.dart';
 import './task_container_bottom_sheet.dart';
 
 import '../../../../shared/utils/utils.dart';
@@ -11,20 +15,10 @@ class HomeBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final taskcontroller = context.watch<TaskController>();
+    final pomodoroController = context.watch<PomodoroController>();
 
-    final List<Map<String, dynamic>> tasks = [
-      {'id': 1, 'text': 'Criar de um site de compras'},
-      {'id': 2, 'text': 'Desenvolvimento do projeto X em flutter'},
-      {'id': 3, 'text': 'Desenvolvimento do projeto X em flutter'},
-      {'id': 4, 'text': 'Refatorar código do projeto X'},
-      {'id': 5, 'text': 'Refatorar código do projeto X'},
-      {'id': 6, 'text': 'Refatorar código do projeto X'},
-      {'id': 7, 'text': 'Refatorar código do projeto X'},
-      {'id': 8, 'text': 'Refatorar código do projeto X'},
-      {'id': 9, 'text': 'Refatorar código do projeto X'},
-      {'id': 10, 'text': 'Refatorar código do projeto X'},
-    ];
+    Size size = MediaQuery.of(context).size;
 
     return Container(
       height: size.height * 0.5,
@@ -41,14 +35,19 @@ class HomeBottomSheet extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: List.generate(
-                    tasks.length,
+                    taskcontroller.pendingTaskList.length,
                     (index) {
                       return Container(
                         margin: const EdgeInsets.only(bottom: 15),
                         child: TaskContainerBottomSheet(
                           backIcon: 'assets/icons/right-arrow.svg',
-                          press: () {},
-                          text: 'Curso de flutter',
+                          press: () {
+                            pomodoroController.setPomodoroTask(
+                              taskId: taskcontroller.pendingTaskList[index].id,
+                            );
+                            Navigator.pop(context);
+                          },
+                          text: taskcontroller.pendingTaskList[index].text,
                         ),
                       );
                     },
@@ -72,4 +71,3 @@ class HomeBottomSheet extends StatelessWidget {
     );
   }
 }
-

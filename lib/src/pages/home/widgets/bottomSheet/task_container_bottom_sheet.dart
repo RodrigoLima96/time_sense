@@ -39,10 +39,10 @@ class TaskContainerBottomSheet extends StatelessWidget {
               children: [
                 SizedBox(
                   width: size.width * 0.55,
-                  child: const SingleChildScrollView(
+                  child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Text(
-                      'Estudar programação orientada a objetos',
+                      text,
                       style: textBold,
                     ),
                   ),
@@ -55,7 +55,9 @@ class TaskContainerBottomSheet extends StatelessWidget {
               backIcon,
               color: primaryColor,
             ),
-            onTap: () {},
+            onTap: () async {
+              await press();
+            },
           ),
         ],
       ),

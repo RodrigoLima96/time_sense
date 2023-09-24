@@ -119,7 +119,8 @@ class PomodoroController extends ChangeNotifier {
   Future<void> getPomodoroStatus() async {
     pomodoroPageState = PomodoroPageState.loading;
     pomodoro = await _pomodoroRepository.getPomodoroStatus();
-    pomodoro.remainingPomodoroTime = PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
+    pomodoro.remainingPomodoroTime =
+        PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
     setPomodoroSessionsState();
     pomodoroPageState = PomodoroPageState.loaded;
     notifyListeners();
@@ -143,5 +144,20 @@ class PomodoroController extends ChangeNotifier {
         : pomodoro.remainingPomodoroTime = pomodoro.remainingPomodoroTime;
 
     await _pomodoroRepository.savePomodoroStatus(pomodoro: pomodoro);
+  }
+
+  setPomodoroTask({required String taskId}) async {
+    final Task task = await _pomodoroRepository.getTaskById(taskId: taskId);
+    pomodoro.taskId = task.id;
+    pomodoro.task = task;
+    await savePomodoroStatus(saveCurrentPomodoroTime: false);
+    notifyListeners();
+  }
+
+  removePomodoroTask() async {
+    pomodoro.taskId = null;
+    pomodoro.task = null;
+    await savePomodoroStatus(saveCurrentPomodoroTime: false);
+    notifyListeners();
   }
 }

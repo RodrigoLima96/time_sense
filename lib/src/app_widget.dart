@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
         Provider(create: (context) => DatabaseService(context.read())),
         Provider(create: (context) => PomodoroRepository(context.read())),
         ChangeNotifierProvider(create: (context) => PomodoroController(context.read())),
+        ChangeNotifierProvider(create: (context) => TaskController()),
       ],
       child: const MaterialApp(
         title: 'Time Sense',

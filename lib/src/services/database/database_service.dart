@@ -26,7 +26,7 @@ class DatabaseService {
   getTaskById({required String taskId}) async {
     Database db = await _databaseService.database;
 
-    final task = await db.query('task', where: 'id = ?', whereArgs: [taskId]);
+    final task = await db.query('tasks', where: 'id = ?', whereArgs: [taskId]);
     return task[0];
   }
 

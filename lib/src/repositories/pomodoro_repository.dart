@@ -15,7 +15,7 @@ class PomodoroRepository {
 
     pomodoro.settings = settings;
 
-    if (pomodoro.task != null) {
+    if (pomodoro.taskId != null) {
       final taskResult =
           await _databaseService.getTaskById(taskId: pomodoro.taskId!);
       final Task task = Task.fromMap(taskResult);
@@ -24,6 +24,12 @@ class PomodoroRepository {
     }
 
     return pomodoro;
+  }
+
+  Future<Task> getTaskById({required String taskId}) async {
+    final taskResult = await _databaseService.getTaskById(taskId: taskId);
+    final Task task = Task.fromMap(taskResult);
+    return task;
   }
 
   Future<void> savePomodoroStatus({required Pomodoro pomodoro}) async {

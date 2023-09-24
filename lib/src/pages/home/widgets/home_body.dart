@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:time_sense/src/pages/tasks/widgets/task_widget.dart';
 
 import '../../../controllers/pomodoro_controller.dart';
 import '../../../shared/utils/utils.dart';
@@ -27,14 +28,28 @@ class HomeBody extends StatelessWidget {
                   top: 10,
                   left: 0,
                   right: 0,
-                  child: PrimaryButton(
-                    color: primaryColor,
-                    press: () {
-                      showHomeBottomSheet(context);
-                    },
-                    text: 'Selecionar uma tarefa',
-                    height: 15,
-                  ),
+                  child: controller.pomodoro.task == null
+                      ? PrimaryButton(
+                          color: primaryColor,
+                          press: () {
+                            showHomeBottomSheet(context);
+                          },
+                          text: 'Selecionar uma tarefa',
+                          height: 15,
+                        )
+                      : TaskWidget(
+                          frontIcon: 'assets/icons/circle.svg',
+                          backIcon: 'assets/icons/exit-icon.svg',
+                          text: 'Desenvolver time sense app',
+                          showFrontIcon: true,
+                          backIconColor: primaryColor,
+                          widgetColor: secondaryColor,
+                          showTaskDetails: false,
+                          frontFunction: () {},
+                          backFunction: () {
+                            controller.removePomodoroTask();
+                          },
+                        ),
                 ),
                 Positioned(
                   top: size.height * 0.2,

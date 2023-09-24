@@ -3,8 +3,8 @@ class Task {
   final String text;
   final String status;
   final int totalFocusingTime;
-  final DateTime creationDate;
-  final DateTime completionDate;
+  final DateTime? creationDate;
+  final DateTime? completionDate;
 
   Task({
     required this.id,
@@ -32,8 +32,8 @@ class Task {
       text: map['text'],
       status: map['status'],
       totalFocusingTime: map['totalFocusingTime'],
-      creationDate: map['creationDate'],
-      completionDate: map['completionDate'],
+      creationDate: map['creationDate'] != null ? DateTime.parse(map['creationDate']) : null,
+      completionDate: map['completionDate'] != null ? DateTime.parse(map['completionDate']) : null,
     );
   }
 }
