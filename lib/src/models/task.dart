@@ -14,4 +14,26 @@ class Task {
     required this.creationDate,
     required this.completionDate,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'text': text,
+      'status': status,
+      'totalFocusingTime': totalFocusingTime,
+      'creationDate': creationDate,
+      'completionDate': completionDate,
+    };
+  }
+
+  factory Task.fromMap(Map<String, dynamic> map) {
+    return Task(
+      id: map['id'],
+      text: map['text'],
+      status: map['status'],
+      totalFocusingTime: map['totalFocusingTime'],
+      creationDate: map['creationDate'],
+      completionDate: map['completionDate'],
+    );
+  }
 }

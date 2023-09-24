@@ -119,13 +119,14 @@ class PomodoroController extends ChangeNotifier {
   Future<void> getPomodoroStatus() async {
     pomodoroPageState = PomodoroPageState.loading;
     pomodoro = await _pomodoroRepository.getPomodoroStatus();
+    pomodoro.remainingPomodoroTime = PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
     setPomodoroSessionsState();
     pomodoroPageState = PomodoroPageState.loaded;
     notifyListeners();
   }
 
   savePomodoroStatusPeriodic() async {
-    Timer.periodic(const Duration(seconds: 30), (timer) {
+    Timer.periodic(const Duration(seconds: 5), (timer) {
       if (pomodoroState == PomodoroState.running) {
         savePomodoroStatus(saveCurrentPomodoroTime: true);
       }

@@ -2,6 +2,18 @@ import '../../models/models.dart';
 import '../controllers.dart';
 
 class PomodoroHelper {
+  static int getPomodoroTime({required Pomodoro pomodoro}) {
+    if (pomodoro.remainingPomodoroTime != null) {
+      return pomodoro.remainingPomodoroTime!;
+    } else if (pomodoro.shortBreak) {
+      return pomodoro.settings!.shortBreakDuration;
+    } else if (pomodoro.longBreak) {
+      return pomodoro.settings!.longBreakDuration;
+    } else {
+      return pomodoro.settings!.pomodoroTime;
+    }
+  }
+
   static Map<String, Map<String, dynamic>> extractButtonsInfo({
     required PomodoroState pomodoroState,
     required Pomodoro pomodoro,

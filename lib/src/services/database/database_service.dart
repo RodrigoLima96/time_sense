@@ -1,6 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 
-import '../../models/models.dart';
 import '../services.dart';
 
 class DatabaseService {
@@ -31,17 +30,8 @@ class DatabaseService {
     return task[0];
   }
 
-  savePomodoroStatus({required Pomodoro pomodoro}) async {
+  savePomodoroStatus({required Map<String, dynamic> pomodoroMap}) async {
     Database db = await _databaseService.database;
-
-    await db.update('pomodoro', {
-      'pomodoroSession': pomodoro.pomodoroSession,
-      'remainingPomodoroTime': pomodoro.remainingPomodoroTime,
-      'date': pomodoro.date.toString(),
-      'shortBreak': pomodoro.shortBreak ? 1 : 0,
-      'longBreak': pomodoro.longBreak ? 1 : 0,
-      'status': pomodoro.status,
-      'lastBreak': pomodoro.lastBreak,
-    });
+    await db.update('pomodoro', pomodoroMap);
   }
 }

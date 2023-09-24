@@ -94,16 +94,16 @@ String get _initialPomodoroData => '''
 
   String get _initialSettingsData => '''
   INSERT INTO settings (
-    pomodoroTime, 
-    shortBreakDuration, 
-    longBreakDuration, 
+    pomodoroTime,
+    shortBreakDuration,
+    longBreakDuration,
     dailySessions
   )
 
   VALUES (
-    3600, 
-    600, 
-    1200, 
+    10, 
+    5, 
+    8, 
     4
   );
 ''';
