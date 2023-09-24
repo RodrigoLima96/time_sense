@@ -12,23 +12,29 @@ class HomeButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<PomodoroController>();
-    Map<String, Map<String, dynamic>> buttonsInfos = controller.getButtonsInfo();
+    Map<String, Map<String, dynamic>> buttonsInfos =
+        controller.getButtonsInfo();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        PrimaryButton(
-          color: primaryColor,
-          press: () {
-            buttonsInfos['first_button']!['function']();
-          },
-          text: buttonsInfos['first_button']!['text'],
-          height: 13,
-          width: 25,
+        Container(
+          margin: controller.showSecondButton
+              ? const EdgeInsets.only(right: 40)
+              : const EdgeInsets.only(right: 0),
+          child: PrimaryButton(
+            color: primaryColor,
+            press: () {
+              buttonsInfos['first_button']!['function']();
+            },
+            text: buttonsInfos['first_button']!['text'],
+            height: 13,
+            width: 25,
+          ),
         ),
         controller.showSecondButton
             ? Container(
-                margin: const EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.only(left: 40),
                 child: PrimaryButton(
                   color: primaryColor,
                   press: () async {

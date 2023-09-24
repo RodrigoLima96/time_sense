@@ -40,13 +40,13 @@ class HomeBody extends StatelessWidget {
                   top: size.height * 0.2,
                   left: 0,
                   right: 0,
-                  child: const TimerWidget(),
-                ),
-                Positioned(
-                  bottom: 150,
-                  left: 0,
-                  right: 0,
-                  child: SessionsWidget(),
+                  child: Column(
+                    children: const [
+                      TimerWidget(),
+                      SizedBox(height: 50),
+                      SessionsWidget(),
+                    ],
+                  ),
                 ),
                 Positioned(
                   bottom: 50,
