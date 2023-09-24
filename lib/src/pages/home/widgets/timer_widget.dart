@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:time_sense/src/controllers/controllers.dart';
-import 'package:time_sense/src/shared/utils/constants.dart';
+
+import '../../../controllers/controllers.dart';
+import '../../../shared/utils/constants.dart';
 
 class TimerWidget extends StatefulWidget {
   const TimerWidget({super.key});
@@ -43,7 +44,7 @@ class _TimerWidgetState extends State<TimerWidget> {
         await controller.completePomodoro();
       },
       timeFormatterFunction: (defaultFormatterFunction, duration) {
-        if (duration.inSeconds == 0) {
+        if (controller.pomodoroState == PomodoroState.notStarted) {
           return pomodoroDurationInMinutes;
         } else {
           return Function.apply(defaultFormatterFunction, [duration]);
