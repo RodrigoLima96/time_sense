@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controllers/controllers.dart';
-import 'widgets.dart';
+import '../../../../controllers/controllers.dart';
+import '../widgets.dart';
 
 class SessionsWidget extends StatelessWidget {
   const SessionsWidget({super.key});

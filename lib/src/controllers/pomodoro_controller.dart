@@ -104,8 +104,8 @@ class PomodoroController extends ChangeNotifier {
   }
 
   String convertSecondsToMinutes({required int pomodoroDuration}) {
-    return PomodoroHelper.convertSecondsToMinutes(
-        pomodoroDuration: pomodoroDuration);
+    return Helper.convertSecondsToMinutes(
+        durationInSeconds: pomodoroDuration);
   }
 
   setPomodoroSessionsState() {

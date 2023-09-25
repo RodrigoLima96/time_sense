@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../shared/utils/utils.dart';
+import '../../../../shared/utils/utils.dart';
 
 class Session extends StatelessWidget {
   final String status;

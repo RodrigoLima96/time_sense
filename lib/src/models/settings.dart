@@ -1,8 +1,8 @@
 class Settings {
-  final int pomodoroTime;
-  final int shortBreakDuration;
-  final int longBreakDuration;
-  final int dailySessions;
+  int pomodoroTime;
+  int shortBreakDuration;
+  int longBreakDuration;
+  int dailySessions;
 
   Settings({
     required this.pomodoroTime,

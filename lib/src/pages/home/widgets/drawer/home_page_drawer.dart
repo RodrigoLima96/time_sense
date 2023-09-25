@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'package:time_sense/src/pages/home/widgets/widgets.dart';
-import 'package:time_sense/src/pages/settings/settings_page.dart';
-import 'package:time_sense/src/pages/tasks/tasks_page.dart';
-import 'package:time_sense/src/pages/user/user_page.dart';
-import 'package:time_sense/src/shared/widgets/widgets.dart';
+import '/src/pages/home/widgets/widgets.dart';
+import '/src/pages/pages.dart';
+import '/src/shared/widgets/widgets.dart';
 
 import '../../../../shared/utils/utils.dart';
 

@@ -2,12 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:time_sense/src/pages/tasks/widgets/task_widget.dart';
 
+import '/src/pages/tasks/widgets/task_widget.dart';
 import '../../../controllers/pomodoro_controller.dart';
 import '../../../shared/utils/utils.dart';
 import '../../../shared/widgets/widgets.dart';
-
 import 'widgets.dart';
 
 class HomeBody extends StatelessWidget {
@@ -25,7 +24,7 @@ class HomeBody extends StatelessWidget {
             child: Stack(
               children: [
                 Positioned(
-                  top: 10,
+                  top: 50,
                   left: 0,
                   right: 0,
                   child: controller.pomodoro.task == null
@@ -49,6 +48,9 @@ class HomeBody extends StatelessWidget {
                           backFunction: () {
                             controller.removePomodoroTask();
                           },
+                          // !taskDetailsFuncion:
+                          // calcular na hora o tempo do pomodoro atual
+                          // para mostrar o tempo total de foco da task
                         ),
                 ),
                 Positioned(

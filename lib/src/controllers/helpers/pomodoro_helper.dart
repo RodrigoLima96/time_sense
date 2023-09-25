@@ -157,13 +157,6 @@ class PomodoroHelper {
     return pomodoro;
   }
 
-  static String convertSecondsToMinutes({required int pomodoroDuration}) {
-    String minutes = (pomodoroDuration ~/ 60).toString().padLeft(2, '0');
-    String seconds = (pomodoroDuration % 60).toString().padLeft(2, '0');
-
-    return '$minutes:$seconds';
-  }
-
   static List<String> getPomodoroSessionsState({
     required Pomodoro pomodoro,
     required PomodoroState pomodoroState,

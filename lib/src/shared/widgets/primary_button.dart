@@ -40,11 +40,11 @@ class PrimaryButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (backIcon != null)
-                const SizedBox(width: 8.0), // Espaço entre o ícone e o texto
+                const SizedBox(width: 8.0),
               Text(
                 text,
                 style: const TextStyle(
-                  color: Colors.white, // Cor do texto
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),

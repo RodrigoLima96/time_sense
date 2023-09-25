@@ -18,11 +18,12 @@ class MyApp extends StatelessWidget {
         Provider(create: (context) => PomodoroRepository(context.read())),
         ChangeNotifierProvider(create: (context) => PomodoroController(context.read())),
         ChangeNotifierProvider(create: (context) => TaskController()),
+        ChangeNotifierProvider(create: (context) => SettingsController()),
       ],
       child: const MaterialApp(
         title: 'Time Sense',
         debugShowCheckedModeBanner: false,
-        home: HomePage(),
+        home: SettingsPage(),
       ),
     );
   }

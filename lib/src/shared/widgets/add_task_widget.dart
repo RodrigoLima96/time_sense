@@ -30,16 +30,13 @@ class AddTaskWidget extends StatelessWidget {
             style: textBold,
           ),
         ),
-        Transform.rotate(
-          angle: -44.77,
-          child: GestureDetector(
-            child: SvgPicture.asset(
-              'assets/icons/exit-icon.svg',
-              color: primaryColor,
-              width: 20,
-            ),
-            onTap: () {},
+        GestureDetector(
+          child: SvgPicture.asset(
+            'assets/icons/more-icon.svg',
+            color: primaryColor,
+            width: 20,
           ),
+          onTap: () {},
         )
       ],
     );

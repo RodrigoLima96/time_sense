@@ -1,6 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:time_sense/src/controllers/settings_controller.dart';
 import 'package:time_sense/src/pages/settings/widgets/widgets.dart';
 
 class SettingsBody extends StatelessWidget {
@@ -13,6 +15,8 @@ class SettingsBody extends StatelessWidget {
     final double settignWidth = size.width * 0.9;
     final double settignHeight = size.height * 0.06;
 
+    final settingsController = context.watch<SettingsController>();
+
     return SizedBox(
       width: size.width,
       height: size.height,
@@ -21,34 +25,35 @@ class SettingsBody extends StatelessWidget {
         children: [
           SettingsOptionWidget(
             text: 'Tempo de foco',
-            setting: '20 min',
+            setting: '${settingsController.settings.pomodoroTime} min',
             funtion: () {},
             height: settignHeight,
             width: settignWidth,
+            showDetails: true,
           ),
-          const SizedBox(height: 40),
           SettingsOptionWidget(
             text: 'Pausa curta',
-            setting: '5 min',
+            setting: '${settingsController.settings.shortBreakDuration} min',
             funtion: () {},
             height: settignHeight,
             width: settignWidth,
+            showDetails: false,
           ),
-          const SizedBox(height: 40),
           SettingsOptionWidget(
             text: 'Pausa longa',
-            setting: '15 min',
+            setting: '${settingsController.settings.longBreakDuration} min',
             funtion: () {},
             height: settignHeight,
             width: settignWidth,
+            showDetails: false,
           ),
-          const SizedBox(height: 40),
           SettingsOptionWidget(
             text: 'Sessões diárias',
-            setting: '4',
+            setting: '${settingsController.settings.dailySessions}',
             funtion: () {},
             height: settignHeight,
             width: settignWidth,
+            showDetails: false,
           ),
           const Spacer(),
           const SettingsOptionsButtons()

@@ -24,6 +24,7 @@ class TasksPageBody extends StatelessWidget {
             funtion: () {},
             height: 40,
             width: 220,
+            showDetails: false,
           ),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 30),
