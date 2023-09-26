@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:time_sense/src/repositories/repositories.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/task.dart';
 
 class TaskController extends ChangeNotifier {
+  String textFieldlHintText = "Criar tarefa...";
+  final TaskRepository taskRepository;
+
+  TaskController(this.taskRepository);
+
   List<Task> pendingTaskList = [
     Task(
       id: '1',
@@ -29,4 +36,23 @@ class TaskController extends ChangeNotifier {
       completionDate: DateTime.now(),
     ),
   ];
+
+  addNewTask({required String text}) async {
+    if (text == "") {
+      textFieldlHintText = 'Digite o nome da tarefa';
+      notifyListeners();
+    } else {
+      const uuid = Uuid();
+
+      final Task newTask = Task(
+        id: uuid.v1(),
+        text: text,
+        status: 'pending',
+        totalFocusingTime: 0,
+        creationDate: DateTime.now(),
+        completionDate: null,
+      );
+      await taskRepository.saveNewTask(task: newTask);
+    }
+  }
 }

@@ -21,8 +21,8 @@ class Task {
       'text': text,
       'status': status,
       'totalFocusingTime': totalFocusingTime,
-      'creationDate': creationDate,
-      'completionDate': completionDate,
+      'creationDate': creationDate.toString(),
+      'completionDate': completionDate.toString(),
     };
   }
 

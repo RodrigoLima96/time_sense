@@ -57,7 +57,10 @@ class HomeBottomSheet extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 20, top: 20),
               child: PrimaryButton(
                 text: 'Fechar',
-                press: () => Navigator.pop(context),
+                press: () {
+                  taskcontroller.textFieldlHintText = "Criar tarefa...";
+                  Navigator.pop(context);
+                },
                 color: primaryColor,
                 height: 10,
                 width: 40,

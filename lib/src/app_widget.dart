@@ -17,8 +17,9 @@ class MyApp extends StatelessWidget {
         Provider(create: (context) => DatabaseService(context.read())),
         Provider(create: (context) => PomodoroRepository(context.read())),
         Provider(create: (context) => SettingsRepository(context.read())),
+        Provider(create: (context) => TaskRepository(context.read())),
         ChangeNotifierProvider(create: (context) => PomodoroController(context.read())),
-        ChangeNotifierProvider(create: (context) => TaskController()),
+        ChangeNotifierProvider(create: (context) => TaskController(context.read())),
         ChangeNotifierProvider(create: (context) => SettingsController(context.read(), context.read())),
       ],
       child: const MaterialApp(

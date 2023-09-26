@@ -17,6 +17,7 @@ dependencies:
   sqflite: ^2.3.0
   wakelock: ^0.6.2
   equatable: ^2.0.0
+  uuid: ^4.0.0
   
 dev_dependencies:
   flutter_test:

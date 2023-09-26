@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/src/controllers/controllers.dart';
 import '/src/pages/tasks/widgets/task_widget.dart';
-import '../../../controllers/pomodoro_controller.dart';
 import '../../../shared/utils/utils.dart';
 import '../../../shared/widgets/widgets.dart';
 import 'widgets.dart';
@@ -15,9 +15,10 @@ class HomeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final controller = context.watch<PomodoroController>();
+    final pomodoroController = context.watch<PomodoroController>();
+    final taskController = context.read<TaskController>();
 
-    return controller.pomodoroPageState == PomodoroPageState.loaded
+    return pomodoroController.pomodoroPageState == PomodoroPageState.loaded
         ? SizedBox(
             height: size.height,
             width: double.infinity,
@@ -27,7 +28,7 @@ class HomeBody extends StatelessWidget {
                   top: 50,
                   left: 0,
                   right: 0,
-                  child: controller.pomodoro.task == null
+                  child: pomodoroController.pomodoro.task == null
                       ? PrimaryButton(
                           color: primaryColor,
                           press: () {
@@ -46,7 +47,9 @@ class HomeBody extends StatelessWidget {
                           showTaskDetails: false,
                           frontFunction: () {},
                           backFunction: () {
-                            controller.removePomodoroTask();
+                            pomodoroController.removePomodoroTask();
+                            taskController.textFieldlHintText =
+                                'Criar tarefa...';
                           },
                           widgetFunction: () {},
                           // !taskDetailsFuncion:

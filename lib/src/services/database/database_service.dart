@@ -39,4 +39,8 @@ class DatabaseService {
     Database db = await _databaseService.database;
     await db.update('settings', settingsMap);
   }
+  saveNewTask({required Map<String, dynamic> taskMap}) async {
+    Database db = await _databaseService.database;
+    await db.insert('tasks', taskMap);
+  }
 }

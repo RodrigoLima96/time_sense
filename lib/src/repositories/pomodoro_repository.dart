@@ -22,7 +22,6 @@ class PomodoroRepository {
 
       pomodoro.task = task;
     }
-
     return pomodoro;
   }
 
