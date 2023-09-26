@@ -10,11 +10,10 @@ import '/src/shared/utils/utils.dart';
 import '/src/controllers/controllers.dart';
 
 class ChangeSettingValueWidget extends StatefulWidget {
-  final int currentValue;
   final String settingType;
+  
   const ChangeSettingValueWidget({
     super.key,
-    required this.currentValue,
     required this.settingType,
   });
 

@@ -21,10 +21,8 @@ class TasksPageBody extends StatelessWidget {
           SettingsOptionWidget(
             text: 'Tarefas Concluídas',
             setting: '',
-            funtion: () {},
-            height: 40,
             width: 220,
-            showDetails: false,
+            settingType: 'tasks',
           ),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 30),
@@ -43,14 +41,17 @@ class TasksPageBody extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 20),
                       child: TaskWidget(
                         frontIcon: 'assets/icons/circle.svg',
-                        backIcon: index == 2 ? 'assets/icons/delete-icon.svg' : 'assets/icons/pending-icon.svg',
-                        backIconColor: index == 2 ? Colors.red.shade300 : primaryColor,
+                        backIcon: index == 2
+                            ? 'assets/icons/delete-icon.svg'
+                            : 'assets/icons/pending-icon.svg',
+                        backIconColor:
+                            index == 2 ? Colors.red.shade300 : primaryColor,
                         showFrontIcon: index == 2 ? true : false,
                         text: 'Estudar flutter',
                         widgetColor: index == 2 ? primaryColor : secondaryColor,
                         showTaskDetails: index == 2 ? true : false,
-                        frontFunction: (){},
-                        backFunction: (){},
+                        frontFunction: () {},
+                        backFunction: () {},
                       ),
                     );
                   },

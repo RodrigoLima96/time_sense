@@ -1,43 +1,49 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
+import '../../../controllers/controllers.dart';
 import '../../../shared/utils/utils.dart';
 import 'widgets.dart';
 
 class SettingsOptionWidget extends StatelessWidget {
   final String text;
   final String setting;
-  final Function funtion;
-  final double height;
-  final double width;
-  final bool showDetails;
   final double margin;
+  final String settingType;
+  double? width;
 
-  const SettingsOptionWidget({
+  SettingsOptionWidget({
     super.key,
     required this.text,
     required this.setting,
-    required this.funtion,
-    required this.height,
-    required this.width,
-    required this.showDetails,
     this.margin = 40,
+    required this.settingType,
+    this.width,
   });
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    final settingsController = context.watch<SettingsController>();
+
+    final bool showDetails = settingsController.showSettingsDetails &&
+        settingsController.selectedSettingOptionName == settingType;
+
     return Column(
       children: [
         Container(
           height: 40,
-          width: width,
+          width: width ?? size.width * 0.85,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             color: secondaryColor,
           ),
-          child: GestureDetector(
+          child: InkWell(
+            borderRadius: BorderRadius.circular(50),
             child: Container(
               margin: const EdgeInsets.only(left: 30, right: 15),
               child: Row(
@@ -46,14 +52,12 @@ class SettingsOptionWidget extends StatelessWidget {
                   Text(text, style: textBold),
                   Row(
                     children: [
-                      setting.isNotEmpty
-                          ? Container(
-                              margin: const EdgeInsets.only(right: 15),
-                              child: Text(setting, style: textBold),
-                            )
-                          : const SizedBox(),
+                      Container(
+                        margin: const EdgeInsets.only(right: 15),
+                        child: Text(setting, style: textBold),
+                      ),
                       Transform.rotate(
-                        angle: 4.68,
+                        angle: showDetails ? 4.68 : 3.2,
                         child: SizedBox(
                           width: 50,
                           child: SvgPicture.asset(
@@ -68,14 +72,13 @@ class SettingsOptionWidget extends StatelessWidget {
               ),
             ),
             onTap: () {
-              funtion();
+              settingsController.selectSettingOption(settingType: settingType);
             },
           ),
         ),
         showDetails
-            ? const ChangeSettingValueWidget(
-                currentValue: 60,
-                settingType: 'pomodoroTime',
+            ? ChangeSettingValueWidget(
+                settingType: settingType,
               )
             : const SizedBox(),
         SizedBox(height: showDetails ? 0 : margin),

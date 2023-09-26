@@ -12,10 +12,7 @@ class SettingsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    final double settignWidth = size.width * 0.9;
-    final double settignHeight = size.height * 0.06;
-
-    final settingsController = context.watch<SettingsController>();
+    final settingsController = context.read<SettingsController>();
 
     return SizedBox(
       width: size.width,
@@ -26,37 +23,25 @@ class SettingsBody extends StatelessWidget {
           SettingsOptionWidget(
             text: 'Tempo de foco',
             setting: '${settingsController.settings.pomodoroTime} min',
-            funtion: () {},
-            height: settignHeight,
-            width: settignWidth,
-            showDetails: true,
+            settingType: 'pomodoroTime',
           ),
           SettingsOptionWidget(
             text: 'Pausa curta',
             setting: '${settingsController.settings.shortBreakDuration} min',
-            funtion: () {},
-            height: settignHeight,
-            width: settignWidth,
-            showDetails: false,
+            settingType: 'shortBreakDuration',
           ),
           SettingsOptionWidget(
             text: 'Pausa longa',
             setting: '${settingsController.settings.longBreakDuration} min',
-            funtion: () {},
-            height: settignHeight,
-            width: settignWidth,
-            showDetails: false,
+            settingType: 'longBreakDuration',
           ),
           SettingsOptionWidget(
             text: 'Sessões diárias',
             setting: '${settingsController.settings.dailySessions}',
-            funtion: () {},
-            height: settignHeight,
-            width: settignWidth,
-            showDetails: false,
+            settingType: 'dailySessions',
           ),
           const Spacer(),
-          const SettingsOptionsButtons()
+          const SettingsOptionsButtons(),
         ],
       ),
     );
