@@ -15,6 +15,7 @@ class TaskWidget extends StatelessWidget {
   final Color widgetColor;
   final bool showTaskDetails;
   final Function frontFunction;
+  final Function widgetFunction;
   final Function backFunction;
 
   const TaskWidget({
@@ -28,6 +29,7 @@ class TaskWidget extends StatelessWidget {
     required this.showTaskDetails,
     required this.frontFunction,
     required this.backFunction,
+    required this.widgetFunction,
   });
 
   @override
@@ -42,8 +44,7 @@ class TaskWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(50),
             color: widgetColor,
           ),
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -53,14 +54,19 @@ class TaskWidget extends StatelessWidget {
                   children: [
                     showFrontIcon
                         ? GestureDetector(
-                            child: SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: SvgPicture.asset(
-                                frontIcon,
-                                color: showTaskDetails
-                                    ? Colors.black
-                                    : primaryColor,
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              color: Colors.transparent,
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  frontIcon,
+                                  color: showTaskDetails
+                                      ? Colors.black
+                                      : primaryColor,
+                                  width: 20,
+                                  height: 20,
+                                ),
                               ),
                             ),
                             onTap: () {
@@ -68,27 +74,39 @@ class TaskWidget extends StatelessWidget {
                             },
                           )
                         : const SizedBox(),
-                    Container(
-                      width: size.width * 0.65,
-                      padding: const EdgeInsets.only(left: 12),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Text(
-                          text,
-                          style: textBold,
+                    InkWell(
+                      child: Container(
+                        width: size.width * 0.65,
+                        height: size.height * 0.05,
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.only(left: 12),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            text,
+                            style: textBold,
+                          ),
                         ),
                       ),
+                      onTap: () {
+                        widgetFunction();
+                      },
                     )
                   ],
                 ),
               ),
               GestureDetector(
-                child: SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: SvgPicture.asset(
-                    backIcon,
-                    color: backIconColor,
+                child: Container(
+                  height: 35,
+                  width: 35,
+                  color: Colors.transparent,
+                  child: Center(
+                    child: SvgPicture.asset(
+                      backIcon,
+                      color: backIconColor,
+                      width: 20,
+                      height: 20,
+                    ),
                   ),
                 ),
                 onTap: () {

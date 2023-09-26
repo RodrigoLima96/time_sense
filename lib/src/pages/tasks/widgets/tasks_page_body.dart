@@ -52,6 +52,7 @@ class TasksPageBody extends StatelessWidget {
                         showTaskDetails: index == 2 ? true : false,
                         frontFunction: () {},
                         backFunction: () {},
+                        widgetFunction: () {},
                       ),
                     );
                   },

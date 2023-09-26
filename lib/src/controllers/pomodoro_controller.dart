@@ -125,7 +125,7 @@ class PomodoroController extends ChangeNotifier {
   }
 
   savePomodoroStatusPeriodic() async {
-    Timer.periodic(const Duration(seconds: 5), (timer) {
+    Timer.periodic(const Duration(seconds: 30), (timer) {
       if (pomodoroState == PomodoroState.running) {
         savePomodoroStatus(saveCurrentPomodoroTime: true);
       }

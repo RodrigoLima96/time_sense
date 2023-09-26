@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_sense/src/controllers/controllers.dart';
-import 'package:time_sense/src/models/models.dart';
-import '../../../../controllers/task_controller.dart';
 import './task_container_bottom_sheet.dart';
 
 import '../../../../shared/utils/utils.dart';
