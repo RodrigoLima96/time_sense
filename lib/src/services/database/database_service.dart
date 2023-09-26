@@ -34,4 +34,9 @@ class DatabaseService {
     Database db = await _databaseService.database;
     await db.update('pomodoro', pomodoroMap);
   }
+
+  saveSettings({required Map<String, dynamic> settingsMap}) async {
+    Database db = await _databaseService.database;
+    await db.update('settings', settingsMap);
+  }
 }

@@ -16,14 +16,15 @@ class MyApp extends StatelessWidget {
         Provider(create: (context) => InitDatabaseService.instance),
         Provider(create: (context) => DatabaseService(context.read())),
         Provider(create: (context) => PomodoroRepository(context.read())),
+        Provider(create: (context) => SettingsRepository(context.read())),
         ChangeNotifierProvider(create: (context) => PomodoroController(context.read())),
         ChangeNotifierProvider(create: (context) => TaskController()),
-        ChangeNotifierProvider(create: (context) => SettingsController()),
+        ChangeNotifierProvider(create: (context) => SettingsController(context.read(), context.read())),
       ],
       child: const MaterialApp(
         title: 'Time Sense',
         debugShowCheckedModeBanner: false,
-        home: SettingsPage(),
+        home: HomePage(),
       ),
     );
   }

@@ -97,15 +97,13 @@ class PomodoroController extends ChangeNotifier {
 
     await savePomodoroStatus(saveCurrentPomodoroTime: false);
     await getPomodoroStatus();
-    setPomodoroSessionsState();
 
     pomodoroPageState = PomodoroPageState.loaded;
     notifyListeners();
   }
 
   String convertSecondsToMinutes({required int pomodoroDuration}) {
-    return Helper.convertSecondsToMinutes(
-        durationInSeconds: pomodoroDuration);
+    return Helper.convertSecondsToMinutes(durationInSeconds: pomodoroDuration);
   }
 
   setPomodoroSessionsState() {
@@ -158,6 +156,19 @@ class PomodoroController extends ChangeNotifier {
     pomodoro.taskId = null;
     pomodoro.task = null;
     await savePomodoroStatus(saveCurrentPomodoroTime: false);
+    notifyListeners();
+  }
+
+  updatePomodoroAfterSettingsChanges() async {
+    pomodoro = await _pomodoroRepository.getPomodoroStatus();
+
+    if (pomodoroState != PomodoroState.running &&
+        pomodoroState != PomodoroState.paused) {
+      pomodoro.remainingPomodoroTime = pomodoro.settings!.pomodoroTime;
+      pomodoro.remainingPomodoroTime =
+          PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
+    }
+    setPomodoroSessionsState();
     notifyListeners();
   }
 }

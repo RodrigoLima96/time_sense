@@ -1,4 +1,8 @@
-class Settings {
+// ignore_for_file: must_be_immutable
+
+import 'package:equatable/equatable.dart';
+
+class Settings extends Equatable {
   int pomodoroTime;
   int shortBreakDuration;
   int longBreakDuration;
@@ -28,4 +32,8 @@ class Settings {
       dailySessions: map['dailySessions'],
     );
   }
+
+  @override
+  List<Object?> get props =>
+      [pomodoroTime, shortBreakDuration, longBreakDuration, dailySessions];
 }

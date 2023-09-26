@@ -12,9 +12,9 @@ class SettingsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    final settingsController = context.read<SettingsController>();
+    final settingsController = context.watch<SettingsController>();
 
-    return SizedBox(
+    return settingsController.settingsPageState == SettingsPageState.loaded ? SizedBox(
       width: size.width,
       height: size.height,
       child: Column(
@@ -44,6 +44,6 @@ class SettingsBody extends StatelessWidget {
           const SettingsOptionsButtons(),
         ],
       ),
-    );
+    ) : const SizedBox();
   }
 }
