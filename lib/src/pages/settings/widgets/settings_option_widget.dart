@@ -30,8 +30,8 @@ class SettingsOptionWidget extends StatelessWidget {
 
     final settingsController = context.watch<SettingsController>();
 
-    final bool showDetails = settingsController.showSettingsDetails &&
-        settingsController.selectedSettingOptionName == settingType;
+    final bool showDetails =
+        settingsController.showSettinsDetails(settingType: settingType);
 
     return Column(
       children: [

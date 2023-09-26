@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:time_sense/src/controllers/controllers.dart';
-import 'package:time_sense/src/controllers/helpers/helpers.dart';
-import 'package:time_sense/src/models/models.dart';
-import 'package:time_sense/src/repositories/settings_repository.dart';
+
+import '/src/controllers/controllers.dart';
+import '/src/controllers/helpers/helpers.dart';
+import '/src/models/models.dart';
+import '/src/repositories/settings_repository.dart';
 
 enum SettingsPageState { loading, loaded }
 
@@ -27,22 +28,21 @@ class SettingsController extends ChangeNotifier {
 
   getCurrentSettings() async {
     settings = await settingsRepository.getSettings();
+    settings =
+        SettingsHelper.convertSettingsTime(settings: settings, toMinutes: true);
 
-    settings = SettingsHelper.getSettingsTimeInMinutes(settings: settings);
+    oldSettings = SettingsHelper.getSettingsCopy(settings: settings);
+
     settingsPageState = SettingsPageState.loaded;
-
-    oldSettings = oldSettings = Settings(
-      pomodoroTime: settings.pomodoroTime,
-      shortBreakDuration: settings.shortBreakDuration,
-      longBreakDuration: settings.longBreakDuration,
-      dailySessions: settings.dailySessions,
-    );
-
     notifyListeners();
   }
 
+  bool showSettinsDetails({required String settingType}) {
+    return showSettingsDetails && selectedSettingOptionName == settingType;
+  }
+
   selectSettingOption({required String settingType}) {
-    settings = saveSettingsOnScreen(
+    settings = SettingsHelper.getLastSettingsValues(
       settings: settings,
       lastSettingOptionName: lastSettingOptionName,
       settingValue: selectedSettingOptionValue,
@@ -55,94 +55,55 @@ class SettingsController extends ChangeNotifier {
         showSettingsDetails = false;
         notifyListeners();
         return;
-      } else {}
+      }
     }
-
-    switch (settingType) {
-      case 'pomodoroTime':
-        selectedSettingOptionValue = settings.pomodoroTime;
-        break;
-      case 'shortBreakDuration':
-        selectedSettingOptionValue = settings.shortBreakDuration;
-        break;
-      case 'longBreakDuration':
-        selectedSettingOptionValue = settings.longBreakDuration;
-        break;
-      case 'dailySessions':
-        selectedSettingOptionValue = settings.dailySessions;
-    }
+    selectedSettingOptionValue = SettingsHelper.getSelectedSettingOptionValue(
+      settings: settings,
+      settingType: settingType,
+    );
 
     selectedSettingOptionName = settingType;
     lastSettingOptionName = settingType;
     showSettingsDetails = true;
-
     notifyListeners();
   }
 
-  Settings saveSettingsOnScreen({
-    required Settings settings,
-    required String lastSettingOptionName,
-    required int settingValue,
-  }) {
-    switch (lastSettingOptionName) {
-      case 'pomodoroTime':
-        settings.pomodoroTime = settingValue;
-        break;
-      case 'shortBreakDuration':
-        settings.shortBreakDuration = settingValue;
-        break;
-      case 'longBreakDuration':
-        settings.longBreakDuration = settingValue;
-        break;
-      case 'dailySessions':
-        settings.dailySessions = settingValue;
-    }
-    return settings;
-  }
-
   changeSettingValue({required String settingType, required String action}) {
-    if (action == 'increment') {
-      if (selectedSettingOptionValue > 0) {
-        selectedSettingOptionValue++;
-      }
-    } else {
-      if (selectedSettingOptionValue > 1) {
-        selectedSettingOptionValue--;
-      }
-    }
-    settings = saveSettingsOnScreen(
+    selectedSettingOptionValue =
+        SettingsHelper.getNewSelectedSettingOptionValue(
+      action: action,
+      selectedSettingOptionValue: selectedSettingOptionValue,
+    );
+
+    settings = SettingsHelper.getLastSettingsValues(
       settings: settings,
       lastSettingOptionName: lastSettingOptionName,
       settingValue: selectedSettingOptionValue,
     );
-    if (oldSettings != settings) {
-      enableButtons = true;
-    } else {
-      enableButtons = false;
-    }
+
+    enableButtons = SettingsHelper.enableButtons(
+        oldSettings: oldSettings, settings: settings);
     notifyListeners();
   }
 
   cancelChanges() {
     if (enableButtons) {
-      settings = Settings(
-        pomodoroTime: oldSettings.pomodoroTime,
-        shortBreakDuration: oldSettings.shortBreakDuration,
-        longBreakDuration: oldSettings.longBreakDuration,
-        dailySessions: oldSettings.dailySessions,
-      );
-
+      settings = SettingsHelper.getSettingsCopy(settings: oldSettings);
       resetPageOptions();
+      notifyListeners();
     }
   }
 
   saveSettings() async {
     if (enableButtons) {
-      settings = SettingsHelper.getSettingsTimeInSeconds(settings: settings);
+      settings = SettingsHelper.convertSettingsTime(
+          settings: settings, toMinutes: false);
+
       await settingsRepository.saveSettings(settings: settings);
       await getCurrentSettings();
       await podomoroController.updatePomodoroAfterSettingsChanges();
       resetPageOptions();
+      notifyListeners();
     }
   }
 
@@ -152,6 +113,5 @@ class SettingsController extends ChangeNotifier {
     selectedSettingOptionName = "";
     lastSettingOptionName = "";
     enableButtons = false;
-    notifyListeners();
   }
 }
