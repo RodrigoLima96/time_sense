@@ -6,12 +6,17 @@ class TaskRepository {
   final DatabaseService _databaseService;
   TaskRepository(this._databaseService);
 
-  getTasks() async {
-    final tasksResult = await _databaseService.getTasks();
-    print(tasksResult);
+  Future<List<Task>> getTasks({required String tasksStatus}) async {
+    List<Task> tasksList = [];
+    final tasksResult =
+        await _databaseService.getTasks(tasksStatus: tasksStatus);
+    for (var taskResult in tasksResult) {
+      tasksList.add(Task.fromMap(taskResult));
+    }
+    return tasksList;
   }
 
-  saveNewTask({required Task task}) async {
+  Future<void> saveNewTask({required Task task}) async {
     await _databaseService.saveNewTask(taskMap: task.toMap());
   }
 }

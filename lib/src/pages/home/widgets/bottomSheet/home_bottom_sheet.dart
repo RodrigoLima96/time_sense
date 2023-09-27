@@ -30,28 +30,43 @@ class HomeBottomSheet extends StatelessWidget {
               child: const AddTaskWidget(),
             ),
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: List.generate(
-                    taskcontroller.pendingTaskList.length,
-                    (index) {
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 15),
-                        child: TaskContainerBottomSheet(
-                          backIcon: 'assets/icons/right-arrow.svg',
-                          press: () {
-                            pomodoroController.setPomodoroTask(
-                              taskId: taskcontroller.pendingTaskList[index].id,
-                            );
-                            Navigator.pop(context);
-                          },
-                          text: taskcontroller.pendingTaskList[index].text,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
+              child: taskcontroller.taskskBottomSheetState !=
+                      TaskskBottomSheetState.loading
+                  ? SingleChildScrollView(
+                      child: taskcontroller.pendingTaskList.isNotEmpty
+                          ? Column(
+                              children: List.generate(
+                                taskcontroller.pendingTaskList.length,
+                                (index) {
+                                  return Container(
+                                    margin: const EdgeInsets.only(bottom: 15),
+                                    child: TaskContainerBottomSheet(
+                                      backIcon: 'assets/icons/right-arrow.svg',
+                                      press: () {
+                                        pomodoroController.setPomodoroTask(
+                                          taskId: taskcontroller
+                                              .pendingTaskList[index].id,
+                                        );
+                                        Navigator.pop(context);
+                                      },
+                                      text: taskcontroller
+                                          .pendingTaskList[index].text,
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                          : Container(
+                              margin: const EdgeInsets.only(top: 100),
+                              child: const Center(
+                                child: Text(
+                                  'Nenhuma tarefa criada ainda...',
+                                  style: textBold,
+                                ),
+                              ),
+                            ),
+                    )
+                  : const Center(child: CircularProgressIndicator()),
             ),
             Container(
               margin: const EdgeInsets.only(bottom: 20, top: 20),

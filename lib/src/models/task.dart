@@ -33,7 +33,7 @@ class Task {
       status: map['status'],
       totalFocusingTime: map['totalFocusingTime'],
       creationDate: map['creationDate'] != null ? DateTime.parse(map['creationDate']) : null,
-      completionDate: map['completionDate'] != null ? DateTime.parse(map['completionDate']) : null,
+      completionDate: map['completionDate'] != "null" ? DateTime.parse(map['completionDate']) : null,
     );
   }
 }

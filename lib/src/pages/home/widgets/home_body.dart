@@ -15,7 +15,6 @@ class HomeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final pomodoroController = context.watch<PomodoroController>();
-    final taskController = context.read<TaskController>();
 
     return pomodoroController.pomodoroPageState == PomodoroPageState.loaded
         ? SizedBox(
@@ -39,7 +38,7 @@ class HomeBody extends StatelessWidget {
                       : TaskWidget(
                           frontIcon: 'assets/icons/circle.svg',
                           backIcon: 'assets/icons/exit-icon.svg',
-                          text: 'Desenvolver time sense app',
+                          text: pomodoroController.pomodoro.task!.text,
                           showFrontIcon: true,
                           backIconColor: primaryColor,
                           widgetColor: secondaryColor,
@@ -47,8 +46,6 @@ class HomeBody extends StatelessWidget {
                           frontFunction: () {},
                           backFunction: () {
                             pomodoroController.removePomodoroTask();
-                            taskController.textFieldlHintText =
-                                'Criar tarefa...';
                           },
                           widgetFunction: () {},
                           // !taskDetailsFuncion:

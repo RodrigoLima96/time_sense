@@ -4,38 +4,33 @@ import 'package:uuid/uuid.dart';
 
 import '../models/task.dart';
 
+enum TaskskBottomSheetState { loading, loaded }
+
 class TaskController extends ChangeNotifier {
   String textFieldlHintText = "Criar tarefa...";
+  TaskskBottomSheetState taskskBottomSheetState =
+      TaskskBottomSheetState.loading;
+
   final TaskRepository taskRepository;
 
-  TaskController(this.taskRepository);
+  List<Task> pendingTaskList = [];
+  List<Task> completeTaskList = [];
 
-  List<Task> pendingTaskList = [
-    Task(
-      id: '1',
-      text: 'Criar um site de compras',
-      status: 'pending',
-      totalFocusingTime: 2456,
-      creationDate: DateTime.now(),
-      completionDate: DateTime.now(),
-    ),
-    Task(
-      id: '2',
-      text: 'Estudar flutter',
-      status: 'pending',
-      totalFocusingTime: 1456,
-      creationDate: DateTime.now(),
-      completionDate: DateTime.now(),
-    ),
-    Task(
-      id: '3',
-      text: 'Desenvolver time sense app',
-      status: 'pending',
-      totalFocusingTime: 2316,
-      creationDate: DateTime.now(),
-      completionDate: DateTime.now(),
-    ),
-  ];
+  TaskController(this.taskRepository) {
+    getTasksByStatus(status: 'pending');
+  }
+
+  getTasksByStatus({required String status}) async {
+    switch (status) {
+      case 'pending':
+        pendingTaskList = await taskRepository.getTasks(tasksStatus: 'pending');
+      case 'complete':
+        completeTaskList =
+            await taskRepository.getTasks(tasksStatus: 'complete');
+    }
+    taskskBottomSheetState = TaskskBottomSheetState.loaded;
+    notifyListeners();
+  }
 
   changeTextFieldlHintText({required String text}) {
     textFieldlHintText = text;
@@ -47,6 +42,8 @@ class TaskController extends ChangeNotifier {
       textFieldlHintText = 'Digite o nome da tarefa...';
       notifyListeners();
     } else {
+      textFieldlHintText = "Criar tarefa...";
+
       const uuid = Uuid();
 
       final Task newTask = Task(
@@ -58,7 +55,8 @@ class TaskController extends ChangeNotifier {
         completionDate: null,
       );
       await taskRepository.saveNewTask(task: newTask);
-      await taskRepository.getTasks();
+      pendingTaskList.add(newTask);
+      notifyListeners();
     }
   }
 }
