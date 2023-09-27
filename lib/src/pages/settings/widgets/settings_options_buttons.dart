@@ -13,6 +13,7 @@ class SettingsOptionsButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final settingsController = context.watch<SettingsController>();
+    final pomodoroController = context.read<PomodoroController>();
 
     final bool enableButtons = settingsController.enableButtons;
     return Container(
@@ -34,6 +35,7 @@ class SettingsOptionsButtons extends StatelessWidget {
             text: 'Salvar',
             press: () {
               settingsController.saveSettings();
+              pomodoroController.updatePomodoroAfterSettingsChanges();
             },
             color: enableButtons ? primaryColor : secondaryColor,
             height: 12,

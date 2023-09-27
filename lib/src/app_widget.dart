@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         Provider(create: (context) => TaskRepository(context.read())),
         ChangeNotifierProvider(create: (context) => PomodoroController(context.read())),
         ChangeNotifierProvider(create: (context) => TaskController(context.read())),
-        ChangeNotifierProvider(create: (context) => SettingsController(context.read(), context.read())),
+        ChangeNotifierProvider(create: (context) => SettingsController(context.read())),
       ],
       child: const MaterialApp(
         title: 'Time Sense',

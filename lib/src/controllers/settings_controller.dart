@@ -9,7 +9,6 @@ enum SettingsPageState { loading, loaded }
 
 class SettingsController extends ChangeNotifier {
   final SettingsRepository settingsRepository;
-  final PomodoroController podomoroController;
 
   int selectedSettingOptionValue = 0;
   String selectedSettingOptionName = '';
@@ -22,7 +21,7 @@ class SettingsController extends ChangeNotifier {
   bool showSettingsDetails = false;
   SettingsPageState settingsPageState = SettingsPageState.loading;
 
-  SettingsController(this.settingsRepository, this.podomoroController) {
+  SettingsController(this.settingsRepository) {
     getCurrentSettings();
   }
 
@@ -101,7 +100,6 @@ class SettingsController extends ChangeNotifier {
 
       await settingsRepository.saveSettings(settings: settings);
       await getCurrentSettings();
-      await podomoroController.updatePomodoroAfterSettingsChanges();
       resetPageOptions();
       notifyListeners();
     }

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/src/controllers/controllers.dart';
-import '/src/pages/tasks/widgets/task_widget.dart';
 import '../../../shared/utils/utils.dart';
 import '../../../shared/widgets/widgets.dart';
 import 'widgets.dart';

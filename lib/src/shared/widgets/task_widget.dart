@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../shared/utils/utils.dart';
-import '../../../shared/widgets/widgets.dart';
+import '../utils/utils.dart';
+import 'widgets.dart';
 
 class TaskWidget extends StatelessWidget {
   final String frontIcon;

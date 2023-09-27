@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:time_sense/src/pages/settings/widgets/widgets.dart';
 import 'package:time_sense/src/shared/utils/utils.dart';
 
-import 'widgets.dart';
+import '../../../shared/widgets/widgets.dart';
 
 class TasksPageBody extends StatelessWidget {
   const TasksPageBody({super.key});

@@ -37,9 +37,14 @@ class TaskController extends ChangeNotifier {
     ),
   ];
 
+  changeTextFieldlHintText({required String text}) {
+    textFieldlHintText = text;
+    notifyListeners();
+  }
+
   addNewTask({required String text}) async {
     if (text == "") {
-      textFieldlHintText = 'Digite o nome da tarefa';
+      textFieldlHintText = 'Digite o nome da tarefa...';
       notifyListeners();
     } else {
       const uuid = Uuid();
@@ -53,6 +58,7 @@ class TaskController extends ChangeNotifier {
         completionDate: null,
       );
       await taskRepository.saveNewTask(task: newTask);
+      await taskRepository.getTasks();
     }
   }
 }

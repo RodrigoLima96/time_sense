@@ -18,6 +18,7 @@ class AddTaskWidget extends StatefulWidget {
 
 class _AddTaskWidgetState extends State<AddTaskWidget> {
   final TextEditingController textFieldController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -31,36 +32,56 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
 
     final taskcontroller = context.watch<TaskController>();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: size.width * 0.7,
-          child: TextFormField(
-            controller: textFieldController,
-            decoration: InputDecoration(
-              hintText: taskcontroller.textFieldlHintText,
-              hintStyle: TextStyle(
-                  color: taskcontroller.textFieldlHintText == "Criar tarefa..."
-                      ? Colors.white.withOpacity(0.5)
-                      : Colors.red.shade300,
-                  fontWeight: FontWeight.normal),
-              border: InputBorder.none,
+    return Form(
+      key: _formKey,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: size.width * 0.7,
+            child: TextFormField(
+              controller: textFieldController,
+              decoration: InputDecoration(
+                hintText: taskcontroller.textFieldlHintText,
+                hintStyle: TextStyle(
+                    color:
+                        taskcontroller.textFieldlHintText == "Criar tarefa..."
+                            ? Colors.white.withOpacity(0.5)
+                            : Colors.red.shade300,
+                    fontWeight: FontWeight.normal),
+                border: InputBorder.none,
+              ),
+              style: textBold,
+              onChanged: (value) {
+                if (value.isEmpty) {
+                  taskcontroller.changeTextFieldlHintText(
+                      text: "Criar tarefa...");
+                }
+              },
             ),
-            style: textBold,
           ),
-        ),
-        GestureDetector(
-          child: SvgPicture.asset(
-            'assets/icons/more-icon.svg',
-            color: primaryColor,
-            width: 20,
+          GestureDetector(
+            child: Container(
+              height: 35,
+              width: 40,
+              color: Colors.transparent,
+              child: Center(
+                child: SvgPicture.asset(
+                  'assets/icons/more-icon.svg',
+                  color: primaryColor,
+                  width: 20,
+                ),
+              ),
+            ),
+            onTap: () {
+              if (_formKey.currentState!.validate()) {
+                taskcontroller.addNewTask(text: textFieldController.text);
+                textFieldController.text = "";
+              }
+            },
           ),
-          onTap: () {
-            taskcontroller.addNewTask(text: textFieldController.text);
-          },
-        )
-      ],
+        ],
+      ),
     );
   }
 }

@@ -51,9 +51,18 @@ class TaskContainerBottomSheet extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            child: SvgPicture.asset(
-              backIcon,
-              color: primaryColor,
+            child: Container(
+              height: 40,
+              width: 40,
+              color: Colors.transparent,
+              child: Center(
+                child: SvgPicture.asset(
+                  backIcon,
+                  color: primaryColor,
+                  width: 25,
+                  height: 25,
+                ),
+              ),
             ),
             onTap: () async {
               await press();
