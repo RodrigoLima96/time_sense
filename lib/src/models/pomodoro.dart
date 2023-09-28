@@ -8,7 +8,7 @@ class Pomodoro {
   int pomodoroSession;
   bool shortBreak;
   bool longBreak;
-  String lastBreak;
+  int shortBreakCount;
   Settings? settings;
   String? taskId;
   Task? task;
@@ -22,7 +22,7 @@ class Pomodoro {
     required this.pomodoroSession,
     required this.shortBreak,
     required this.longBreak,
-    required this.lastBreak,
+    required this.shortBreakCount,
     required this.settings,
     required this.taskId,
   });
@@ -37,7 +37,7 @@ class Pomodoro {
       'taskId': taskId,
       'pomodoroSession': pomodoroSession,
       'shortBreak': shortBreak ? 1 : 0,
-      'lastBreak': lastBreak,
+      'shortBreakCount': shortBreakCount,
       'longBreak': longBreak ? 1 : 0,
       'settings': settings,
     };
@@ -53,8 +53,8 @@ class Pomodoro {
       taskId: map['taskId'],
       pomodoroSession: map['pomodoroSession'],
       shortBreak: map['shortBreak'] == 1,
-      lastBreak: map['lastBreak'],
       longBreak: map['longBreak'] == 1,
+      shortBreakCount: map['shortBreakCount'],
       settings: map['settings'],
     );
   }

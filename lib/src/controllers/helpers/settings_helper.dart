@@ -105,6 +105,7 @@ class SettingsHelper {
       pomodoroTime: settings.pomodoroTime,
       shortBreakDuration: settings.shortBreakDuration,
       longBreakDuration: settings.longBreakDuration,
+      shortBreakCount: settings.shortBreakCount,
       dailySessions: settings.dailySessions,
     );
   }

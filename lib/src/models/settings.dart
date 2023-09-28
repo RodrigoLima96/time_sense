@@ -6,12 +6,14 @@ class Settings extends Equatable {
   int pomodoroTime;
   int shortBreakDuration;
   int longBreakDuration;
+  int shortBreakCount;
   int dailySessions;
 
   Settings({
     required this.pomodoroTime,
     required this.shortBreakDuration,
     required this.longBreakDuration,
+    required this.shortBreakCount,
     required this.dailySessions,
   });
 
@@ -20,7 +22,8 @@ class Settings extends Equatable {
       'pomodoroTime': pomodoroTime,
       'shortBreakDuration': shortBreakDuration,
       'longBreakDuration': longBreakDuration,
-      'dailySessions': dailySessions,
+      'shortBreakCount': shortBreakCount,
+      'dailySessions': dailySessions
     };
   }
 
@@ -29,6 +32,7 @@ class Settings extends Equatable {
       pomodoroTime: map['pomodoroTime'],
       shortBreakDuration: map['shortBreakDuration'],
       longBreakDuration: map['longBreakDuration'],
+      shortBreakCount: map['shortBreakCount'],
       dailySessions: map['dailySessions'],
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '/src/controllers/controllers.dart';
 import '/src/controllers/helpers/helpers.dart';
 import '/src/models/models.dart';
 import '/src/repositories/settings_repository.dart';

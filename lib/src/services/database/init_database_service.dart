@@ -40,7 +40,7 @@ class InitDatabaseService {
       pomodoroSession INTEGER,
       shortBreak INTEGER,
       longBreak INTEGER,
-      lastBreak TEXT,
+      shortBreakCount INTEGER,
       date TEXT,
       totalFocusingTime INTEGER,
       taskId TEXT
@@ -52,6 +52,7 @@ class InitDatabaseService {
       pomodoroTime INTEGER,
       shortBreakDuration INTEGER,
       longBreakDuration INTEGER,
+      shortBreakCount INTEGER,
       dailySessions INTEGER
     );
   ''';
@@ -74,7 +75,7 @@ class InitDatabaseService {
     pomodoroSession,
     shortBreak,
     longBreak,
-    lastBreak,
+    shortBreakCount,
     date,
     totalFocusingTime,
     taskId
@@ -85,7 +86,7 @@ class InitDatabaseService {
     0,
     0,
     0,
-    'longBreak',
+    1,
     null,
     0,
     null
@@ -97,13 +98,15 @@ class InitDatabaseService {
     pomodoroTime,
     shortBreakDuration,
     longBreakDuration,
+    shortBreakCount,
     dailySessions
   )
 
   VALUES (
-    3600,
-    600,
     1200,
+    300,
+    600,
+    4,
     4
   );
 ''';

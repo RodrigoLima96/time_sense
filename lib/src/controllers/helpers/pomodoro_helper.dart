@@ -124,17 +124,19 @@ class PomodoroHelper {
     if (!pomodoro.shortBreak && !pomodoro.longBreak) {
       pomodoro.pomodoroSession++;
       pomodoro.date = DateTime.now();
-      if (pomodoro.lastBreak == 'longBreak') {
+
+      if (pomodoro.shortBreakCount < pomodoro.settings!.shortBreakCount) {
+        pomodoro.shortBreakCount++;
         pomodoro.shortBreak = true;
       } else {
+        pomodoro.shortBreakCount = pomodoro.settings!.shortBreakCount;
         pomodoro.longBreak = true;
       }
     } else if (pomodoro.shortBreak) {
       pomodoro.shortBreak = false;
-      pomodoro.lastBreak = 'shortBreak';
     } else {
       pomodoro.longBreak = false;
-      pomodoro.lastBreak = 'longBreak';
+      pomodoro.shortBreakCount = 1;
     }
     pomodoro.remainingPomodoroTime = null;
     return pomodoro;
@@ -147,13 +149,11 @@ class PomodoroHelper {
     if (isBreak) {
       if (pomodoro.shortBreak) {
         pomodoro.shortBreak = false;
-        pomodoro.lastBreak = 'shortBreak';
       } else {
         pomodoro.longBreak = false;
-        pomodoro.lastBreak = 'longBreak';
+        pomodoro.shortBreakCount = 1;
       }
     }
-
     return pomodoro;
   }
 
