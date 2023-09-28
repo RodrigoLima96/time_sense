@@ -44,6 +44,8 @@ class SettingsHelper {
         break;
       case 'longBreakDuration':
         settings.longBreakDuration = settingValue;
+      case 'shortBreakCount':
+        settings.shortBreakCount = settingValue;
         break;
       case 'dailySessions':
         settings.dailySessions = settingValue;
@@ -65,6 +67,8 @@ class SettingsHelper {
         break;
       case 'longBreakDuration':
         selectedSettingOptionValue = settings.longBreakDuration;
+      case 'shortBreakCount':
+        selectedSettingOptionValue = settings.shortBreakCount;
         break;
       case 'dailySessions':
         selectedSettingOptionValue = settings.dailySessions;
@@ -76,12 +80,16 @@ class SettingsHelper {
   static int getNewSelectedSettingOptionValue({
     required String action,
     required int selectedSettingOptionValue,
+    required String settingType,
   }) {
     if (action == 'increment') {
       if (selectedSettingOptionValue > 0) {
         selectedSettingOptionValue++;
       }
     } else {
+      if (selectedSettingOptionValue == 2 && settingType == 'shortBreakCount') {
+        return selectedSettingOptionValue;
+      }
       if (selectedSettingOptionValue > 1) {
         selectedSettingOptionValue--;
       }

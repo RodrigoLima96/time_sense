@@ -106,7 +106,7 @@ class InitDatabaseService {
     1200,
     300,
     600,
-    4,
+    2,
     4
   );
 ''';

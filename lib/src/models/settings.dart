@@ -39,5 +39,5 @@ class Settings extends Equatable {
 
   @override
   List<Object?> get props =>
-      [pomodoroTime, shortBreakDuration, longBreakDuration, dailySessions];
+      [pomodoroTime, shortBreakDuration, longBreakDuration, shortBreakCount, dailySessions];
 }

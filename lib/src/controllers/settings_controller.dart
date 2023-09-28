@@ -71,6 +71,7 @@ class SettingsController extends ChangeNotifier {
         SettingsHelper.getNewSelectedSettingOptionValue(
       action: action,
       selectedSettingOptionValue: selectedSettingOptionValue,
+      settingType: settingType,
     );
 
     settings = SettingsHelper.getLastSettingsValues(
