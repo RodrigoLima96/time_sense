@@ -13,7 +13,7 @@ class HomeBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final taskcontroller = context.watch<TaskController>();
+    final tasksController = context.watch<TasksController>();
     final pomodoroController = context.watch<PomodoroController>();
 
     Size size = MediaQuery.of(context).size;
@@ -30,26 +30,26 @@ class HomeBottomSheet extends StatelessWidget {
               child: const AddTaskWidget(),
             ),
             Expanded(
-              child: taskcontroller.taskskBottomSheetState !=
+              child: tasksController.taskskBottomSheetState !=
                       TaskskBottomSheetState.loading
                   ? SingleChildScrollView(
-                      child: taskcontroller.pendingTaskList.isNotEmpty
+                      child: tasksController.pendingTaskList.isNotEmpty
                           ? Column(
                               children: List.generate(
-                                taskcontroller.pendingTaskList.length,
+                                tasksController.pendingTaskList.length,
                                 (index) {
                                   return Container(
                                     margin: const EdgeInsets.only(bottom: 15),
                                     child: TaskContainerBottomSheet(
-                                      backIcon: 'assets/icons/right-arrow.svg',
+                                      backIcon: 'assets/icons/right-arrow-icon.svg',
                                       press: () {
                                         pomodoroController.setPomodoroTask(
-                                          taskId: taskcontroller
+                                          taskId: tasksController
                                               .pendingTaskList[index].id,
                                         );
                                         Navigator.pop(context);
                                       },
-                                      text: taskcontroller
+                                      text: tasksController
                                           .pendingTaskList[index].text,
                                     ),
                                   );
@@ -73,7 +73,7 @@ class HomeBottomSheet extends StatelessWidget {
               child: PrimaryButton(
                 text: 'Fechar',
                 press: () {
-                  taskcontroller.textFieldlHintText = "Criar tarefa...";
+                  tasksController.textFieldlHintText = "Criar tarefa...";
                   Navigator.pop(context);
                 },
                 color: primaryColor,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-import '../../controllers/task_controller.dart';
+import '../../controllers/tasks_controller.dart';
 import '../utils/utils.dart';
 
 class AddTaskWidget extends StatefulWidget {
@@ -30,7 +30,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    final taskcontroller = context.watch<TaskController>();
+    final tasksController = context.watch<TasksController>();
 
     return Form(
       key: _formKey,
@@ -42,10 +42,10 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
             child: TextFormField(
               controller: textFieldController,
               decoration: InputDecoration(
-                hintText: taskcontroller.textFieldlHintText,
+                hintText: tasksController.textFieldlHintText,
                 hintStyle: TextStyle(
                     color:
-                        taskcontroller.textFieldlHintText == "Criar tarefa..."
+                        tasksController.textFieldlHintText == "Criar tarefa..."
                             ? Colors.white.withOpacity(0.5)
                             : Colors.red.shade300,
                     fontWeight: FontWeight.normal),
@@ -54,7 +54,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
               style: textBold,
               onChanged: (value) {
                 if (value.isEmpty) {
-                  taskcontroller.changeTextFieldlHintText(
+                  tasksController.changeTextFieldlHintText(
                       text: "Criar tarefa...");
                 }
               },
@@ -75,7 +75,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
             ),
             onTap: () {
               if (_formKey.currentState!.validate()) {
-                taskcontroller.addNewTask(text: textFieldController.text);
+                tasksController.addNewTask(text: textFieldController.text);
                 textFieldController.text = "";
               }
             },

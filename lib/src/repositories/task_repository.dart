@@ -8,8 +8,10 @@ class TaskRepository {
 
   Future<List<Task>> getTasks({required String tasksStatus}) async {
     List<Task> tasksList = [];
+    int status = tasksStatus == 'pending' ? 1 : 0;
+    
     final tasksResult =
-        await _databaseService.getTasks(tasksStatus: tasksStatus);
+        await _databaseService.getTasks(tasksStatus: status);
     for (var taskResult in tasksResult) {
       tasksList.add(Task.fromMap(taskResult));
     }

@@ -2,39 +2,42 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import '/src/models/models.dart';
 
 import '../utils/utils.dart';
 import 'widgets.dart';
 
 class TaskWidget extends StatelessWidget {
+  final Task task;
   final String frontIcon;
   final String backIcon;
-  final Color backIconColor;
-  final String text;
-  final bool showFrontIcon;
-  final Color widgetColor;
-  final bool showTaskDetails;
   final Function frontFunction;
   final Function widgetFunction;
   final Function backFunction;
+  final bool showFrontIcon;
+  final bool pomodoroTask;
+  final bool isPending;
 
   const TaskWidget({
     super.key,
     required this.frontIcon,
     required this.backIcon,
-    required this.text,
-    required this.showFrontIcon,
-    required this.backIconColor,
-    required this.widgetColor,
-    required this.showTaskDetails,
     required this.frontFunction,
     required this.backFunction,
     required this.widgetFunction,
+    required this.task,
+    required this.showFrontIcon,
+    required this.pomodoroTask,
+    required this.isPending,
   });
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final Color widgetColor = task.showDetails ? primaryColor : secondaryColor;
+
+    Color backIconColor = task.showDetails ? Colors.red.shade300 : primaryColor;
+
     return Column(
       children: [
         Container(
@@ -52,7 +55,7 @@ class TaskWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    showFrontIcon
+                    showFrontIcon || task.showDetails
                         ? GestureDetector(
                             child: Container(
                               height: 30,
@@ -61,7 +64,7 @@ class TaskWidget extends StatelessWidget {
                               child: Center(
                                 child: SvgPicture.asset(
                                   frontIcon,
-                                  color: showTaskDetails
+                                  color: task.showDetails
                                       ? Colors.black
                                       : primaryColor,
                                   width: 20,
@@ -76,14 +79,16 @@ class TaskWidget extends StatelessWidget {
                         : const SizedBox(),
                     InkWell(
                       child: Container(
-                        width: size.width * 0.65,
+                        width: task.showDetails || showFrontIcon
+                            ? size.width * 0.65
+                            : size.width * 0.72,
                         height: size.height * 0.05,
                         alignment: Alignment.centerLeft,
                         padding: const EdgeInsets.only(left: 12),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Text(
-                            text,
+                            task.text,
                             style: textBold,
                           ),
                         ),
@@ -102,7 +107,7 @@ class TaskWidget extends StatelessWidget {
                   color: Colors.transparent,
                   child: Center(
                     child: SvgPicture.asset(
-                      backIcon,
+                      task.showDetails ? 'assets/icons/delete-icon.svg' : backIcon,
                       color: backIconColor,
                       width: 20,
                       height: 20,
@@ -116,7 +121,7 @@ class TaskWidget extends StatelessWidget {
             ],
           ),
         ),
-        showTaskDetails
+        task.showDetails
             ? Container(
                 margin: const EdgeInsets.only(top: 10),
                 child: const TotalFocusingTimeWidget(

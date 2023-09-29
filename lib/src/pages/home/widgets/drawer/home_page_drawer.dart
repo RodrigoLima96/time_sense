@@ -67,7 +67,7 @@ class HomePageDrawer extends StatelessWidget {
               text: 'Tarefas',
               press: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const TasksPage()));
+                    MaterialPageRoute(builder: (context) =>  const TasksPage()));
               },
             ),
             DrawerIcon(

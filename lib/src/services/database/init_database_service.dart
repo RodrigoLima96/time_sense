@@ -61,10 +61,11 @@ class InitDatabaseService {
     CREATE TABLE tasks (
       id TEXT,
       text TEXT,
-      status TEXT,
+      pending INTEGER,
       totalFocusingTime INTEGER,
-      creationDate creationDate,
-      completionDate creationDate
+      creationDate TEXT,
+      completionDate TEXT,
+      showDetails INTEGER
     );
   ''';
 

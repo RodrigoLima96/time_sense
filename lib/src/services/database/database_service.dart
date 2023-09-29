@@ -40,11 +40,11 @@ class DatabaseService {
     await db.update('settings', settingsMap);
   }
 
-  getTasks({required String tasksStatus}) async {
+  getTasks({required int tasksStatus}) async {
     Database db = await _databaseService.database;
     final tasks = await db.query(
       'tasks',
-      where: 'status = ?',
+      where: 'pending = ?',
       whereArgs: [tasksStatus],
     );
     return tasks;

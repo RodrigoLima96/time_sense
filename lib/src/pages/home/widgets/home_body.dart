@@ -36,14 +36,13 @@ class HomeBody extends StatelessWidget {
                           height: 15,
                         )
                       : TaskWidget(
-                          frontIcon: 'assets/icons/circle.svg',
+                          frontIcon: 'assets/icons/circle-icon.svg',
                           backIcon: 'assets/icons/exit-icon.svg',
-                          text: pomodoroController.pomodoro.task!.text,
+                          task: pomodoroController.pomodoro.task!,
                           showFrontIcon: true,
-                          backIconColor: primaryColor,
-                          widgetColor: secondaryColor,
-                          showTaskDetails: false,
+                          pomodoroTask: true,
                           frontFunction: () {},
+                          isPending: true,
                           backFunction: () {
                             pomodoroController.removePomodoroTask();
                           },
