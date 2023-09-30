@@ -26,7 +26,7 @@ class TasksPageBody extends StatelessWidget {
         children: [
           const TasksStatusWidget(),
           Container(
-            margin: const EdgeInsets.only(top: 20, bottom: 30),
+            margin: const EdgeInsets.only(top: 20, bottom: 15),
             child: Text(
               tasksListLength.toString(),
               style: textBold.copyWith(color: primaryColor, fontSize: 16),

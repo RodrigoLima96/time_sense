@@ -12,17 +12,16 @@ class TasksStatusWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     final tasksController = context.watch<TasksController>();
 
     return InkWell(
-      borderRadius: BorderRadius.circular(50),
+    borderRadius: BorderRadius.circular(50),
       onTap: () {
         tasksController.changeIsPendingTasksPage();
       },
       child: Container(
         height: 40,
-        width: size.width * 0.5,
+        width: 250,
         padding: const EdgeInsets.symmetric(horizontal: 25),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),

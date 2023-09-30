@@ -16,7 +16,6 @@ class TaskWidget extends StatelessWidget {
   final Function backFunction;
   final bool showFrontIcon;
   final bool pomodoroTask;
-  final bool isPending;
 
   const TaskWidget({
     super.key,
@@ -28,7 +27,6 @@ class TaskWidget extends StatelessWidget {
     required this.task,
     required this.showFrontIcon,
     required this.pomodoroTask,
-    required this.isPending,
   });
 
   @override
@@ -41,8 +39,8 @@ class TaskWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: size.width * 0.9,
           height: size.height * 0.05,
+          margin: const EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             color: widgetColor,
@@ -77,25 +75,24 @@ class TaskWidget extends StatelessWidget {
                             },
                           )
                         : const SizedBox(),
-                    InkWell(
-                      child: Container(
-                        width: task.showDetails || showFrontIcon
-                            ? size.width * 0.65
-                            : size.width * 0.72,
-                        height: size.height * 0.05,
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.only(left: 12),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Text(
-                            task.text,
-                            style: textBold,
+                    Expanded(
+                      child: InkWell(
+                        child: Container(
+                          height: 40,
+                          margin: const EdgeInsets.only(left: 15),
+                          alignment: Alignment.centerLeft,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Text(
+                              task.text,
+                              style: textBold,
+                            ),
                           ),
                         ),
+                        onTap: () {
+                          widgetFunction();
+                        },
                       ),
-                      onTap: () {
-                        widgetFunction();
-                      },
                     )
                   ],
                 ),
@@ -107,7 +104,9 @@ class TaskWidget extends StatelessWidget {
                   color: Colors.transparent,
                   child: Center(
                     child: SvgPicture.asset(
-                      task.showDetails ? 'assets/icons/delete-icon.svg' : backIcon,
+                      task.showDetails
+                          ? 'assets/icons/delete-icon.svg'
+                          : backIcon,
                       color: backIconColor,
                       width: 20,
                       height: 20,
@@ -115,7 +114,8 @@ class TaskWidget extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  backFunction();
+                   task.showDetails ?
+                  backFunction() : null;
                 },
               ),
             ],

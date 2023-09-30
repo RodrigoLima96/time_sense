@@ -42,7 +42,6 @@ class HomeBody extends StatelessWidget {
                           showFrontIcon: true,
                           pomodoroTask: true,
                           frontFunction: () {},
-                          isPending: true,
                           backFunction: () {
                             pomodoroController.removePomodoroTask();
                           },

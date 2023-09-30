@@ -14,13 +14,15 @@ class TasksController extends ChangeNotifier {
   TasksPageState tasksPageState = TasksPageState.loading;
 
   bool isPendingTasksPage = true;
-  String pageTitleText = 'Tarefas pendentes';
+  String pageTitleText = "Tarefas pendentes";
   String textFieldlHintText = "Criar tarefa...";
 
   final TaskRepository taskRepository;
 
   List<Task> pendingTaskList = [];
   List<Task> completeTaskList = [];
+  int? lastPendingTaskSelectedIndex;
+  int? lastCompleteTaskSelectedIndex;
 
   TasksController(this.taskRepository) {
     getTasksByStatus(status: 'pending');
@@ -116,10 +118,23 @@ class TasksController extends ChangeNotifier {
   }) {
     final targetList = isPendingTasksPage ? pendingTaskList : completeTaskList;
     final taskIndex = targetList.indexWhere((task) => task.id == taskId);
-    
+
     if (taskIndex != -1) {
       targetList[taskIndex].showDetails = !targetList[taskIndex].showDetails;
-      notifyListeners();
+
+      if (isPendingTasksPage) {
+        if (lastPendingTaskSelectedIndex != null &&
+            lastPendingTaskSelectedIndex != taskIndex) {
+          targetList[lastPendingTaskSelectedIndex!].showDetails = false;
+        }
+        lastPendingTaskSelectedIndex = taskIndex;
+      } else {
+        if (lastCompleteTaskSelectedIndex != null &&
+            lastCompleteTaskSelectedIndex != taskIndex) {
+          targetList[lastCompleteTaskSelectedIndex!].showDetails = false;
+        }
+        lastCompleteTaskSelectedIndex = taskIndex;
+      }
     }
     notifyListeners();
   }

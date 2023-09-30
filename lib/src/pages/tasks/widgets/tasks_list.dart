@@ -12,6 +12,8 @@ class TasksList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     final tasksController = context.watch<TasksController>();
     bool isPending = tasksController.isPendingTasksPage;
 
@@ -19,13 +21,16 @@ class TasksList extends StatelessWidget {
         ? tasksController.pendingTaskList
         : tasksController.completeTaskList;
 
-    final String taskListEmptyText = isPending ? 'Nenhuma tarefa pendente' : 'Nenhuma tarefa concluída';
+    final String taskListEmptyText =
+        isPending ? 'Nenhuma tarefa pendente' : 'Nenhuma tarefa concluída';
 
     return tasksList.isNotEmpty
-        ? Column(
-            children: List.generate(
-              tasksList.length,
-              (index) {
+        ? SizedBox(
+            width: size.width,
+            height: size.height * 0.78,
+            child: ListView.builder(
+              itemCount: tasksList.length,
+              itemBuilder: (context, index) {
                 final task = tasksList[index];
                 return Container(
                   margin: const EdgeInsets.only(bottom: 20),
@@ -37,7 +42,6 @@ class TasksList extends StatelessWidget {
                         ? 'assets/icons/pending-icon.svg'
                         : 'assets/icons/check-icon.svg',
                     task: task,
-                    isPending: isPending,
                     pomodoroTask: false,
                     showFrontIcon: false,
                     frontFunction: () {

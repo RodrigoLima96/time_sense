@@ -28,7 +28,6 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
 
     final tasksController = context.watch<TasksController>();
 
@@ -37,8 +36,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(
-            width: size.width * 0.7,
+          Expanded(
             child: TextFormField(
               controller: textFieldController,
               decoration: InputDecoration(
