@@ -15,4 +15,17 @@ class Helper {
       {required int durationInMinutes, bool settings = false}) {
     return durationInMinutes * 60;
   }
+
+  static Map<String, int>  convertTaskTime({required int seconds}) {
+    int hours = seconds ~/ 3600; // 3600 segundos em 1 hora
+    int minutes = (seconds % 3600) ~/ 60;
+
+    final convertedTime = {
+      'hour': hours,
+      'minutes': minutes,
+      'seconds': seconds,
+    };
+
+    return convertedTime;
+  }
 }

@@ -27,7 +27,7 @@ class TasksList extends StatelessWidget {
     return tasksList.isNotEmpty
         ? SizedBox(
             width: size.width,
-            height: size.height * 0.78,
+            height: size.height * 0.7,
             child: ListView.builder(
               itemCount: tasksList.length,
               itemBuilder: (context, index) {

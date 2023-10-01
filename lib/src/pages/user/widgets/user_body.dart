@@ -26,29 +26,28 @@ class UserBody extends StatelessWidget {
               height: 80,
               borderWidth: 4,
             ),
-    
             Container(
               margin: const EdgeInsets.only(top: 14),
               child: const Text('Rodrigo Lima', style: textBold),
             ),
-            
             Container(
               margin: const EdgeInsets.only(top: 50),
               child: const TotalFocusingTimeWidget(
-                  hours: 89, minutes: 23, text: 'Tempo total de foco'),
+                hours: 89,
+                minutes: 23,
+                seconds: 10,
+                text: 'Tempo total de foco',
+              ),
             ),
-    
             Container(
               margin: const EdgeInsets.only(top: 50),
               child: const TasksCompletedWidget(
                   totalTasks: 24, text: 'Total de tarefas concluídas'),
             ),
-    
             Container(
               margin: const EdgeInsets.only(top: 50),
               child: const Text('Total por data', style: textRegular),
             ),
-    
             Container(
               margin: const EdgeInsets.only(top: 15),
               child: PrimaryButton(
@@ -59,20 +58,18 @@ class UserBody extends StatelessWidget {
                 backIcon: 'assets/icons/arrow-back-icon.svg',
               ),
             ),
-    
             Container(
               margin: const EdgeInsets.only(top: 50),
               child: const TotalFocusingTimeWidget(
                 hours: 1,
                 minutes: 11,
+                seconds: 10,
                 text: 'foco',
               ),
             ),
-    
             Container(
               margin: const EdgeInsets.only(top: 50),
-              child: const TasksCompletedWidget(
-                  totalTasks: 3, text: 'Tarefas'),
+              child: const TasksCompletedWidget(totalTasks: 3, text: 'Tarefas'),
             ),
           ],
         ),

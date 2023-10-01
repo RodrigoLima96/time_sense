@@ -122,16 +122,12 @@ class TaskWidget extends StatelessWidget {
           ),
         ),
         task.showDetails
-            ? Container(
-                margin: const EdgeInsets.only(top: 10),
-                child: const TotalFocusingTimeWidget(
-                  hours: 2,
-                  minutes: 4,
-                  text: 'Tempo de foco',
-                ),
-              )
+            ? TaskFocusTimeWidget(
+              taskId: task.id,
+            )
             : const SizedBox(),
       ],
     );
   }
 }
+

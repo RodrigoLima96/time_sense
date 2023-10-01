@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:time_sense/src/controllers/helpers/helpers.dart';
 import 'package:time_sense/src/repositories/repositories.dart';
 import 'package:uuid/uuid.dart';
 
@@ -21,6 +22,7 @@ class TasksController extends ChangeNotifier {
 
   List<Task> pendingTaskList = [];
   List<Task> completeTaskList = [];
+  Map<String, int>? taskFocusTime;
   int? lastPendingTaskSelectedIndex;
   int? lastCompleteTaskSelectedIndex;
 
@@ -120,6 +122,7 @@ class TasksController extends ChangeNotifier {
     final taskIndex = targetList.indexWhere((task) => task.id == taskId);
 
     if (taskIndex != -1) {
+      taskFocusTime = Helper.convertTaskTime(seconds: targetList[taskIndex].totalFocusingTime);
       targetList[taskIndex].showDetails = !targetList[taskIndex].showDetails;
 
       if (isPendingTasksPage) {
