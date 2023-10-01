@@ -6,15 +6,19 @@ import 'widgets.dart';
 
 class TaskFocusTimeWidget extends StatelessWidget {
   final String taskId;
+  final bool pomodoroTask;
 
   const TaskFocusTimeWidget({
     super.key,
     required this.taskId,
+    required this.pomodoroTask,
   });
 
   @override
   Widget build(BuildContext context) {
-    final taskTime = context.read<TasksController>().taskFocusTime;
+    final taskTime = !pomodoroTask
+        ? context.read<TasksController>().taskFocusTime
+        : context.read<PomodoroController>().taskFocusTime;
 
     return Container(
       margin: const EdgeInsets.only(top: 10),

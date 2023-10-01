@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       child: const MaterialApp(
         title: 'Time Sense',
         debugShowCheckedModeBanner: false,
-        home: TasksPage(),
+        home: HomePage(),
       ),
     );
   }

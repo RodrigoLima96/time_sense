@@ -45,7 +45,9 @@ class HomeBody extends StatelessWidget {
                           backFunction: () {
                             pomodoroController.removePomodoroTask();
                           },
-                          widgetFunction: () {},
+                          widgetFunction: () {
+                            pomodoroController.showPomodoroTaskDetails();
+                          },
                           // !taskDetailsFuncion:
                           // calcular na hora o tempo do pomodoro atual
                           // para mostrar o tempo total de foco da task

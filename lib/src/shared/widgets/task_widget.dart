@@ -104,17 +104,17 @@ class TaskWidget extends StatelessWidget {
                   color: Colors.transparent,
                   child: Center(
                     child: SvgPicture.asset(
-                      task.showDetails
+                      task.showDetails && !pomodoroTask
                           ? 'assets/icons/delete-icon.svg'
                           : backIcon,
-                      color: backIconColor,
+                      color: pomodoroTask && task.showDetails ? Colors.black : backIconColor,
                       width: 20,
                       height: 20,
                     ),
                   ),
                 ),
                 onTap: () {
-                   task.showDetails ?
+                   task.showDetails || pomodoroTask ?
                   backFunction() : null;
                 },
               ),
@@ -124,6 +124,7 @@ class TaskWidget extends StatelessWidget {
         task.showDetails
             ? TaskFocusTimeWidget(
               taskId: task.id,
+              pomodoroTask: pomodoroTask,
             )
             : const SizedBox(),
       ],

@@ -19,6 +19,7 @@ class PomodoroController extends ChangeNotifier {
   PomodoroPageState pomodoroPageState = PomodoroPageState.loading;
   List<String> pomodoroSessions = [];
   bool showSecondButton = false;
+  Map<String, int>? taskFocusTime;
 
   PomodoroController(
     this._pomodoroRepository,
@@ -156,6 +157,12 @@ class PomodoroController extends ChangeNotifier {
     pomodoro.taskId = null;
     pomodoro.task = null;
     await savePomodoroStatus(saveCurrentPomodoroTime: false);
+    notifyListeners();
+  }
+
+  showPomodoroTaskDetails() {
+    taskFocusTime = Helper.convertTaskTime(seconds: pomodoro.task!.totalFocusingTime);
+    pomodoro.task!.showDetails = !pomodoro.task!.showDetails;
     notifyListeners();
   }
 
