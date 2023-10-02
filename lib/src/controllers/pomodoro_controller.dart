@@ -161,7 +161,8 @@ class PomodoroController extends ChangeNotifier {
   }
 
   showPomodoroTaskDetails() {
-    taskFocusTime = Helper.convertTaskTime(seconds: pomodoro.task!.totalFocusingTime);
+    taskFocusTime =
+        Helper.convertTaskTime(seconds: pomodoro.task!.totalFocusingTime);
     pomodoro.task!.showDetails = !pomodoro.task!.showDetails;
     notifyListeners();
   }
@@ -171,7 +172,6 @@ class PomodoroController extends ChangeNotifier {
 
     if (pomodoroState != PomodoroState.running &&
         pomodoroState != PomodoroState.paused) {
-      pomodoro.remainingPomodoroTime = pomodoro.settings!.pomodoroTime;
       pomodoro.remainingPomodoroTime =
           PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
     }

@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
+import '../../controllers/controllers.dart';
 import '../utils/utils.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -16,6 +18,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pomodoroController = context.watch<PomodoroController>();
+
     return AppBar(
       elevation: 0,
       backgroundColor: backgroundColor,
@@ -23,15 +27,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leadingWidth: 40,
       leading: Container(
         margin: const EdgeInsets.only(left: 15),
-        child: GestureDetector(
-          child: SvgPicture.asset(
-            icon,
-            color: primaryColor,
-          ),
-          onTap: () {
-            function();
-          },
-        ),
+        child: pomodoroController.pomodoroState != PomodoroState.running
+            ? GestureDetector(
+                child: SvgPicture.asset(
+                  icon,
+                  color: primaryColor,
+                ),
+                onTap: () {
+                  function();
+                },
+              )
+            : const SizedBox(),
       ),
     );
   }

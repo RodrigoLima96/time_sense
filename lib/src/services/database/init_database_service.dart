@@ -43,7 +43,8 @@ class InitDatabaseService {
       shortBreakCount INTEGER,
       date TEXT,
       totalFocusingTime INTEGER,
-      taskId TEXT
+      taskId TEXT,
+      taskPomodoroStartTime INTEGER
     );
   ''';
 
@@ -79,7 +80,8 @@ class InitDatabaseService {
     shortBreakCount,
     date,
     totalFocusingTime,
-    taskId
+    taskId,
+    taskPomodoroStartTime
   )
   VALUES (
     'focus',
@@ -90,6 +92,7 @@ class InitDatabaseService {
     1,
     null,
     0,
+    null,
     null
   );
 ''';

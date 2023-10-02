@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -28,7 +28,6 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     final tasksController = context.watch<TasksController>();
 
     return Form(
@@ -71,9 +70,15 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                 ),
               ),
             ),
-            onTap: () {
+            onTap: () async {
               if (_formKey.currentState!.validate()) {
-                tasksController.addNewTask(text: textFieldController.text);
+                await tasksController.addNewTask(
+                    text: textFieldController.text);
+                    
+                if (tasksController.textFieldlHintText !=
+                    'Digite o nome da tarefa...') {
+                  FocusScope.of(context).unfocus();
+                }
                 textFieldController.text = "";
               }
             },
