@@ -160,7 +160,7 @@ class PomodoroController extends ChangeNotifier {
     notifyListeners();
   }
 
-  removeOrCompletePomodoroTask() async {
+  removePomodoroTask() async {
     pomodoro.taskPomodoroStartTime = null;
     pomodoro.taskId = null;
     pomodoro.task = null;

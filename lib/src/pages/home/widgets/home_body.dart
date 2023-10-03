@@ -55,7 +55,7 @@ class HomeBody extends StatelessWidget {
                               isCompleted: true,
                             );
 
-                            pomodoroController.removeOrCompletePomodoroTask();
+                            pomodoroController.removePomodoroTask();
                           },
                           backFunction: () {
                             int currentPomodoroTaskTime =
@@ -68,7 +68,7 @@ class HomeBody extends StatelessWidget {
                               );
                             }
 
-                            pomodoroController.removeOrCompletePomodoroTask();
+                            pomodoroController.removePomodoroTask();
                           },
                           widgetFunction: () {
                             pomodoroController.showPomodoroTaskDetails();
