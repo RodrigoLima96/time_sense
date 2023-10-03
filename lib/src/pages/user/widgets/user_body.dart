@@ -35,7 +35,8 @@ class UserBody extends StatelessWidget {
               child: const TotalFocusingTimeWidget(
                 hours: 89,
                 minutes: 23,
-                seconds: 10,
+                seconds: 2,
+                totalSeconds: 22111,
                 text: 'Tempo total de foco',
                 taskPending: true,
               ),
@@ -64,7 +65,8 @@ class UserBody extends StatelessWidget {
               child: const TotalFocusingTimeWidget(
                 hours: 1,
                 minutes: 11,
-                seconds: 10,
+                seconds: 23,
+                totalSeconds: 4372,
                 text: 'foco',
                 taskPending: true,
               ),

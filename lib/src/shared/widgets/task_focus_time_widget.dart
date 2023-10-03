@@ -27,6 +27,7 @@ class TaskFocusTimeWidget extends StatelessWidget {
       child: TotalFocusingTimeWidget(
         hours: taskTime!['hour']!,
         minutes: taskTime['minutes']!,
+        totalSeconds: taskTime['totalSeconds']!,
         seconds: taskTime['seconds']!,
         text: 'Tempo de foco',
         taskPending: taskPending,

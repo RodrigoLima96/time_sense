@@ -126,7 +126,7 @@ class TasksController extends ChangeNotifier {
 
     if (taskIndex != -1) {
       taskFocusTime = Helper.convertTaskTime(
-          seconds: targetList[taskIndex].totalFocusingTime);
+          totalSeconds: targetList[taskIndex].totalFocusingTime);
       targetList[taskIndex].showDetails = !targetList[taskIndex].showDetails;
 
       if (isPendingTasksPage) {

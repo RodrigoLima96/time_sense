@@ -16,17 +16,18 @@ class _TimerWidgetState extends State<TimerWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final controller = context.watch<PomodoroController>();
+    final pomodoroController = context.watch<PomodoroController>();
+    final taskController = context.read<TasksController>();
 
-    int pomodoroDuration = controller.pomodoro.remainingPomodoroTime!;
+    int pomodoroDuration = pomodoroController.pomodoro.remainingPomodoroTime!;
 
-    final pomodoroDurationInMinutes =
-        controller.convertSecondsToMinutes(pomodoroDuration: pomodoroDuration);
+    final pomodoroDurationInMinutes = pomodoroController
+        .convertSecondsToMinutes(pomodoroDuration: pomodoroDuration);
 
     return CircularCountDownTimer(
       duration: pomodoroDuration,
       initialDuration: 0,
-      controller: controller.countDownController,
+      controller: pomodoroController.countDownController,
       width: size.width * 0.8,
       height: size.height * 0.35,
       ringColor: secondaryColor,
@@ -41,10 +42,21 @@ class _TimerWidgetState extends State<TimerWidget> {
       isReverse: true,
       autoStart: false,
       onComplete: () async {
-        await controller.completePomodoro();
+        if (!pomodoroController.pomodoro.shortBreak &&
+            !pomodoroController.pomodoro.longBreak) {
+          int currentPomodoroTaskTime =
+              pomodoroController.getCurrentPomodoroTaskTime(pomodoroComplete: true);
+          await taskController.savePomodoroTaskTime(
+            taskId: pomodoroController.pomodoro.task!.id,
+            taskTime: currentPomodoroTaskTime,
+            isCompleted: false,
+          );
+        }
+
+        await pomodoroController.completePomodoro();
       },
       timeFormatterFunction: (defaultFormatterFunction, duration) {
-        if (controller.pomodoroState == PomodoroState.notStarted) {
+        if (pomodoroController.pomodoroState == PomodoroState.notStarted) {
           return pomodoroDurationInMinutes;
         } else {
           return Function.apply(defaultFormatterFunction, [duration]);

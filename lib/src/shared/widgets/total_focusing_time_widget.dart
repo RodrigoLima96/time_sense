@@ -6,6 +6,7 @@ class TotalFocusingTimeWidget extends StatelessWidget {
   final int hours;
   final int minutes;
   final int seconds;
+  final int totalSeconds;
   final String text;
   final bool taskPending;
 
@@ -13,6 +14,7 @@ class TotalFocusingTimeWidget extends StatelessWidget {
     super.key,
     required this.hours,
     required this.minutes,
+    required this.totalSeconds,
     required this.seconds,
     required this.text,
     required this.taskPending,
@@ -24,7 +26,7 @@ class TotalFocusingTimeWidget extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.only(bottom: 10),
-          child: hours < 1 && minutes < 1 && seconds < 1
+          child: hours < 1 && minutes < 1 && totalSeconds < 1
               ? const SizedBox()
               : Text(text, style: textRegular),
         ),
@@ -45,21 +47,24 @@ class TotalFocusingTimeWidget extends StatelessWidget {
             minutes > 0
                 ? Text(minutes > 1 ? 'minutos' : 'minuto', style: textRegular)
                 : const SizedBox(),
-            seconds > 0 && seconds < 60
-                ? Text('$seconds ',
+            seconds > 0 && totalSeconds > 60 ?
+            Text(' $seconds ', style: textBold.copyWith(color: primaryColor)) : const SizedBox(),
+            seconds > 0 && totalSeconds > 60 ?
+            Text(seconds > 1 ? 'segundos' : 'segundo', style: textRegular) : const SizedBox(),
+            totalSeconds > 0 && totalSeconds < 60
+                ? Text('$totalSeconds ',
                     style: textBold.copyWith(color: primaryColor))
                 : const SizedBox(),
-            seconds > 0 && seconds < 60
-                ? Text(seconds > 1 ? 'segundos' : 'segundo', style: textRegular)
+            totalSeconds > 0 && totalSeconds < 60
+                ? Text(totalSeconds > 1 ? 'segundos' : 'segundo',
+                    style: textRegular)
                 : const SizedBox(),
-            hours < 1 && minutes < 1 && seconds < 1
+            hours < 1 && minutes < 1 && totalSeconds < 1
                 ? Text(
-                    taskPending ? 'Tarefa não iniciada' : '00:00',
-                    style: taskPending
-                        ? textBold
-                        : textBold.copyWith(
-                            color: primaryColor,
-                          ),
+                    taskPending
+                        ? 'Tarefa não iniciada'
+                        : 'Concluída sem tempo de foco',
+                    style: textBold,
                   )
                 : const SizedBox(),
           ],

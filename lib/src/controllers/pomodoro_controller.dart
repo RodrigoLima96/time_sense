@@ -46,9 +46,9 @@ class PomodoroController extends ChangeNotifier {
     pomodoroState = PomodoroState.running;
     setPomodoroSessionsState();
     showSecondButton = true;
-    if (pomodoro.taskPomodoroStartTime == null && pomodoro.task != null) {
-      pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime;
-    }
+    Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
+        ? pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime
+        : null;
     notifyListeners();
   }
 
@@ -66,9 +66,9 @@ class PomodoroController extends ChangeNotifier {
     pomodoroState = PomodoroState.running;
     showSecondButton = true;
     setPomodoroSessionsState();
-    if (pomodoro.taskPomodoroStartTime == null && pomodoro.task != null) {
-      pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime;
-    }
+    Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
+        ? pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime
+        : null;
     notifyListeners();
   }
 
@@ -76,7 +76,9 @@ class PomodoroController extends ChangeNotifier {
     countDownController.restart(duration: pomodoro.settings!.pomodoroTime);
     pomodoroState = PomodoroState.running;
     showSecondButton = true;
-    pomodoro.taskPomodoroStartTime = pomodoro.settings!.pomodoroTime;
+    if (pomodoro.task != null) {
+      pomodoro.taskPomodoroStartTime = pomodoro.settings!.pomodoroTime;
+    }
     notifyListeners();
   }
 
@@ -99,7 +101,7 @@ class PomodoroController extends ChangeNotifier {
     pomodoroPageState = PomodoroPageState.loading;
 
     pomodoro = PomodoroHelper.getCompletePomodoroStatus(pomodoro: pomodoro);
-
+    pomodoro.taskPomodoroStartTime = null;
     showSecondButton = false;
     pomodoroState = PomodoroState.notStarted;
 
@@ -172,10 +174,12 @@ class PomodoroController extends ChangeNotifier {
     notifyListeners();
   }
 
-  int getCurrentPomodoroTaskTime() {
+  int getCurrentPomodoroTaskTime({required bool pomodoroComplete}) {
     int currentPomodoroTaskTime = 0;
 
-    if (pomodoro.taskPomodoroStartTime != null) {
+    if (pomodoro.taskPomodoroStartTime != null &&
+        !pomodoro.shortBreak &&
+        !pomodoro.longBreak) {
       String? currentPomodoroTimme = countDownController.getTime();
       int? currentTaskFocusTime;
 
@@ -187,8 +191,13 @@ class PomodoroController extends ChangeNotifier {
           controllerRemainingPomodoroTime: currentPomodoroTimme,
         );
       }
-      currentPomodoroTaskTime +=
-          pomodoro.taskPomodoroStartTime! - currentTaskFocusTime!;
+      if (pomodoroComplete) {
+        currentPomodoroTaskTime = pomodoro.taskPomodoroStartTime!;
+      } else {
+        currentPomodoroTaskTime +=
+            pomodoro.taskPomodoroStartTime! - currentTaskFocusTime!;
+      }
+
       return currentPomodoroTaskTime;
     } else {
       return 0;
@@ -198,9 +207,9 @@ class PomodoroController extends ChangeNotifier {
   showPomodoroTaskDetails() {
     if (pomodoro.task!.showDetails == false) {
       int totalTaskTime = pomodoro.task!.totalFocusingTime;
-      totalTaskTime += getCurrentPomodoroTaskTime();
+      totalTaskTime += getCurrentPomodoroTaskTime(pomodoroComplete: false);
 
-      taskFocusTime = Helper.convertTaskTime(seconds: totalTaskTime);
+      taskFocusTime = Helper.convertTaskTime(totalSeconds: totalTaskTime);
       pomodoro.task!.showDetails = true;
     } else {
       pomodoro.task!.showDetails = false;
@@ -213,10 +222,14 @@ class PomodoroController extends ChangeNotifier {
 
     if (pomodoroState != PomodoroState.running &&
         pomodoroState != PomodoroState.paused) {
+      pomodoro.taskPomodoroStartTime = null;
+      pomodoro.remainingPomodoroTime = null;
       pomodoro.remainingPomodoroTime =
           PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
     }
     setPomodoroSessionsState();
+
+    await savePomodoroStatus(saveCurrentPomodoroTime: false);
     notifyListeners();
   }
 }

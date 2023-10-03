@@ -1,3 +1,5 @@
+import 'package:time_sense/src/models/models.dart';
+
 class Helper {
   static dynamic convertSecondsToMinutes(
       {required int durationInSeconds, bool settings = false}) {
@@ -16,16 +18,25 @@ class Helper {
     return durationInMinutes * 60;
   }
 
-  static Map<String, int>  convertTaskTime({required int seconds}) {
-    int hours = seconds ~/ 3600; // 3600 segundos em 1 hora
-    int minutes = (seconds % 3600) ~/ 60;
+  static Map<String, int> convertTaskTime({required int totalSeconds}) {
+    int hours = totalSeconds ~/ 3600;
+    int minutes = (totalSeconds % 3600) ~/ 60;
+    int seconds = totalSeconds % 60;
 
     final convertedTime = {
       'hour': hours,
       'minutes': minutes,
+      'totalSeconds': totalSeconds,
       'seconds': seconds,
     };
 
     return convertedTime;
+  }
+
+  static bool checkIfTaskPomodoroStartTime({required Pomodoro pomodoro}) {
+    return pomodoro.taskPomodoroStartTime == null &&
+        pomodoro.task != null &&
+        !pomodoro.shortBreak &&
+        !pomodoro.longBreak;
   }
 }

@@ -33,9 +33,9 @@ class SettingsOptionsButtons extends StatelessWidget {
           const SizedBox(width: 70),
           PrimaryButton(
             text: 'Salvar',
-            press: () {
-              settingsController.saveSettings();
-              pomodoroController.updatePomodoroAfterSettingsChanges();
+            press: () async {
+              await settingsController.saveSettings();
+              await pomodoroController.updatePomodoroAfterSettingsChanges();
             },
             color: enableButtons ? primaryColor : secondaryColor,
             height: 12,
