@@ -7,11 +7,13 @@ import 'widgets.dart';
 class TaskFocusTimeWidget extends StatelessWidget {
   final String taskId;
   final bool pomodoroTask;
+  final bool taskPending;
 
   const TaskFocusTimeWidget({
     super.key,
     required this.taskId,
     required this.pomodoroTask,
+    required this.taskPending,
   });
 
   @override
@@ -27,6 +29,7 @@ class TaskFocusTimeWidget extends StatelessWidget {
         minutes: taskTime['minutes']!,
         seconds: taskTime['seconds']!,
         text: 'Tempo de foco',
+        taskPending: taskPending,
       ),
     );
   }

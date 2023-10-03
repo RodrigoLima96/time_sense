@@ -7,6 +7,7 @@ class TotalFocusingTimeWidget extends StatelessWidget {
   final int minutes;
   final int seconds;
   final String text;
+  final bool taskPending;
 
   const TotalFocusingTimeWidget({
     super.key,
@@ -14,6 +15,7 @@ class TotalFocusingTimeWidget extends StatelessWidget {
     required this.minutes,
     required this.seconds,
     required this.text,
+    required this.taskPending,
   });
 
   @override
@@ -51,7 +53,14 @@ class TotalFocusingTimeWidget extends StatelessWidget {
                 ? Text(seconds > 1 ? 'segundos' : 'segundo', style: textRegular)
                 : const SizedBox(),
             hours < 1 && minutes < 1 && seconds < 1
-                ? const Text('Tarefa não iniciada', style: textBold)
+                ? Text(
+                    taskPending ? 'Tarefa não iniciada' : '00:00',
+                    style: taskPending
+                        ? textBold
+                        : textBold.copyWith(
+                            color: primaryColor,
+                          ),
+                  )
                 : const SizedBox(),
           ],
         ),

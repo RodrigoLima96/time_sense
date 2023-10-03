@@ -125,6 +125,7 @@ class TaskWidget extends StatelessWidget {
             ? TaskFocusTimeWidget(
               taskId: task.id,
               pomodoroTask: pomodoroTask,
+              taskPending: task.pending,
             )
             : const SizedBox(),
       ],

@@ -54,4 +54,23 @@ class DatabaseService {
     Database db = await _databaseService.database;
     await db.insert('tasks', taskMap);
   }
+
+  updateTask({required Map<String, dynamic> taskMap}) async {
+    Database db = await _databaseService.database;
+    await db.update(
+      'tasks',
+      taskMap,
+      where: 'id = ?',
+      whereArgs: [taskMap['id']],
+    );
+  }
+
+  deleteTask({required String taskId}) async {
+    Database db = await _databaseService.database;
+    await db.delete(
+      'tasks',
+      where: 'id = ?',
+      whereArgs: [taskId],
+    );
+  }
 }

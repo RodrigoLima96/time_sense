@@ -15,6 +15,7 @@ class HomeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final pomodoroController = context.watch<PomodoroController>();
+    final taskController = context.read<TasksController>();
 
     return pomodoroController.pomodoroPageState == PomodoroPageState.loaded
         ? SizedBox(
@@ -45,16 +46,33 @@ class HomeBody extends StatelessWidget {
                           task: pomodoroController.pomodoro.task!,
                           showFrontIcon: true,
                           pomodoroTask: true,
-                          frontFunction: () {},
+                          frontFunction: () {
+                            int currentPomodoroTaskTime =
+                                pomodoroController.getCurrentPomodoroTaskTime();
+                            taskController.savePomodoroTaskTime(
+                              taskId: pomodoroController.pomodoro.task!.id,
+                              taskTime: currentPomodoroTaskTime,
+                              isCompleted: true,
+                            );
+
+                            pomodoroController.removeOrCompletePomodoroTask();
+                          },
                           backFunction: () {
-                            pomodoroController.removePomodoroTask();
+                            int currentPomodoroTaskTime =
+                                pomodoroController.getCurrentPomodoroTaskTime();
+                            if (currentPomodoroTaskTime > 0) {
+                              taskController.savePomodoroTaskTime(
+                                taskId: pomodoroController.pomodoro.task!.id,
+                                taskTime: currentPomodoroTaskTime,
+                                isCompleted: false,
+                              );
+                            }
+
+                            pomodoroController.removeOrCompletePomodoroTask();
                           },
                           widgetFunction: () {
                             pomodoroController.showPomodoroTaskDetails();
                           },
-                          // !taskDetailsFuncion:
-                          // calcular na hora o tempo do pomodoro atual
-                          // para mostrar o tempo total de foco da task
                         ),
                 ),
                 Positioned(

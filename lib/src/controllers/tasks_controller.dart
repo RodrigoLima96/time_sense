@@ -89,7 +89,7 @@ class TasksController extends ChangeNotifier {
 
   setTaskAscompleteOrPending({
     required String taskId,
-  }) {
+  }) async {
     final sourceList = isPendingTasksPage ? pendingTaskList : completeTaskList;
     final targetList = isPendingTasksPage ? completeTaskList : pendingTaskList;
 
@@ -100,18 +100,21 @@ class TasksController extends ChangeNotifier {
       sourceList[taskIndex].showDetails = false;
 
       targetList.add(sourceList[taskIndex]);
+      await taskRepository.updateTask(task: sourceList[taskIndex]);
       sourceList.removeAt(taskIndex);
 
       notifyListeners();
     }
   }
 
-  deleteTask({required String taskId}) {
+  deleteTask({required String taskId}) async {
     if (isPendingTasksPage) {
       pendingTaskList.removeWhere((task) => task.id == taskId);
     } else {
       completeTaskList.removeWhere((task) => task.id == taskId);
     }
+
+    await taskRepository.deleteTask(taskId: taskId);
     notifyListeners();
   }
 
@@ -122,7 +125,8 @@ class TasksController extends ChangeNotifier {
     final taskIndex = targetList.indexWhere((task) => task.id == taskId);
 
     if (taskIndex != -1) {
-      taskFocusTime = Helper.convertTaskTime(seconds: targetList[taskIndex].totalFocusingTime);
+      taskFocusTime = Helper.convertTaskTime(
+          seconds: targetList[taskIndex].totalFocusingTime);
       targetList[taskIndex].showDetails = !targetList[taskIndex].showDetails;
 
       if (isPendingTasksPage) {
@@ -140,5 +144,24 @@ class TasksController extends ChangeNotifier {
       }
     }
     notifyListeners();
+  }
+
+  savePomodoroTaskTime({
+    required String taskId,
+    required int taskTime,
+    required bool isCompleted,
+  }) async {
+    final taskIndex = pendingTaskList.indexWhere((task) => task.id == taskId);
+
+    pendingTaskList[taskIndex].pending = isCompleted ? false : true;
+    pendingTaskList[taskIndex].totalFocusingTime += taskTime;
+
+    await taskRepository.updateTask(task: pendingTaskList[taskIndex]);
+    if (isCompleted) {
+      completeTaskList.add(pendingTaskList[taskIndex]);
+      pendingTaskList.removeAt(taskIndex);
+    }
+
+    isCompleted ? notifyListeners() : null;
   }
 }

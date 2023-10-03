@@ -37,6 +37,7 @@ class UserBody extends StatelessWidget {
                 minutes: 23,
                 seconds: 10,
                 text: 'Tempo total de foco',
+                taskPending: true,
               ),
             ),
             Container(
@@ -65,6 +66,7 @@ class UserBody extends StatelessWidget {
                 minutes: 11,
                 seconds: 10,
                 text: 'foco',
+                taskPending: true,
               ),
             ),
             Container(
