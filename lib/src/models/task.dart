@@ -2,7 +2,7 @@ class Task {
   final String id;
   final String text;
   bool pending;
-  final int totalFocusingTime;
+  int totalFocusingTime;
   final DateTime? creationDate;
   final DateTime? completionDate;
   bool showDetails;

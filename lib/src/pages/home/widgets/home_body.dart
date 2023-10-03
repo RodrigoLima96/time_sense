@@ -30,6 +30,10 @@ class HomeBody extends StatelessWidget {
                       ? PrimaryButton(
                           color: primaryColor,
                           press: () {
+                            if (pomodoroController.pomodoroState ==
+                                PomodoroState.running) {
+                              pomodoroController.pausePomodoro();
+                            }
                             showHomeBottomSheet(context);
                           },
                           text: 'Selecionar uma tarefa',
