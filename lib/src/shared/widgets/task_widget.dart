@@ -107,15 +107,26 @@ class TaskWidget extends StatelessWidget {
                       task.showDetails && !pomodoroTask
                           ? 'assets/icons/delete-icon.svg'
                           : backIcon,
-                      color: pomodoroTask && task.showDetails ? Colors.black : backIconColor,
+                      color: pomodoroTask && task.showDetails
+                          ? Colors.black
+                          : backIconColor,
                       width: 20,
                       height: 20,
                     ),
                   ),
                 ),
                 onTap: () {
-                   task.showDetails || pomodoroTask ?
-                  backFunction() : null;
+                  showDeleteConfirmationDialog(
+                      context: context,
+                      text: pomodoroTask
+                          ? 'Salvar tempo de foco da tarefa?'
+                          : 'Excluir tarefa permanentemente?',
+                          icon: !pomodoroTask ? 'assets/icons/delete-icon.svg' : null,
+                      onDelete: () {
+                        task.showDetails || pomodoroTask
+                            ? backFunction()
+                            : null;
+                      });
                 },
               ),
             ],
@@ -123,13 +134,12 @@ class TaskWidget extends StatelessWidget {
         ),
         task.showDetails
             ? TaskFocusTimeWidget(
-              taskId: task.id,
-              pomodoroTask: pomodoroTask,
-              taskPending: task.pending,
-            )
+                taskId: task.id,
+                pomodoroTask: pomodoroTask,
+                taskPending: task.pending,
+              )
             : const SizedBox(),
       ],
     );
   }
 }
-

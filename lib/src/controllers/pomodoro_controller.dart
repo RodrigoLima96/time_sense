@@ -180,15 +180,15 @@ class PomodoroController extends ChangeNotifier {
     if (pomodoro.taskPomodoroStartTime != null &&
         !pomodoro.shortBreak &&
         !pomodoro.longBreak) {
-      String? currentPomodoroTimme = countDownController.getTime();
+      String? currentPomodoroTime = countDownController.getTime();
       int? currentTaskFocusTime;
 
-      if (currentPomodoroTimme == "00:00") {
+      if (currentPomodoroTime == "00:00") {
         currentTaskFocusTime = pomodoro.remainingPomodoroTime!;
       } else {
         currentTaskFocusTime = PomodoroHelper.getRemainingPomodoroTime(
           remainingPomodoroTime: pomodoro.taskPomodoroStartTime!,
-          controllerRemainingPomodoroTime: currentPomodoroTimme,
+          controllerRemainingPomodoroTime: currentPomodoroTime,
         );
       }
       if (pomodoroComplete) {
