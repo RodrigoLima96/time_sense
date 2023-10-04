@@ -6,14 +6,26 @@ import '/src/shared/utils/utils.dart';
 
 import '../../../controllers/controllers.dart';
 
-class TasksPageBody extends StatelessWidget {
+class TasksPageBody extends StatefulWidget {
   const TasksPageBody({super.key});
+
+  @override
+  State<TasksPageBody> createState() => _TasksPageBodyState();
+}
+
+class _TasksPageBodyState extends State<TasksPageBody> {
+  late TasksController tasksController;
+  
+  @override
+  void dispose() {
+    tasksController.setTaskShowDetails();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
-    final tasksController = context.watch<TasksController>();
+    tasksController = context.watch<TasksController>();
 
     final tasksListLength = tasksController.isPendingTasksPage
         ? tasksController.pendingTaskList.length

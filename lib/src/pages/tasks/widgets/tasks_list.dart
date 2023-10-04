@@ -48,7 +48,8 @@ class TasksList extends StatelessWidget {
                     frontFunction: () {
                       if (pomodoroController.pomodoro.taskId == task.id) {
                         int currentPomodoroTaskTime =
-                            pomodoroController.getCurrentPomodoroTaskTime(pomodoroComplete: false);
+                            pomodoroController.getCurrentPomodoroTaskTime(
+                                pomodoroComplete: false);
                         tasksController.savePomodoroTaskTime(
                           taskId: pomodoroController.pomodoro.task!.id,
                           taskTime: currentPomodoroTaskTime,

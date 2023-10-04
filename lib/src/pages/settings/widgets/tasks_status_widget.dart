@@ -15,9 +15,10 @@ class TasksStatusWidget extends StatelessWidget {
     final tasksController = context.watch<TasksController>();
 
     return InkWell(
-    borderRadius: BorderRadius.circular(50),
+      borderRadius: BorderRadius.circular(50),
       onTap: () {
         tasksController.changeIsPendingTasksPage();
+        tasksController.setTaskShowDetails();
       },
       child: Container(
         height: 40,

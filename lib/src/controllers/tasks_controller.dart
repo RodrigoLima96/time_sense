@@ -102,7 +102,8 @@ class TasksController extends ChangeNotifier {
       targetList.add(sourceList[taskIndex]);
       await taskRepository.updateTask(task: sourceList[taskIndex]);
       sourceList.removeAt(taskIndex);
-
+      lastPendingTaskSelectedIndex = null;
+      lastCompleteTaskSelectedIndex = null;
       notifyListeners();
     }
   }
@@ -115,6 +116,8 @@ class TasksController extends ChangeNotifier {
     }
 
     await taskRepository.deleteTask(taskId: taskId);
+    lastPendingTaskSelectedIndex = null;
+    lastCompleteTaskSelectedIndex = null;
     notifyListeners();
   }
 
@@ -164,5 +167,13 @@ class TasksController extends ChangeNotifier {
     }
 
     isCompleted ? notifyListeners() : null;
+  }
+
+  setTaskShowDetails() {
+    final targetList = isPendingTasksPage ? pendingTaskList : completeTaskList;
+
+    for (var task in targetList) {
+      task.showDetails = false;
+    }
   }
 }
