@@ -42,7 +42,7 @@ class PomodoroController extends ChangeNotifier {
   }
 
   initPomodoro() {
-    countDownController.restart(duration: pomodoro.remainingPomodoroTime);
+    countDownController.start();
     pomodoroState = PomodoroState.running;
     setPomodoroSessionsState();
     showSecondButton = true;

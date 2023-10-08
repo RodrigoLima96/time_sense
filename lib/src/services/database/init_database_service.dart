@@ -36,6 +36,7 @@ class InitDatabaseService {
   String get _pomodoro => '''
     CREATE TABLE pomodoro (
       status TEXT,
+      pomodoroTime INTEGER,
       remainingPomodoroTime INTEGER,
       pomodoroSession INTEGER,
       shortBreak INTEGER,
@@ -73,6 +74,7 @@ class InitDatabaseService {
   String get _initialPomodoroData => '''
   INSERT INTO pomodoro (
     status,
+    pomodoroTime,
     remainingPomodoroTime,
     pomodoroSession,
     shortBreak,
@@ -85,6 +87,7 @@ class InitDatabaseService {
   )
   VALUES (
     'focus',
+    null,
     null,
     0,
     0,

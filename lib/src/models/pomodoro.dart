@@ -2,6 +2,7 @@ import 'models.dart';
 
 class Pomodoro {
   String status;
+  int? pomodoroTime;
   int? remainingPomodoroTime;
   DateTime? date;
   final int? totalFocusingTime;
@@ -16,6 +17,7 @@ class Pomodoro {
 
   Pomodoro({
     required this.status,
+    required this.pomodoroTime,
     required this.remainingPomodoroTime,
     required this.date,
     required this.totalFocusingTime,
@@ -33,6 +35,7 @@ class Pomodoro {
     return {
       'status': status,
       'remainingPomodoroTime': remainingPomodoroTime,
+      'pomodoroTime': pomodoroTime,
       'date': date.toString(),
       'totalFocusingTime': totalFocusingTime,
       'task': task,
@@ -49,6 +52,7 @@ class Pomodoro {
   factory Pomodoro.fromMap(Map<String, dynamic> map) {
     return Pomodoro(
       status: map['status'],
+      pomodoroTime: map['pomodoroTime'],
       remainingPomodoroTime: map['remainingPomodoroTime'],
       date: map['date'] != null ? DateTime.parse(map['date']) : DateTime.now(),
       totalFocusingTime: map['totalFocusingTime'],
