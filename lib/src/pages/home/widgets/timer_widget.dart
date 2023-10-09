@@ -1,6 +1,7 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:time_sense/src/models/models.dart';
 
 import '../../../controllers/controllers.dart';
 import '../../../shared/utils/constants.dart';
@@ -12,21 +13,58 @@ class TimerWidget extends StatefulWidget {
   State<TimerWidget> createState() => _TimerWidgetState();
 }
 
-class _TimerWidgetState extends State<TimerWidget> {
+class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
+  late PomodoroController pomodoroController;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.detached) {
+      print('detached');
+    }
+    if (state == AppLifecycleState.hidden) {
+      print('hidden');
+    }
+    if (state == AppLifecycleState.inactive) {
+      print('inactive');
+    }
+    if (state == AppLifecycleState.paused) {
+      print('paused');
+    }
+    if (state == AppLifecycleState.resumed) {
+      print('resumed');
+      await pomodoroController.getResumedPomodoroStatus();
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final pomodoroController = context.watch<PomodoroController>();
+    pomodoroController = context.watch<PomodoroController>();
     final taskController = context.read<TasksController>();
+    Pomodoro pomodoro = pomodoroController.pomodoro;
+    int pomodoroTime = pomodoro.pomodoroTime;
 
-    int pomodoroDuration = pomodoroController.pomodoro.remainingPomodoroTime!;
+    int remainingPomodoroTime = pomodoroController.remainingPomodoroTime;
 
     final pomodoroDurationInMinutes = pomodoroController
-        .convertSecondsToMinutes(pomodoroDuration: pomodoroDuration);
+        .convertSecondsToMinutes(pomodoroDuration: pomodoro.pomodoroTime);
 
     return CircularCountDownTimer(
-      duration: pomodoroDuration,
-      initialDuration: 0,
+      duration: pomodoroTime,
+      initialDuration: remainingPomodoroTime,
       controller: pomodoroController.countDownController,
       width: size.width * 0.8,
       height: size.height * 0.35,
@@ -40,12 +78,11 @@ class _TimerWidgetState extends State<TimerWidget> {
       ),
       textFormat: CountdownTextFormat.MM_SS,
       isReverse: true,
-      autoStart: false,
+      autoStart: pomodoro.status == PomodoroState.running.name ? true : false,
       onComplete: () async {
-        if (!pomodoroController.pomodoro.shortBreak &&
-            !pomodoroController.pomodoro.longBreak) {
-          int currentPomodoroTaskTime =
-              pomodoroController.getCurrentPomodoroTaskTime(pomodoroComplete: true);
+        if (!pomodoro.shortBreak && !pomodoro.longBreak) {
+          int currentPomodoroTaskTime = pomodoroController
+              .getCurrentPomodoroTaskTime(pomodoroComplete: true);
           await taskController.savePomodoroTaskTime(
             taskId: pomodoroController.pomodoro.task!.id,
             taskTime: currentPomodoroTaskTime,

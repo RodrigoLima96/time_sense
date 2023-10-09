@@ -1,10 +1,13 @@
 import 'models.dart';
 
 class Pomodoro {
+  String id;
   String status;
-  int? pomodoroTime;
+  int pomodoroTime;
   int? remainingPomodoroTime;
-  DateTime? date;
+  DateTime? creationDate;
+  DateTime? initDate;
+  DateTime? completeDate;
   final int? totalFocusingTime;
   int pomodoroSession;
   bool shortBreak;
@@ -16,10 +19,13 @@ class Pomodoro {
   int? taskPomodoroStartTime;
 
   Pomodoro({
+    required this.id,
     required this.status,
     required this.pomodoroTime,
     required this.remainingPomodoroTime,
-    required this.date,
+    required this.creationDate,
+    required this.initDate,
+    required this.completeDate,
     required this.totalFocusingTime,
     required this.task,
     required this.pomodoroSession,
@@ -36,7 +42,9 @@ class Pomodoro {
       'status': status,
       'remainingPomodoroTime': remainingPomodoroTime,
       'pomodoroTime': pomodoroTime,
-      'date': date.toString(),
+      'creationDate': creationDate?.toString(),
+      'initDate': initDate?.toString(),
+      'completeDate': completeDate?.toString(),
       'totalFocusingTime': totalFocusingTime,
       'task': task,
       'taskId': taskId,
@@ -51,10 +59,13 @@ class Pomodoro {
 
   factory Pomodoro.fromMap(Map<String, dynamic> map) {
     return Pomodoro(
+      id: map['id'],
       status: map['status'],
       pomodoroTime: map['pomodoroTime'],
       remainingPomodoroTime: map['remainingPomodoroTime'],
-      date: map['date'] != null ? DateTime.parse(map['date']) : DateTime.now(),
+      creationDate: map['creationDate'] != null ? DateTime.parse(map['creationDate']) : DateTime.now(),
+      initDate: map['initDate'] != null ? DateTime.parse(map['initDate']) : null,
+      completeDate: map['completeDate'] != null ? DateTime.parse(map['completeDate']) : null,
       totalFocusingTime: map['totalFocusingTime'],
       task: map['task'],
       taskId: map['taskId'],

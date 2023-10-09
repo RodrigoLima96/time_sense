@@ -2,6 +2,46 @@ import '../../models/models.dart';
 import '../controllers.dart';
 
 class PomodoroHelper {
+  static int getPomodoroStatus({required Pomodoro pomodoro}) {
+    if (pomodoro.initDate != null) {
+      DateTime currentDate = DateTime.now();
+
+      int elapsedTime = currentDate.difference(pomodoro.initDate!).inSeconds;
+
+      // if (pomodoro.remainingPomodoroTime != null) {
+        // pomodoro.remainingPomodoroTime =
+        //     pomodoro.remainingPomodoroTime! + elapsedTime;
+      // } else {
+        // pomodoro.remainingPomodoroTime = elapsedTime;
+      // }
+      print(elapsedTime);
+      return elapsedTime;
+    } else {
+      return 0;
+    }
+    // int remainingPomodoroTime = DateTime(
+    //   dataAtual.year,
+    //   dataAtual.month,
+    //   dataAtual.day,
+    //   pomodoro.termino.hour,
+    //   pomodoro.termino.minute,
+    // ).difference(pomodoro.inicio).inSeconds;
+  }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+
   static int getPomodoroTime({required Pomodoro pomodoro}) {
     if (pomodoro.remainingPomodoroTime != null) {
       return pomodoro.remainingPomodoroTime!;
@@ -123,7 +163,7 @@ class PomodoroHelper {
   static Pomodoro getCompletePomodoroStatus({required Pomodoro pomodoro}) {
     if (!pomodoro.shortBreak && !pomodoro.longBreak) {
       pomodoro.pomodoroSession++;
-      pomodoro.date = DateTime.now();
+      pomodoro.creationDate = DateTime.now();
 
       if (pomodoro.shortBreakCount < pomodoro.settings!.shortBreakCount) {
         pomodoro.shortBreakCount++;

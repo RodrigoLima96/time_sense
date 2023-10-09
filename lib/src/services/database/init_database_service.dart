@@ -35,6 +35,7 @@ class InitDatabaseService {
 
   String get _pomodoro => '''
     CREATE TABLE pomodoro (
+      id TEXT,
       status TEXT,
       pomodoroTime INTEGER,
       remainingPomodoroTime INTEGER,
@@ -42,7 +43,9 @@ class InitDatabaseService {
       shortBreak INTEGER,
       longBreak INTEGER,
       shortBreakCount INTEGER,
-      date TEXT,
+      creationDate TEXT,
+      initDate TEXT,
+      completeDate TEXT,
       totalFocusingTime INTEGER,
       taskId TEXT,
       taskPomodoroStartTime INTEGER
@@ -73,6 +76,7 @@ class InitDatabaseService {
 
   String get _initialPomodoroData => '''
   INSERT INTO pomodoro (
+    id,
     status,
     pomodoroTime,
     remainingPomodoroTime,
@@ -80,19 +84,24 @@ class InitDatabaseService {
     shortBreak,
     longBreak,
     shortBreakCount,
-    date,
+    creationDate,
+    initDate,
+    completeDate,
     totalFocusingTime,
     taskId,
     taskPomodoroStartTime
   )
   VALUES (
+    '1',
     'focus',
-    null,
+    1200,
     null,
     0,
     0,
     0,
     1,
+    null,
+    null,
     null,
     0,
     null,

@@ -6,7 +6,7 @@ class PomodoroRepository {
 
   PomodoroRepository(this._databaseService);
 
-  Future<Pomodoro> getPomodoroStatus() async {
+  Future<Pomodoro> getPomodoro() async {
     final pomodoroResult = await _databaseService.getPomodoro();
     Pomodoro pomodoro = Pomodoro.fromMap(pomodoroResult);
 

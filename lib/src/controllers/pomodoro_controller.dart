@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
-
 import 'helpers/helpers.dart';
 import '../models/models.dart';
 import '../repositories/repositories.dart';
@@ -14,6 +13,7 @@ class PomodoroController extends ChangeNotifier {
   CountDownController countDownController = CountDownController();
   final PomodoroRepository _pomodoroRepository;
   late Pomodoro pomodoro;
+  int remainingPomodoroTime = 0;
 
   PomodoroState pomodoroState = PomodoroState.notStarted;
   PomodoroPageState pomodoroPageState = PomodoroPageState.loading;
@@ -24,9 +24,58 @@ class PomodoroController extends ChangeNotifier {
   PomodoroController(
     this._pomodoroRepository,
   ) {
+    // getPomodoroStatus2();
     getPomodoroStatus();
-    savePomodoroStatusPeriodic();
+    // savePomodoroStatusPeriodic();
   }
+
+  Future<void> getPomodoroStatus() async {
+    pomodoroPageState = PomodoroPageState.loading;
+    pomodoro = await _pomodoroRepository.getPomodoro();
+    remainingPomodoroTime = 0;
+    remainingPomodoroTime =
+        PomodoroHelper.getPomodoroStatus(pomodoro: pomodoro);
+    // pomodoro.remainingPomodoroTime =
+    //     PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
+
+    remainingPomodoroTime += pomodoro.remainingPomodoroTime ?? 0;
+
+    setPomodoroSessionsState();
+    pomodoroPageState = PomodoroPageState.loaded;
+    switch (pomodoro.status) {
+      case 'running':
+        await initPomodoro();
+        break;
+      case 'paused':
+        pausePomodoro();
+        break;
+      default:
+    }
+    notifyListeners();
+  }
+
+  getResumedPomodoroStatus() {
+    remainingPomodoroTime = 0;
+    remainingPomodoroTime =
+        PomodoroHelper.getPomodoroStatus(pomodoro: pomodoro);
+    remainingPomodoroTime += pomodoro.remainingPomodoroTime ?? 0;
+    notifyListeners();
+  }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
 
   Map<String, Map<String, dynamic>> getButtonsInfo() {
     final buttonsInfo = PomodoroHelper.extractButtonsInfo(
@@ -41,7 +90,7 @@ class PomodoroController extends ChangeNotifier {
     return buttonsInfo;
   }
 
-  initPomodoro() {
+  initPomodoro() async {
     countDownController.start();
     pomodoroState = PomodoroState.running;
     setPomodoroSessionsState();
@@ -49,6 +98,9 @@ class PomodoroController extends ChangeNotifier {
     Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
         ? pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime
         : null;
+    pomodoro.initDate = pomodoro.initDate ?? DateTime.now();
+    pomodoro.status = PomodoroState.running.name;
+    await savePomodoroStatus(saveCurrentPomodoroTime: false);
     notifyListeners();
   }
 
@@ -69,6 +121,7 @@ class PomodoroController extends ChangeNotifier {
     Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
         ? pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime
         : null;
+    pomodoro.initDate = DateTime.now();
     notifyListeners();
   }
 
@@ -79,6 +132,7 @@ class PomodoroController extends ChangeNotifier {
     if (pomodoro.task != null) {
       pomodoro.taskPomodoroStartTime = pomodoro.settings!.pomodoroTime;
     }
+    pomodoro.initDate = DateTime.now();
     notifyListeners();
   }
 
@@ -106,7 +160,7 @@ class PomodoroController extends ChangeNotifier {
     pomodoroState = PomodoroState.notStarted;
 
     await savePomodoroStatus(saveCurrentPomodoroTime: false);
-    await getPomodoroStatus();
+    await getPomodoroStatus2();
 
     pomodoroPageState = PomodoroPageState.loaded;
     notifyListeners();
@@ -124,9 +178,9 @@ class PomodoroController extends ChangeNotifier {
     );
   }
 
-  Future<void> getPomodoroStatus() async {
+  Future<void> getPomodoroStatus2() async {
     pomodoroPageState = PomodoroPageState.loading;
-    pomodoro = await _pomodoroRepository.getPomodoroStatus();
+    pomodoro = await _pomodoroRepository.getPomodoro();
     pomodoro.remainingPomodoroTime =
         PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
     setPomodoroSessionsState();
@@ -134,13 +188,13 @@ class PomodoroController extends ChangeNotifier {
     notifyListeners();
   }
 
-  savePomodoroStatusPeriodic() async {
-    Timer.periodic(const Duration(seconds: 30), (timer) {
-      if (pomodoroState == PomodoroState.running) {
-        savePomodoroStatus(saveCurrentPomodoroTime: true);
-      }
-    });
-  }
+  // savePomodoroStatusPeriodic() async {
+  //   Timer.periodic(const Duration(seconds: 30), (timer) {
+  //     if (pomodoroState == PomodoroState.running) {
+  //       savePomodoroStatus(saveCurrentPomodoroTime: true);
+  //     }
+  //   });
+  // }
 
   savePomodoroStatus({required bool saveCurrentPomodoroTime}) async {
     saveCurrentPomodoroTime
@@ -218,7 +272,7 @@ class PomodoroController extends ChangeNotifier {
   }
 
   updatePomodoroAfterSettingsChanges() async {
-    pomodoro = await _pomodoroRepository.getPomodoroStatus();
+    pomodoro = await _pomodoroRepository.getPomodoro();
 
     if (pomodoroState != PomodoroState.running &&
         pomodoroState != PomodoroState.paused) {
