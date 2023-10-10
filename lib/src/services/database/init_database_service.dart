@@ -94,7 +94,7 @@ class InitDatabaseService {
   VALUES (
     '1',
     'focus',
-    1200,
+    3600,
     null,
     0,
     0,

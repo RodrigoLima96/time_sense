@@ -1,8 +1,9 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
-import 'package:time_sense/src/models/models.dart';
 
+import '../../../models/models.dart';
 import '../../../controllers/controllers.dart';
 import '../../../shared/utils/constants.dart';
 
@@ -15,11 +16,18 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
   late PomodoroController pomodoroController;
+  late Pomodoro pomodoro;
+  late int pomodoroTime;
+  late int remainingPomodoroTime;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
     super.initState();
+    pomodoroController = context.read<PomodoroController>();
+    pomodoro = pomodoroController.pomodoro;
+    pomodoroTime = pomodoro.pomodoroTime;
+    remainingPomodoroTime = pomodoroController.remainingPomodoroTime;
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -30,21 +38,10 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.detached) {
-      print('detached');
-    }
-    if (state == AppLifecycleState.hidden) {
-      print('hidden');
-    }
-    if (state == AppLifecycleState.inactive) {
-      print('inactive');
-    }
-    if (state == AppLifecycleState.paused) {
-      print('paused');
-    }
     if (state == AppLifecycleState.resumed) {
-      print('resumed');
-      await pomodoroController.getResumedPomodoroStatus();
+      if (pomodoroController.pomodoroState == PomodoroState.running) {
+        Phoenix.rebirth(context);
+      }
     }
     super.didChangeAppLifecycleState(state);
   }
@@ -52,15 +49,7 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    pomodoroController = context.watch<PomodoroController>();
     final taskController = context.read<TasksController>();
-    Pomodoro pomodoro = pomodoroController.pomodoro;
-    int pomodoroTime = pomodoro.pomodoroTime;
-
-    int remainingPomodoroTime = pomodoroController.remainingPomodoroTime;
-
-    final pomodoroDurationInMinutes = pomodoroController
-        .convertSecondsToMinutes(pomodoroDuration: pomodoro.pomodoroTime);
 
     return CircularCountDownTimer(
       duration: pomodoroTime,
@@ -94,7 +83,8 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
       },
       timeFormatterFunction: (defaultFormatterFunction, duration) {
         if (pomodoroController.pomodoroState == PomodoroState.notStarted) {
-          return pomodoroDurationInMinutes;
+          return pomodoroController.convertSecondsToMinutes(
+              pomodoroDuration: pomodoro.pomodoroTime);
         } else {
           return Function.apply(defaultFormatterFunction, [duration]);
         }

@@ -24,9 +24,7 @@ class PomodoroController extends ChangeNotifier {
   PomodoroController(
     this._pomodoroRepository,
   ) {
-    // getPomodoroStatus2();
     getPomodoroStatus();
-    // savePomodoroStatusPeriodic();
   }
 
   Future<void> getPomodoroStatus() async {
@@ -34,7 +32,7 @@ class PomodoroController extends ChangeNotifier {
     pomodoro = await _pomodoroRepository.getPomodoro();
     remainingPomodoroTime = 0;
     remainingPomodoroTime =
-        PomodoroHelper.getPomodoroStatus(pomodoro: pomodoro);
+        PomodoroHelper.getElapsedPomodoroTime(pomodoro: pomodoro);
     // pomodoro.remainingPomodoroTime =
     //     PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
 
@@ -51,14 +49,6 @@ class PomodoroController extends ChangeNotifier {
         break;
       default:
     }
-    notifyListeners();
-  }
-
-  getResumedPomodoroStatus() {
-    remainingPomodoroTime = 0;
-    remainingPomodoroTime =
-        PomodoroHelper.getPomodoroStatus(pomodoro: pomodoro);
-    remainingPomodoroTime += pomodoro.remainingPomodoroTime ?? 0;
     notifyListeners();
   }
 
