@@ -16,17 +16,11 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
   late PomodoroController pomodoroController;
-  late Pomodoro pomodoro;
-  late int pomodoroTime;
-  late int remainingPomodoroTime;
 
   @override
   void initState() {
     super.initState();
     pomodoroController = context.read<PomodoroController>();
-    pomodoro = pomodoroController.pomodoro;
-    pomodoroTime = pomodoro.pomodoroTime;
-    remainingPomodoroTime = pomodoroController.remainingPomodoroTime;
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -38,6 +32,7 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
+
     if (state == AppLifecycleState.resumed) {
       if (pomodoroController.pomodoroState == PomodoroState.running) {
         Phoenix.rebirth(context);
@@ -50,10 +45,15 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final taskController = context.read<TasksController>();
+    final pomodoroController = context.watch<PomodoroController>();
+
+    final Pomodoro pomodoro = pomodoroController.pomodoro;
+    final pomodoroTime = pomodoro.pomodoroTime;
+    final elapsedPomodoroTime = pomodoroController.elapsedPomodoroTime;
 
     return CircularCountDownTimer(
       duration: pomodoroTime,
-      initialDuration: remainingPomodoroTime,
+      initialDuration: elapsedPomodoroTime,
       controller: pomodoroController.countDownController,
       width: size.width * 0.8,
       height: size.height * 0.35,
@@ -82,9 +82,9 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
         await pomodoroController.completePomodoro();
       },
       timeFormatterFunction: (defaultFormatterFunction, duration) {
-        if (pomodoroController.pomodoroState == PomodoroState.notStarted) {
-          return pomodoroController.convertSecondsToMinutes(
-              pomodoroDuration: pomodoro.pomodoroTime);
+        if (pomodoroController.pomodoroState == PomodoroState.notStarted ||
+            pomodoroController.pomodoroState == PomodoroState.pausedTest) {
+          return pomodoroController.remainingPomodoroTimeInMinutes;
         } else {
           return Function.apply(defaultFormatterFunction, [duration]);
         }

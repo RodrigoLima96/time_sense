@@ -2,17 +2,16 @@ import '../../models/models.dart';
 import '../controllers.dart';
 
 class PomodoroHelper {
-  static int getElapsedPomodoroTime({required Pomodoro pomodoro}) {
+  static int getElapsedPomodoroTimeFromDate({required Pomodoro pomodoro}) {
     if (pomodoro.initDate != null) {
       DateTime currentDate = DateTime.now();
-
       int elapsedTime = currentDate.difference(pomodoro.initDate!).inSeconds;
 
       // if (pomodoro.remainingPomodoroTime != null) {
-        // pomodoro.remainingPomodoroTime =
-        //     pomodoro.remainingPomodoroTime! + elapsedTime;
+      // pomodoro.remainingPomodoroTime =
+      //     pomodoro.remainingPomodoroTime! + elapsedTime;
       // } else {
-        // pomodoro.remainingPomodoroTime = elapsedTime;
+      // pomodoro.remainingPomodoroTime = elapsedTime;
       // }
       print(elapsedTime);
       return elapsedTime;
@@ -43,8 +42,8 @@ class PomodoroHelper {
   //
 
   static int getPomodoroTime({required Pomodoro pomodoro}) {
-    if (pomodoro.remainingPomodoroTime != null) {
-      return pomodoro.remainingPomodoroTime!;
+    if (pomodoro.remainingPomodoroTime == 0) {
+      return pomodoro.remainingPomodoroTime;
     } else if (pomodoro.shortBreak) {
       return pomodoro.settings!.shortBreakDuration;
     } else if (pomodoro.longBreak) {
@@ -144,7 +143,7 @@ class PomodoroHelper {
         } else {
           return {
             'first_button': {
-              'text': 'retomar',
+              'text': 'Retomar',
               'function': () {
                 resumePomodoro();
               },
@@ -157,6 +156,21 @@ class PomodoroHelper {
             }
           };
         }
+      case PomodoroState.pausedTest:
+        return {
+          'first_button': {
+            'text': 'Retomar',
+            'function': () {
+              resumePomodoro();
+            },
+          },
+          'second_button': {
+            'text': 'Cancelar',
+            'function': () {
+              cancelPomodoro(isBreak: false);
+            },
+          }
+        };
     }
   }
 
@@ -178,7 +192,7 @@ class PomodoroHelper {
       pomodoro.longBreak = false;
       pomodoro.shortBreakCount = 1;
     }
-    pomodoro.remainingPomodoroTime = null;
+    pomodoro.remainingPomodoroTime = 0;
     return pomodoro;
   }
 
@@ -237,24 +251,26 @@ class PomodoroHelper {
     return pomodoroSessions;
   }
 
-  static int? getRemainingPomodoroTime({
-    required int remainingPomodoroTime,
-    required String? controllerRemainingPomodoroTime,
+  static int getElapsedPomodoroTime({
+    required int pomodoroTime,
+    required String? remainingPomodoroTime,
   }) {
-    if (controllerRemainingPomodoroTime == "") {
-      return null;
-    }
+    int elapsedTime;
 
-    List<String> timeParts = controllerRemainingPomodoroTime!.split(':');
+    if (remainingPomodoroTime == "00:00") {
+      return 0;
+    }
+    List<String> timeParts = remainingPomodoroTime!.split(':');
 
     if (timeParts.length == 2) {
       int minutes = int.parse(timeParts[0]);
       int seconds = int.parse(timeParts[1]);
 
-      remainingPomodoroTime = minutes * 60 + seconds;
+      int remainingPomodoroTime = minutes * 60 + seconds;
+      elapsedTime = pomodoroTime - remainingPomodoroTime;
     } else {
-      return null;
+      elapsedTime = 0;
     }
-    return remainingPomodoroTime;
+    return elapsedTime;
   }
 }

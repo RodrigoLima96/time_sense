@@ -38,7 +38,7 @@ class TotalFocusingTimeWidget extends StatelessWidget {
                     style: textBold.copyWith(color: primaryColor))
                 : const SizedBox(),
             hours > 0
-                ? Text(hours > 1 ? 'horas e  ' : 'hora e  ', style: textRegular)
+                ? Text(hours > 1 ? 'horas ' : 'hora ', style: textRegular)
                 : const SizedBox(),
             minutes > 0
                 ? Text('$minutes  ',

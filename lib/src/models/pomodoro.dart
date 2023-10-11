@@ -4,7 +4,8 @@ class Pomodoro {
   String id;
   String status;
   int pomodoroTime;
-  int? remainingPomodoroTime;
+  int elapsedPomodoroTime;
+  int remainingPomodoroTime;
   DateTime? creationDate;
   DateTime? initDate;
   DateTime? completeDate;
@@ -22,6 +23,7 @@ class Pomodoro {
     required this.id,
     required this.status,
     required this.pomodoroTime,
+    required this.elapsedPomodoroTime,
     required this.remainingPomodoroTime,
     required this.creationDate,
     required this.initDate,
@@ -39,9 +41,11 @@ class Pomodoro {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'status': status,
-      'remainingPomodoroTime': remainingPomodoroTime,
       'pomodoroTime': pomodoroTime,
+      'elapsedPomodoroTime': elapsedPomodoroTime,
+      'remainingPomodoroTime': remainingPomodoroTime,
       'creationDate': creationDate?.toString(),
       'initDate': initDate?.toString(),
       'completeDate': completeDate?.toString(),
@@ -62,10 +66,16 @@ class Pomodoro {
       id: map['id'],
       status: map['status'],
       pomodoroTime: map['pomodoroTime'],
+      elapsedPomodoroTime: map['elapsedPomodoroTime'],
       remainingPomodoroTime: map['remainingPomodoroTime'],
-      creationDate: map['creationDate'] != null ? DateTime.parse(map['creationDate']) : DateTime.now(),
-      initDate: map['initDate'] != null ? DateTime.parse(map['initDate']) : null,
-      completeDate: map['completeDate'] != null ? DateTime.parse(map['completeDate']) : null,
+      creationDate: map['creationDate'] != null
+          ? DateTime.parse(map['creationDate'])
+          : DateTime.now(),
+      initDate:
+          map['initDate'] != null ? DateTime.parse(map['initDate']) : null,
+      completeDate: map['completeDate'] != null
+          ? DateTime.parse(map['completeDate'])
+          : null,
       totalFocusingTime: map['totalFocusingTime'],
       task: map['task'],
       taskId: map['taskId'],
