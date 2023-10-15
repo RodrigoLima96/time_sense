@@ -9,7 +9,6 @@ class Pomodoro {
   DateTime? creationDate;
   DateTime? initDate;
   DateTime? completeDate;
-  final int? totalFocusingTime;
   int pomodoroSession;
   bool shortBreak;
   bool longBreak;
@@ -28,7 +27,6 @@ class Pomodoro {
     required this.creationDate,
     required this.initDate,
     required this.completeDate,
-    required this.totalFocusingTime,
     required this.task,
     required this.pomodoroSession,
     required this.shortBreak,
@@ -49,7 +47,6 @@ class Pomodoro {
       'creationDate': creationDate?.toString(),
       'initDate': initDate?.toString(),
       'completeDate': completeDate?.toString(),
-      'totalFocusingTime': totalFocusingTime,
       'task': task,
       'taskId': taskId,
       'pomodoroSession': pomodoroSession,
@@ -76,7 +73,6 @@ class Pomodoro {
       completeDate: map['completeDate'] != null
           ? DateTime.parse(map['completeDate'])
           : null,
-      totalFocusingTime: map['totalFocusingTime'],
       task: map['task'],
       taskId: map['taskId'],
       pomodoroSession: map['pomodoroSession'],

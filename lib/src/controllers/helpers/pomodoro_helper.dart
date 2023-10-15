@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../../models/models.dart';
 import '../controllers.dart';
 
@@ -42,9 +44,7 @@ class PomodoroHelper {
   //
 
   static int getPomodoroTime({required Pomodoro pomodoro}) {
-    if (pomodoro.remainingPomodoroTime == 0) {
-      return pomodoro.remainingPomodoroTime;
-    } else if (pomodoro.shortBreak) {
+    if (pomodoro.shortBreak) {
       return pomodoro.settings!.shortBreakDuration;
     } else if (pomodoro.longBreak) {
       return pomodoro.settings!.longBreakDuration;
@@ -156,7 +156,7 @@ class PomodoroHelper {
             }
           };
         }
-      case PomodoroState.pausedTest:
+      case PomodoroState.rebootpaused:
         return {
           'first_button': {
             'text': 'Retomar',
@@ -175,9 +175,15 @@ class PomodoroHelper {
   }
 
   static Pomodoro getCompletePomodoroStatus({required Pomodoro pomodoro}) {
+    pomodoro.elapsedPomodoroTime = 0;
+    pomodoro.creationDate = DateTime.now();
+    pomodoro.initDate = null;
+    pomodoro.taskPomodoroStartTime = null;
+    pomodoro.status = PomodoroState.notStarted.name;
+
     if (!pomodoro.shortBreak && !pomodoro.longBreak) {
       pomodoro.pomodoroSession++;
-      pomodoro.creationDate = DateTime.now();
+      pomodoro.creationDate = null;
 
       if (pomodoro.shortBreakCount < pomodoro.settings!.shortBreakCount) {
         pomodoro.shortBreakCount++;
@@ -198,7 +204,11 @@ class PomodoroHelper {
 
   static Pomodoro getCancelPomodoroStatus(
       {required Pomodoro pomodoro, required bool isBreak}) {
-    pomodoro.remainingPomodoroTime = pomodoro.settings!.pomodoroTime;
+    pomodoro.pomodoroTime = pomodoro.settings!.pomodoroTime;
+    pomodoro.initDate = null;
+    pomodoro.elapsedPomodoroTime = 0;
+    pomodoro.taskPomodoroStartTime = null;
+    pomodoro.status = PomodoroState.notStarted.name;
 
     if (isBreak) {
       if (pomodoro.shortBreak) {
@@ -268,9 +278,40 @@ class PomodoroHelper {
 
       int remainingPomodoroTime = minutes * 60 + seconds;
       elapsedTime = pomodoroTime - remainingPomodoroTime;
+      if (elapsedTime < 0) {
+        elapsedTime = 0;
+      }
     } else {
       elapsedTime = 0;
     }
+
     return elapsedTime;
+  }
+
+  static Pomodoro getResetDailyPomodoroStatus({required Pomodoro pomodoro}) {
+    pomodoro.creationDate = DateTime.now();
+    pomodoro.initDate = null;
+    pomodoro.completeDate = null;
+    pomodoro.elapsedPomodoroTime = 0;
+    pomodoro.id += '2';
+    pomodoro.shortBreak = false;
+    pomodoro.longBreak = false;
+    pomodoro.remainingPomodoroTime = 0;
+    pomodoro.status = PomodoroState.notStarted.name;
+    pomodoro.taskPomodoroStartTime = null;
+    pomodoro.pomodoroTime = pomodoro.settings!.pomodoroTime;
+    pomodoro.shortBreakCount = 1;
+    pomodoro.pomodoroSession = 0;
+    return pomodoro;
+  }
+
+  static bool resetDailyPomodoroCycle({required DateTime creationDate}) {
+
+    final now = DateTime.now();
+    final dateFormat = DateFormat('yyyy-MM-dd');
+    final currentDate = dateFormat.format(now);
+    final inputDate = dateFormat.format(creationDate);
+
+    return currentDate != inputDate;
   }
 }

@@ -32,7 +32,6 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-
     if (state == AppLifecycleState.resumed) {
       if (pomodoroController.pomodoroState == PomodoroState.running) {
         Phoenix.rebirth(context);
@@ -51,6 +50,7 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
     final pomodoroTime = pomodoro.pomodoroTime;
     final elapsedPomodoroTime = pomodoroController.elapsedPomodoroTime;
 
+    print('POMODOROTIME: $pomodoroTime');
     return CircularCountDownTimer(
       duration: pomodoroTime,
       initialDuration: elapsedPomodoroTime,
@@ -69,21 +69,21 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
       isReverse: true,
       autoStart: pomodoro.status == PomodoroState.running.name ? true : false,
       onComplete: () async {
-        if (!pomodoro.shortBreak && !pomodoro.longBreak) {
-          int currentPomodoroTaskTime = pomodoroController
-              .getCurrentPomodoroTaskTime(pomodoroComplete: true);
-          await taskController.savePomodoroTaskTime(
-            taskId: pomodoroController.pomodoro.task!.id,
-            taskTime: currentPomodoroTaskTime,
-            isCompleted: false,
-          );
-        }
+        // if (!pomodoro.shortBreak && !pomodoro.longBreak) {
+        //   int currentPomodoroTaskTime = pomodoroController
+        //       .getCurrentPomodoroTaskTime(pomodoroComplete: true);
+        //   await taskController.savePomodoroTaskTime(
+        //     taskId: pomodoroController.pomodoro.task!.id,
+        //     taskTime: currentPomodoroTaskTime,
+        //     isCompleted: false,
+        //   );
+        // }
 
         await pomodoroController.completePomodoro();
       },
       timeFormatterFunction: (defaultFormatterFunction, duration) {
         if (pomodoroController.pomodoroState == PomodoroState.notStarted ||
-            pomodoroController.pomodoroState == PomodoroState.pausedTest) {
+            pomodoroController.pomodoroState == PomodoroState.rebootpaused) {
           return pomodoroController.remainingPomodoroTimeInMinutes;
         } else {
           return Function.apply(defaultFormatterFunction, [duration]);

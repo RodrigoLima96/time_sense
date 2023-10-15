@@ -5,7 +5,7 @@ import 'helpers/helpers.dart';
 import '../models/models.dart';
 import '../repositories/repositories.dart';
 
-enum PomodoroState { notStarted, running, paused, pausedTest }
+enum PomodoroState { notStarted, running, paused, rebootpaused }
 
 enum PomodoroPageState { loading, loaded }
 
@@ -20,7 +20,6 @@ class PomodoroController extends ChangeNotifier {
   List<String> pomodoroSessions = [];
   bool showSecondButton = false;
   Map<String, int>? taskFocusTime;
-  bool appStarted = true;
   String remainingPomodoroTimeInMinutes = '';
 
   PomodoroController(
@@ -32,6 +31,12 @@ class PomodoroController extends ChangeNotifier {
   Future<void> getPomodoroStatus() async {
     pomodoroPageState = PomodoroPageState.loading;
     pomodoro = await _pomodoroRepository.getPomodoro();
+
+    // TO DO
+    await resetDailyPomodoroCycle();
+
+    pomodoro.pomodoroTime = PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
+    print(pomodoro);
 
     if (pomodoro.status == PomodoroState.running.name) {
       elapsedPomodoroTime =
@@ -46,7 +51,6 @@ class PomodoroController extends ChangeNotifier {
     setPomodoroStatus(pomodoroStatus: pomodoro.status);
     setPomodoroSessionsState();
     pomodoroPageState = PomodoroPageState.loaded;
-    appStarted = false;
     notifyListeners();
   }
 
@@ -58,10 +62,11 @@ class PomodoroController extends ChangeNotifier {
         showSecondButton = true;
 
       case 'paused':
-        pomodoroState = PomodoroState.pausedTest;
-        remainingPomodoroTimeInMinutes = convertSecondsToMinutes(
-            pomodoroDuration:
-                pomodoro.pomodoroTime - pomodoro.elapsedPomodoroTime);
+        pomodoroState = PomodoroState.rebootpaused;
+        int remainingTime =
+            pomodoro.pomodoroTime - pomodoro.elapsedPomodoroTime;
+        remainingPomodoroTimeInMinutes =
+            convertSecondsToMinutes(pomodoroDuration: remainingTime);
         showSecondButton = true;
         break;
       default:
@@ -69,51 +74,41 @@ class PomodoroController extends ChangeNotifier {
   }
 
   initPomodoro() async {
-    countDownController.start();
+    pomodoro.initDate = DateTime.now();
+    countDownController.restart(duration: pomodoro.pomodoroTime);
     pomodoroState = PomodoroState.running;
+    pomodoro.status = PomodoroState.running.name;
     showSecondButton = true;
 
-    if (!appStarted) {
-      pomodoro.initDate = pomodoro.initDate ?? DateTime.now();
-      pomodoro.status = PomodoroState.running.name;
-
-      setPomodoroSessionsState();
-      await savePomodoroStatus(saveCurrentPomodoroTime: false);
-      Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
-          ? pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime
-          : null;
-      notifyListeners();
-    }
+    setPomodoroSessionsState();
+    await savePomodoroStatus();
+    // Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
+    //     ? pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime
+    //     : null;
+    notifyListeners();
   }
 
   pausePomodoro() async {
-    if (appStarted) {
-      pomodoroState = PomodoroState.pausedTest;
-    }
-
+    countDownController.pause();
+    pomodoroState = PomodoroState.paused;
+    pomodoro.status = PomodoroState.paused.name;
     showSecondButton = true;
 
-    if (!appStarted) {
-      countDownController.pause();
-      pomodoroState = PomodoroState.paused;
-      pomodoro.status = PomodoroState.paused.name;
+    elapsedPomodoroTime = 0;
+    elapsedPomodoroTime = PomodoroHelper.getElapsedPomodoroTime(
+      pomodoroTime: pomodoro.pomodoroTime,
+      remainingPomodoroTime: countDownController.getTime(),
+    );
 
-      elapsedPomodoroTime = 0;
-      elapsedPomodoroTime = PomodoroHelper.getElapsedPomodoroTime(
-        pomodoroTime: pomodoro.pomodoroTime,
-        remainingPomodoroTime: countDownController.getTime(),
-      );
-
-      pomodoro.elapsedPomodoroTime = elapsedPomodoroTime;
-      pomodoro.initDate = null;
-      await savePomodoroStatus(saveCurrentPomodoroTime: true);
-      setPomodoroSessionsState();
-    }
+    pomodoro.elapsedPomodoroTime = elapsedPomodoroTime;
+    pomodoro.initDate = null;
+    await savePomodoroStatus();
+    setPomodoroSessionsState();
     notifyListeners();
   }
 
   resumePomodoro() async {
-    if (pomodoroState == PomodoroState.pausedTest) {
+    if (pomodoroState == PomodoroState.rebootpaused) {
       countDownController.start();
     } else {
       countDownController.resume();
@@ -124,28 +119,81 @@ class PomodoroController extends ChangeNotifier {
     elapsedPomodoroTime = pomodoro.elapsedPomodoroTime;
     showSecondButton = true;
     setPomodoroSessionsState();
-    Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
-        ? pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime
-        : null;
+    // Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
+    //     ? pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime
+    //     : null;
 
-    await savePomodoroStatus(saveCurrentPomodoroTime: true);
+    await savePomodoroStatus();
     notifyListeners();
   }
 
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
+  restartPomodoro() async {
+
+    
+
+    // TO DO
+    // await resetDailyPomodoroCycle();
+
+    pomodoro.initDate = DateTime.now();
+    elapsedPomodoroTime = 0;
+    pomodoro.elapsedPomodoroTime = 0;
+    countDownController.restart(duration: pomodoro.settings!.pomodoroTime);
+    pomodoroState = PomodoroState.running;
+    pomodoro.shortBreak = false;
+    showSecondButton = true;
+    if (pomodoro.task != null) {
+      pomodoro.taskPomodoroStartTime = pomodoro.settings!.pomodoroTime;
+    }
+    await savePomodoroStatus();
+    notifyListeners();
+  }
+
+  cancelPomodoro({required bool isBreak}) async {
+    // TO DO
+    // await resetDailyPomodoroCycle();
+
+    countDownController.restart(duration: pomodoro.settings!.pomodoroTime);
+    countDownController.pause();
+
+    pomodoro = PomodoroHelper.getCancelPomodoroStatus(
+        pomodoro: pomodoro, isBreak: isBreak);
+    elapsedPomodoroTime = 0;
+    remainingPomodoroTimeInMinutes =
+        convertSecondsToMinutes(pomodoroDuration: pomodoro.pomodoroTime);
+
+    pomodoroState = PomodoroState.notStarted;
+    showSecondButton = false;
+    setPomodoroSessionsState();
+    await savePomodoroStatus();
+    notifyListeners();
+  }
+
+  completePomodoro() async {
+    pomodoroPageState = PomodoroPageState.loading;
+
+    pomodoro = PomodoroHelper.getCompletePomodoroStatus(pomodoro: pomodoro);
+    pomodoro.pomodoroTime = PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
+
+    remainingPomodoroTimeInMinutes =
+        convertSecondsToMinutes(pomodoroDuration: pomodoro.pomodoroTime);
+    elapsedPomodoroTime = 0;
+    pomodoroState = PomodoroState.notStarted;
+    showSecondButton = false;
+
+    setPomodoroSessionsState();
+    await savePomodoroStatus();
+
+    pomodoroPageState = PomodoroPageState.loaded;
+    notifyListeners();
+  }
+
+  setPomodoroSessionsState() {
+    pomodoroSessions = PomodoroHelper.getPomodoroSessionsState(
+      pomodoro: pomodoro,
+      pomodoroState: pomodoroState,
+      pomodoroSessions: pomodoroSessions,
+    );
+  }
 
   Map<String, Map<String, dynamic>> getButtonsInfo() {
     final buttonsInfo = PomodoroHelper.extractButtonsInfo(
@@ -160,68 +208,67 @@ class PomodoroController extends ChangeNotifier {
     return buttonsInfo;
   }
 
-  restartPomodoro() {
-    countDownController.restart(duration: pomodoro.settings!.pomodoroTime);
-    pomodoroState = PomodoroState.running;
-    showSecondButton = true;
-    if (pomodoro.task != null) {
-      pomodoro.taskPomodoroStartTime = pomodoro.settings!.pomodoroTime;
+  resetDailyPomodoroCycle({bool? periodic}) async {
+    final resetPomodoro = PomodoroHelper.resetDailyPomodoroCycle(
+        creationDate: pomodoro.creationDate!);
+
+    if (resetPomodoro) {
+      pomodoro = PomodoroHelper.getResetDailyPomodoroStatus(pomodoro: pomodoro);
+      elapsedPomodoroTime = 0;
+      remainingPomodoroTimeInMinutes =
+          convertSecondsToMinutes(pomodoroDuration: pomodoro.pomodoroTime);
+
+      await savePomodoroStatus();
+      if (periodic != null) {
+        setPomodoroSessionsState();
+        notifyListeners();
+      }
     }
-    pomodoro.initDate = DateTime.now();
-    notifyListeners();
   }
 
-  cancelPomodoro({required bool isBreak}) async {
-    countDownController.restart(duration: pomodoro.settings!.pomodoroTime);
-    countDownController.pause();
+  //
+  //
+  //
+  //
+  //
 
-    pomodoro = PomodoroHelper.getCancelPomodoroStatus(
-        pomodoro: pomodoro, isBreak: isBreak);
-    pomodoro.taskPomodoroStartTime = null;
-    await savePomodoroStatus(saveCurrentPomodoroTime: false);
+  updatePomodoroAfterSettingsChanges() async {
+    pomodoro = await _pomodoroRepository.getPomodoro();
 
-    pomodoroState = PomodoroState.notStarted;
-    showSecondButton = false;
+    if (pomodoroState != PomodoroState.running &&
+        pomodoroState != PomodoroState.paused) {
+      pomodoro.taskPomodoroStartTime = null;
+      pomodoro.pomodoroTime =
+          PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
+      remainingPomodoroTimeInMinutes =
+          convertSecondsToMinutes(pomodoroDuration: pomodoro.pomodoroTime);
+
+      countDownController.restart(duration: pomodoro.pomodoroTime);
+      countDownController.pause();
+    }
+
     setPomodoroSessionsState();
-    notifyListeners();
-  }
-
-  completePomodoro() async {
-    pomodoroPageState = PomodoroPageState.loading;
-
-    pomodoro = PomodoroHelper.getCompletePomodoroStatus(pomodoro: pomodoro);
-    pomodoro.taskPomodoroStartTime = null;
-    showSecondButton = false;
-    pomodoroState = PomodoroState.notStarted;
-
-    await savePomodoroStatus(saveCurrentPomodoroTime: false);
-    await getPomodoroStatus2();
-
-    pomodoroPageState = PomodoroPageState.loaded;
+    await savePomodoroStatus();
     notifyListeners();
   }
 
   String convertSecondsToMinutes({required int pomodoroDuration}) {
     return Helper.convertSecondsToMinutes(durationInSeconds: pomodoroDuration);
   }
-
-  setPomodoroSessionsState() {
-    pomodoroSessions = PomodoroHelper.getPomodoroSessionsState(
-      pomodoro: pomodoro,
-      pomodoroState: pomodoroState,
-      pomodoroSessions: pomodoroSessions,
-    );
-  }
-
-  Future<void> getPomodoroStatus2() async {
-    pomodoroPageState = PomodoroPageState.loading;
-    pomodoro = await _pomodoroRepository.getPomodoro();
-    pomodoro.remainingPomodoroTime =
-        PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
-    setPomodoroSessionsState();
-    pomodoroPageState = PomodoroPageState.loaded;
-    notifyListeners();
-  }
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
 
   // savePomodoroStatusPeriodic() async {
   //   Timer.periodic(const Duration(seconds: 30), (timer) {
@@ -231,15 +278,7 @@ class PomodoroController extends ChangeNotifier {
   //   });
   // }
 
-  savePomodoroStatus({required bool saveCurrentPomodoroTime}) async {
-    // saveCurrentPomodoroTime
-    //     ? pomodoro.remainingPomodoroTime =
-    //         PomodoroHelper.getRemainingPomodoroTime(
-    //         remainingPomodoroTime: pomodoro.remainingPomodoroTime,
-    //         controllerRemainingPomodoroTime: countDownController.getTime(),
-    //       )!
-    //     : pomodoro.remainingPomodoroTime = pomodoro.remainingPomodoroTime;
-
+  savePomodoroStatus() async {
     await _pomodoroRepository.savePomodoroStatus(pomodoro: pomodoro);
     print(pomodoro.elapsedPomodoroTime);
   }
@@ -248,7 +287,7 @@ class PomodoroController extends ChangeNotifier {
     final Task task = await _pomodoroRepository.getTaskById(taskId: taskId);
     pomodoro.taskId = task.id;
     pomodoro.task = task;
-    await savePomodoroStatus(saveCurrentPomodoroTime: false);
+    await savePomodoroStatus();
     notifyListeners();
   }
 
@@ -260,7 +299,7 @@ class PomodoroController extends ChangeNotifier {
     if (pomodoroState == PomodoroState.running) {
       pausePomodoro();
     }
-    await savePomodoroStatus(saveCurrentPomodoroTime: false);
+    await savePomodoroStatus();
     notifyListeners();
   }
 
@@ -304,22 +343,6 @@ class PomodoroController extends ChangeNotifier {
     } else {
       pomodoro.task!.showDetails = false;
     }
-    notifyListeners();
-  }
-
-  updatePomodoroAfterSettingsChanges() async {
-    pomodoro = await _pomodoroRepository.getPomodoro();
-
-    if (pomodoroState != PomodoroState.running &&
-        pomodoroState != PomodoroState.paused) {
-      pomodoro.taskPomodoroStartTime = null;
-      pomodoro.remainingPomodoroTime = 0;
-      pomodoro.remainingPomodoroTime =
-          PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
-    }
-    setPomodoroSessionsState();
-
-    await savePomodoroStatus(saveCurrentPomodoroTime: false);
     notifyListeners();
   }
 }

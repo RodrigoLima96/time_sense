@@ -47,7 +47,6 @@ class InitDatabaseService {
       creationDate TEXT,
       initDate TEXT,
       completeDate TEXT,
-      totalFocusingTime INTEGER,
       taskId TEXT,
       taskPomodoroStartTime INTEGER
     );
@@ -89,14 +88,13 @@ class InitDatabaseService {
     creationDate,
     initDate,
     completeDate,
-    totalFocusingTime,
     taskId,
     taskPomodoroStartTime
   )
   VALUES (
     '1',
-    'focus',
-    3600,
+    'notStarted',
+    0,
     0,
     0,
     0,
@@ -106,7 +104,6 @@ class InitDatabaseService {
     null,
     null,
     null,
-    0,
     null,
     null
   );
@@ -122,9 +119,9 @@ class InitDatabaseService {
   )
 
   VALUES (
-    1200,
-    300,
-    600,
+    60,
+    4,
+    7,
     2,
     4
   );

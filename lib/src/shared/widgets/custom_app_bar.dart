@@ -27,7 +27,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leadingWidth: 40,
       leading: Container(
         margin: const EdgeInsets.only(left: 15),
-        child: pomodoroController.pomodoroState != PomodoroState.running
+        child: pomodoroController.pomodoroState == PomodoroState.notStarted
             ? GestureDetector(
                 child: SvgPicture.asset(
                   icon,
