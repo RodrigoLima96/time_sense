@@ -14,11 +14,12 @@ class PomodoroController extends ChangeNotifier {
   final PomodoroRepository _pomodoroRepository;
   late Pomodoro pomodoro;
   int elapsedPomodoroTime = 0;
+  bool showSecondButton = false;
+  bool showMenuButton = false;
 
   PomodoroState pomodoroState = PomodoroState.notStarted;
   PomodoroPageState pomodoroPageState = PomodoroPageState.loading;
   List<String> pomodoroSessions = [];
-  bool showSecondButton = false;
   Map<String, int>? taskFocusTime;
   String remainingPomodoroTimeInMinutes = '';
 
@@ -68,6 +69,8 @@ class PomodoroController extends ChangeNotifier {
         remainingPomodoroTimeInMinutes =
             convertSecondsToMinutes(pomodoroDuration: remainingTime);
         showSecondButton = true;
+      case 'notStarted':
+        showMenuButton = true;
         break;
       default:
     }
@@ -79,6 +82,7 @@ class PomodoroController extends ChangeNotifier {
     pomodoroState = PomodoroState.running;
     pomodoro.status = PomodoroState.running.name;
     showSecondButton = true;
+    showMenuButton = false;
 
     setPomodoroSessionsState();
     await savePomodoroStatus();
@@ -128,9 +132,6 @@ class PomodoroController extends ChangeNotifier {
   }
 
   restartPomodoro() async {
-
-    
-
     // TO DO
     // await resetDailyPomodoroCycle();
 
@@ -163,6 +164,7 @@ class PomodoroController extends ChangeNotifier {
 
     pomodoroState = PomodoroState.notStarted;
     showSecondButton = false;
+    showMenuButton = true;
     setPomodoroSessionsState();
     await savePomodoroStatus();
     notifyListeners();
@@ -179,6 +181,7 @@ class PomodoroController extends ChangeNotifier {
     elapsedPomodoroTime = 0;
     pomodoroState = PomodoroState.notStarted;
     showSecondButton = false;
+    showMenuButton = true;
 
     setPomodoroSessionsState();
     await savePomodoroStatus();
@@ -217,6 +220,8 @@ class PomodoroController extends ChangeNotifier {
       elapsedPomodoroTime = 0;
       remainingPomodoroTimeInMinutes =
           convertSecondsToMinutes(pomodoroDuration: pomodoro.pomodoroTime);
+      showSecondButton = false;
+      showMenuButton = true;
 
       await savePomodoroStatus();
       if (periodic != null) {
