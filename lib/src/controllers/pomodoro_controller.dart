@@ -33,11 +33,7 @@ class PomodoroController extends ChangeNotifier {
     pomodoroPageState = PomodoroPageState.loading;
     pomodoro = await _pomodoroRepository.getPomodoro();
 
-    // TO DO
-    await resetDailyPomodoroCycle();
-
     pomodoro.pomodoroTime = PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
-    print(pomodoro);
 
     if (pomodoro.status == PomodoroState.running.name) {
       elapsedPomodoroTime =
@@ -55,7 +51,7 @@ class PomodoroController extends ChangeNotifier {
     notifyListeners();
   }
 
-  setPomodoroStatus({required String pomodoroStatus}) {
+  setPomodoroStatus({required String pomodoroStatus}) async {
     switch (pomodoro.status) {
       case 'running':
         countDownController.start();
@@ -69,8 +65,10 @@ class PomodoroController extends ChangeNotifier {
         remainingPomodoroTimeInMinutes =
             convertSecondsToMinutes(pomodoroDuration: remainingTime);
         showSecondButton = true;
+        await resetDailyPomodoroCycle();
       case 'notStarted':
         showMenuButton = true;
+        await resetDailyPomodoroCycle();
         break;
       default:
     }
@@ -132,9 +130,6 @@ class PomodoroController extends ChangeNotifier {
   }
 
   restartPomodoro() async {
-    // TO DO
-    // await resetDailyPomodoroCycle();
-
     pomodoro.initDate = DateTime.now();
     elapsedPomodoroTime = 0;
     pomodoro.elapsedPomodoroTime = 0;
@@ -145,14 +140,12 @@ class PomodoroController extends ChangeNotifier {
     if (pomodoro.task != null) {
       pomodoro.taskPomodoroStartTime = pomodoro.settings!.pomodoroTime;
     }
+    await resetDailyPomodoroCycle();
     await savePomodoroStatus();
     notifyListeners();
   }
 
   cancelPomodoro({required bool isBreak}) async {
-    // TO DO
-    // await resetDailyPomodoroCycle();
-
     countDownController.restart(duration: pomodoro.settings!.pomodoroTime);
     countDownController.pause();
 
@@ -165,6 +158,8 @@ class PomodoroController extends ChangeNotifier {
     pomodoroState = PomodoroState.notStarted;
     showSecondButton = false;
     showMenuButton = true;
+
+    await resetDailyPomodoroCycle();
     setPomodoroSessionsState();
     await savePomodoroStatus();
     notifyListeners();
@@ -183,6 +178,7 @@ class PomodoroController extends ChangeNotifier {
     showSecondButton = false;
     showMenuButton = true;
 
+    await resetDailyPomodoroCycle();
     setPomodoroSessionsState();
     await savePomodoroStatus();
 
@@ -212,7 +208,7 @@ class PomodoroController extends ChangeNotifier {
   }
 
   resetDailyPomodoroCycle({bool? periodic}) async {
-    final resetPomodoro = PomodoroHelper.resetDailyPomodoroCycle(
+    final resetPomodoro = PomodoroHelper.checkResetDailyPomodoroCycle(
         creationDate: pomodoro.creationDate!);
 
     if (resetPomodoro) {
@@ -284,6 +280,7 @@ class PomodoroController extends ChangeNotifier {
   // }
 
   savePomodoroStatus() async {
+    // pomodoro.creationDate = DateTime.now().subtract(const Duration(days: 1));
     await _pomodoroRepository.savePomodoroStatus(pomodoro: pomodoro);
     print(pomodoro.elapsedPomodoroTime);
   }

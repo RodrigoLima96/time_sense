@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../models/models.dart';
 import '../controllers.dart';
@@ -175,15 +176,19 @@ class PomodoroHelper {
   }
 
   static Pomodoro getCompletePomodoroStatus({required Pomodoro pomodoro}) {
+    final resetPomodoro =
+        checkResetDailyPomodoroCycle(creationDate: pomodoro.creationDate!);
+
+    pomodoro.creationDate =
+        resetPomodoro ? pomodoro.creationDate : DateTime.now();
+
     pomodoro.elapsedPomodoroTime = 0;
-    pomodoro.creationDate = DateTime.now();
     pomodoro.initDate = null;
     pomodoro.taskPomodoroStartTime = null;
     pomodoro.status = PomodoroState.notStarted.name;
 
     if (!pomodoro.shortBreak && !pomodoro.longBreak) {
       pomodoro.pomodoroSession++;
-      pomodoro.creationDate = null;
 
       if (pomodoro.shortBreakCount < pomodoro.settings!.shortBreakCount) {
         pomodoro.shortBreakCount++;
@@ -289,11 +294,12 @@ class PomodoroHelper {
   }
 
   static Pomodoro getResetDailyPomodoroStatus({required Pomodoro pomodoro}) {
+    const uuid = Uuid();
     pomodoro.creationDate = DateTime.now();
     pomodoro.initDate = null;
     pomodoro.completeDate = null;
     pomodoro.elapsedPomodoroTime = 0;
-    pomodoro.id += '2';
+    pomodoro.id = uuid.v1();
     pomodoro.shortBreak = false;
     pomodoro.longBreak = false;
     pomodoro.remainingPomodoroTime = 0;
@@ -305,8 +311,7 @@ class PomodoroHelper {
     return pomodoro;
   }
 
-  static bool resetDailyPomodoroCycle({required DateTime creationDate}) {
-
+  static bool checkResetDailyPomodoroCycle({required DateTime creationDate}) {
     final now = DateTime.now();
     final dateFormat = DateFormat('yyyy-MM-dd');
     final currentDate = dateFormat.format(now);
