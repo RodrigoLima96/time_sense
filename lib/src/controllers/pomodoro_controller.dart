@@ -45,10 +45,14 @@ class PomodoroController extends ChangeNotifier {
 
     elapsedPomodoroTime += pomodoro.elapsedPomodoroTime;
 
-    setPomodoroStatus(pomodoroStatus: pomodoro.status);
-    setPomodoroSessionsState();
-    pomodoroPageState = PomodoroPageState.loaded;
-    notifyListeners();
+    if (elapsedPomodoroTime >= pomodoro.pomodoroTime) {
+      completePomodoro();
+    } else {
+      setPomodoroStatus(pomodoroStatus: pomodoro.status);
+      setPomodoroSessionsState();
+      pomodoroPageState = PomodoroPageState.loaded;
+      notifyListeners();
+    }
   }
 
   setPomodoroStatus({required String pomodoroStatus}) async {
@@ -75,6 +79,7 @@ class PomodoroController extends ChangeNotifier {
   }
 
   initPomodoro() async {
+    await resetDailyPomodoroCycle();
     pomodoro.initDate = DateTime.now();
     countDownController.restart(duration: pomodoro.pomodoroTime);
     pomodoroState = PomodoroState.running;
@@ -130,6 +135,7 @@ class PomodoroController extends ChangeNotifier {
   }
 
   restartPomodoro() async {
+    await resetDailyPomodoroCycle();
     pomodoro.initDate = DateTime.now();
     elapsedPomodoroTime = 0;
     pomodoro.elapsedPomodoroTime = 0;
@@ -140,7 +146,7 @@ class PomodoroController extends ChangeNotifier {
     if (pomodoro.task != null) {
       pomodoro.taskPomodoroStartTime = pomodoro.settings!.pomodoroTime;
     }
-    await resetDailyPomodoroCycle();
+    setPomodoroSessionsState();
     await savePomodoroStatus();
     notifyListeners();
   }
@@ -207,7 +213,7 @@ class PomodoroController extends ChangeNotifier {
     return buttonsInfo;
   }
 
-  resetDailyPomodoroCycle({bool? periodic}) async {
+  resetDailyPomodoroCycle() async {
     final resetPomodoro = PomodoroHelper.checkResetDailyPomodoroCycle(
         creationDate: pomodoro.creationDate!);
 
@@ -218,12 +224,8 @@ class PomodoroController extends ChangeNotifier {
           convertSecondsToMinutes(pomodoroDuration: pomodoro.pomodoroTime);
       showSecondButton = false;
       showMenuButton = true;
-
+      pomodoroState = PomodoroState.notStarted;
       await savePomodoroStatus();
-      if (periodic != null) {
-        setPomodoroSessionsState();
-        notifyListeners();
-      }
     }
   }
 

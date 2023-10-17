@@ -91,6 +91,7 @@ class InitDatabaseService {
     taskId,
     taskPomodoroStartTime
   )
+
   VALUES (
     '1',
     'notStarted',
@@ -119,8 +120,8 @@ class InitDatabaseService {
   )
 
   VALUES (
-    60,
-    4,
+    10,
+    5,
     7,
     2,
     4
