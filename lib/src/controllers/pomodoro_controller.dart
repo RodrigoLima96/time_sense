@@ -17,6 +17,7 @@ class PomodoroController extends ChangeNotifier {
   int elapsedPomodoroTime = 0;
   bool showSecondButton = false;
   bool showMenuButton = false;
+  final dateFormat = DateFormat('dd/MM/yyyy');
 
   PomodoroState pomodoroState = PomodoroState.notStarted;
   PomodoroPageState pomodoroPageState = PomodoroPageState.loading;
@@ -82,9 +83,10 @@ class PomodoroController extends ChangeNotifier {
   initPomodoro() async {
     final resetPomodoro = PomodoroHelper.checkResetDailyPomodoroCycle(
         creationDate: pomodoro.creationDate!);
-    if (resetPomodoro) {
+    if (resetPomodoro && pomodoro.shortBreak || pomodoro.longBreak) {
       await resetDailyPomodoroCycle();
     } else {
+      await resetDailyPomodoroCycle();
       pomodoro.initDate = DateTime.now();
       countDownController.restart(duration: pomodoro.pomodoroTime);
       pomodoroState = PomodoroState.running;
@@ -92,13 +94,12 @@ class PomodoroController extends ChangeNotifier {
       showSecondButton = true;
       showMenuButton = false;
 
-      setPomodoroSessionsState();
       await savePomodoroStatus();
       // Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
       //     ? pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime
       //     : null;
     }
-
+    setPomodoroSessionsState();
     notifyListeners();
   }
 
@@ -182,7 +183,6 @@ class PomodoroController extends ChangeNotifier {
     pomodoroPageState = PomodoroPageState.loading;
 
     if (!pomodoro.shortBreak && !pomodoro.longBreak) {
-      final dateFormat = DateFormat('dd/MM/yyyy');
       final String formattedDate = dateFormat.format(pomodoro.creationDate!);
 
       await _pomodoroRepository.savePomodoroTime(
@@ -232,6 +232,15 @@ class PomodoroController extends ChangeNotifier {
         creationDate: pomodoro.creationDate!);
 
     if (resetPomodoro) {
+      if (!pomodoro.shortBreak &&
+          !pomodoro.longBreak &&
+          pomodoro.status == PomodoroState.paused.name) {
+        final String formattedDate = dateFormat.format(pomodoro.creationDate!);
+
+        await _pomodoroRepository.savePomodoroTime(
+            date: formattedDate,
+            totalFocusingTime: pomodoro.elapsedPomodoroTime);
+      }
       pomodoro = PomodoroHelper.getResetDailyPomodoroStatus(pomodoro: pomodoro);
       elapsedPomodoroTime = 0;
       remainingPomodoroTimeInMinutes =
