@@ -83,7 +83,7 @@ class PomodoroController extends ChangeNotifier {
   initPomodoro() async {
     final resetPomodoro = PomodoroHelper.checkResetDailyPomodoroCycle(
         creationDate: pomodoro.creationDate!);
-    if (resetPomodoro && pomodoro.shortBreak || pomodoro.longBreak) {
+    if (resetPomodoro && (pomodoro.shortBreak || pomodoro.longBreak)) {
       await resetDailyPomodoroCycle();
     } else {
       await resetDailyPomodoroCycle();
