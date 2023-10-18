@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'helpers/helpers.dart';
 import '../models/models.dart';
 import '../repositories/repositories.dart';
@@ -37,7 +38,7 @@ class PomodoroController extends ChangeNotifier {
 
     if (pomodoro.status == PomodoroState.running.name) {
       elapsedPomodoroTime =
-          PomodoroHelper.getElapsedPomodoroTimeFromDate(pomodoro: pomodoro);
+          PomodoroHelper.getPomodoroElapsedTime(pomodoro: pomodoro);
     }
 
     remainingPomodoroTimeInMinutes =
@@ -174,6 +175,13 @@ class PomodoroController extends ChangeNotifier {
   completePomodoro() async {
     pomodoroPageState = PomodoroPageState.loading;
 
+    if (!pomodoro.shortBreak && !pomodoro.longBreak) {
+      final dateFormat = DateFormat('dd/MM/yyyy');
+      final String formattedDate = dateFormat.format(pomodoro.creationDate!);
+      
+      await _pomodoroRepository.savePomodoroTime(
+          date: formattedDate, totalFocusingTime: pomodoro.pomodoroTime);
+    }
     pomodoro = PomodoroHelper.getCompletePomodoroStatus(pomodoro: pomodoro);
     pomodoro.pomodoroTime = PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
 

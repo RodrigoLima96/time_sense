@@ -5,7 +5,7 @@ import '../../models/models.dart';
 import '../controllers.dart';
 
 class PomodoroHelper {
-  static int getElapsedPomodoroTimeFromDate({required Pomodoro pomodoro}) {
+  static int getPomodoroElapsedTime({required Pomodoro pomodoro}) {
     if (pomodoro.initDate != null) {
       DateTime currentDate = DateTime.now();
       int elapsedTime = currentDate.difference(pomodoro.initDate!).inSeconds;

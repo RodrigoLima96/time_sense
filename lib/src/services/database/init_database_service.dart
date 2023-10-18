@@ -28,6 +28,7 @@ class InitDatabaseService {
     await db.execute(_pomodoro);
     await db.execute(_settings);
     await db.execute(_tasks);
+    await db.execute(_statistics);
 
     await db.execute(_initialPomodoroData);
     await db.execute(_initialSettingsData);
@@ -72,6 +73,13 @@ class InitDatabaseService {
       completionDate TEXT,
       showDetails INTEGER
     );
+  ''';
+
+  String get _statistics => '''
+    CREATE TABLE statistics (
+      date TEXT,
+      totalFocusingTime INTEGER
+    )
   ''';
 
   String get _initialPomodoroData => '''

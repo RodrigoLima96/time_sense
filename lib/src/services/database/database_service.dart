@@ -35,6 +35,33 @@ class DatabaseService {
     await db.update('pomodoro', pomodoroMap);
   }
 
+  getStatistic({required String date}) async {
+    Database db = await _databaseService.database;
+
+    final statistic = await db.query(
+      'statistics',
+      where: 'date = ?',
+      whereArgs: [date],
+    );
+
+    return statistic;
+  }
+
+  createStatistic({required Map<String, dynamic> statisticMap}) async {
+    Database db = await _databaseService.database;
+    await db.insert('statistics', statisticMap);
+  }
+
+  updateStatistic({required Map<String, dynamic> statisticMap}) async {
+    Database db = await _databaseService.database;
+    await db.update(
+      'statistics',
+      statisticMap,
+      where: 'date = ?',
+      whereArgs: [statisticMap['date']],
+    );
+  }
+
   saveSettings({required Map<String, dynamic> settingsMap}) async {
     Database db = await _databaseService.database;
     await db.update('settings', settingsMap);
