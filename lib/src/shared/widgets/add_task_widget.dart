@@ -38,6 +38,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
           Expanded(
             child: TextFormField(
               controller: textFieldController,
+              onTapOutside: (event) => FocusScope.of(context).unfocus(),
               decoration: InputDecoration(
                 hintText: tasksController.textFieldlHintText,
                 hintStyle: TextStyle(
@@ -74,7 +75,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
               if (_formKey.currentState!.validate()) {
                 await tasksController.addNewTask(
                     text: textFieldController.text);
-                    
+
                 if (tasksController.textFieldlHintText !=
                     'Digite o nome da tarefa...') {
                   FocusScope.of(context).unfocus();
