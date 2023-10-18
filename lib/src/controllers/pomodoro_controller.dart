@@ -80,19 +80,25 @@ class PomodoroController extends ChangeNotifier {
   }
 
   initPomodoro() async {
-    await resetDailyPomodoroCycle();
-    pomodoro.initDate = DateTime.now();
-    countDownController.restart(duration: pomodoro.pomodoroTime);
-    pomodoroState = PomodoroState.running;
-    pomodoro.status = PomodoroState.running.name;
-    showSecondButton = true;
-    showMenuButton = false;
+    final resetPomodoro = PomodoroHelper.checkResetDailyPomodoroCycle(
+        creationDate: pomodoro.creationDate!);
+    if (resetPomodoro) {
+      await resetDailyPomodoroCycle();
+    } else {
+      pomodoro.initDate = DateTime.now();
+      countDownController.restart(duration: pomodoro.pomodoroTime);
+      pomodoroState = PomodoroState.running;
+      pomodoro.status = PomodoroState.running.name;
+      showSecondButton = true;
+      showMenuButton = false;
 
-    setPomodoroSessionsState();
-    await savePomodoroStatus();
-    // Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
-    //     ? pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime
-    //     : null;
+      setPomodoroSessionsState();
+      await savePomodoroStatus();
+      // Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
+      //     ? pomodoro.taskPomodoroStartTime = pomodoro.remainingPomodoroTime
+      //     : null;
+    }
+
     notifyListeners();
   }
 
@@ -178,7 +184,7 @@ class PomodoroController extends ChangeNotifier {
     if (!pomodoro.shortBreak && !pomodoro.longBreak) {
       final dateFormat = DateFormat('dd/MM/yyyy');
       final String formattedDate = dateFormat.format(pomodoro.creationDate!);
-      
+
       await _pomodoroRepository.savePomodoroTime(
           date: formattedDate, totalFocusingTime: pomodoro.pomodoroTime);
     }

@@ -9,25 +9,10 @@ class PomodoroHelper {
     if (pomodoro.initDate != null) {
       DateTime currentDate = DateTime.now();
       int elapsedTime = currentDate.difference(pomodoro.initDate!).inSeconds;
-
-      // if (pomodoro.remainingPomodoroTime != null) {
-      // pomodoro.remainingPomodoroTime =
-      //     pomodoro.remainingPomodoroTime! + elapsedTime;
-      // } else {
-      // pomodoro.remainingPomodoroTime = elapsedTime;
-      // }
-      print(elapsedTime);
       return elapsedTime;
     } else {
       return 0;
     }
-    // int remainingPomodoroTime = DateTime(
-    //   dataAtual.year,
-    //   dataAtual.month,
-    //   dataAtual.day,
-    //   pomodoro.termino.hour,
-    //   pomodoro.termino.minute,
-    // ).difference(pomodoro.inicio).inSeconds;
   }
 
   //
