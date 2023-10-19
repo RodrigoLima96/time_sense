@@ -103,7 +103,7 @@ class PomodoroHelper {
               },
             },
             'second_button': {
-              'text': 'Pular',
+              'text': 'Pular pausa',
               'function': () {
                 cancelPomodoro(isBreak: true);
               },
@@ -135,7 +135,7 @@ class PomodoroHelper {
               },
             },
             'second_button': {
-              'text': 'Pular',
+              'text': 'Pular pausa',
               'function': () {
                 cancelPomodoro(isBreak: true);
               },
@@ -151,9 +151,9 @@ class PomodoroHelper {
             },
           },
           'second_button': {
-            'text': 'Cancelar',
+            'text': pomodoro.shortBreak || pomodoro.longBreak ? 'Pular pausa' : 'Cancelar',
             'function': () {
-              cancelPomodoro(isBreak: false);
+              cancelPomodoro(isBreak: pomodoro.shortBreak || pomodoro.longBreak ? true : false);
             },
           }
         };
