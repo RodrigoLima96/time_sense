@@ -50,98 +50,57 @@ class PomodoroHelper {
   }) {
     switch (pomodoroState) {
       case PomodoroState.notStarted:
-        if (!pomodoro.shortBreak && !pomodoro.longBreak) {
-          return {
-            'first_button': {
-              'text': 'Começar Foco',
-              'function': () {
-                initPomodoro();
-              },
-            }
-          };
-        } else if (pomodoro.shortBreak) {
-          return {
-            'first_button': {
-              'text': 'Começar pausa',
-              'function': () {
-                initPomodoro();
-              },
-            }
-          };
-        } else {
-          return {
-            'first_button': {
-              'text': 'Começar pausa longa',
-              'function': () {
-                initPomodoro();
-              },
-            }
-          };
-        }
+        return {
+          'first_button': {
+            'text': !pomodoro.shortBreak && !pomodoro.longBreak
+                ? 'Começar Foco'
+                : pomodoro.shortBreak
+                    ? 'Começar pausa'
+                    : 'Começar pausa longa',
+            'function': () {
+              initPomodoro();
+            },
+          }
+        };
       case PomodoroState.running:
-        if (!pomodoro.shortBreak && !pomodoro.longBreak) {
-          return {
-            'first_button': {
-              'text': 'Pausar',
-              'function': () {
-                pausePomodoro();
-              },
+        return {
+          'first_button': {
+            'text': 'Pausar',
+            'function': () {
+              pausePomodoro();
             },
-            'second_button': {
-              'text': 'Reiniciar',
-              'function': () {
-                restartPomodoro();
-              },
-            }
-          };
-        } else {
-          return {
-            'first_button': {
-              'text': 'Pausar',
-              'function': () {
-                pausePomodoro();
-              },
+          },
+          'second_button': {
+            'text': !pomodoro.shortBreak && !pomodoro.longBreak
+                ? 'Reiniciar'
+                : 'Pular pausa',
+            'function': () {
+              !pomodoro.shortBreak && !pomodoro.longBreak
+                  ? restartPomodoro()
+                  : cancelPomodoro(isBreak: true);
             },
-            'second_button': {
-              'text': 'Pular pausa',
-              'function': () {
-                cancelPomodoro(isBreak: true);
-              },
-            }
-          };
-        }
+          }
+        };
       case PomodoroState.paused:
-        if (!pomodoro.shortBreak && !pomodoro.longBreak) {
-          return {
-            'first_button': {
-              'text': 'Retomar',
-              'function': () {
-                resumePomodoro();
-              },
+        return {
+          'first_button': {
+            'text': 'Retomar',
+            'function': () {
+              resumePomodoro();
             },
-            'second_button': {
-              'text': 'Cancelar',
-              'function': () {
-                cancelPomodoro(isBreak: false);
-              },
-            }
-          };
-        } else {
-          return {
-            'first_button': {
-              'text': 'Retomar',
-              'function': () {
-                resumePomodoro();
-              },
+          },
+          'second_button': {
+            'text': !pomodoro.shortBreak && !pomodoro.longBreak
+                ? 'Cancelar'
+                : 'Pular pausa',
+            'function': () {
+              cancelPomodoro(
+                isBreak:
+                    !pomodoro.shortBreak && !pomodoro.longBreak ? false : true,
+              );
             },
-            'second_button': {
-              'text': 'Pular pausa',
-              'function': () {
-                cancelPomodoro(isBreak: true);
-              },
-            }
-          };
-        }
+          }
+        };
       case PomodoroState.rebootpaused:
         return {
           'first_button': {
@@ -151,9 +110,13 @@ class PomodoroHelper {
             },
           },
           'second_button': {
-            'text': pomodoro.shortBreak || pomodoro.longBreak ? 'Pular pausa' : 'Cancelar',
+            'text': pomodoro.shortBreak || pomodoro.longBreak
+                ? 'Pular pausa'
+                : 'Cancelar',
             'function': () {
-              cancelPomodoro(isBreak: pomodoro.shortBreak || pomodoro.longBreak ? true : false);
+              cancelPomodoro(
+                  isBreak:
+                      pomodoro.shortBreak || pomodoro.longBreak ? true : false);
             },
           }
         };
