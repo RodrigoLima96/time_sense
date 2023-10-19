@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'routes/routes.dart';
 import 'controllers/controllers.dart';
-import 'pages/pages.dart';
 import 'repositories/repositories.dart';
 import 'services/services.dart';
 
@@ -22,10 +22,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TasksController(context.read())),
         ChangeNotifierProvider(create: (context) => SettingsController(context.read())),
       ],
-      child: const MaterialApp(
+      child:  MaterialApp(
         title: 'Time Sense',
         debugShowCheckedModeBanner: false,
-        home: HomePage(),
+        routes: AppRoutes.list,
+        initialRoute: AppRoutes.initial,
+        navigatorKey: AppRoutes.navigatorKey,
       ),
     );
   }

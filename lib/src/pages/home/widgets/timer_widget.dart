@@ -43,14 +43,13 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final taskController = context.read<TasksController>();
+    // final taskController = context.read<TasksController>();
     final pomodoroController = context.watch<PomodoroController>();
 
     final Pomodoro pomodoro = pomodoroController.pomodoro;
     final pomodoroTime = pomodoro.pomodoroTime;
     final elapsedPomodoroTime = pomodoroController.elapsedPomodoroTime;
 
-    print('POMODOROTIME: $pomodoroTime');
     return CircularCountDownTimer(
       duration: pomodoroTime,
       initialDuration: elapsedPomodoroTime,

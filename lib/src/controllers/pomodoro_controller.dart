@@ -252,12 +252,6 @@ class PomodoroController extends ChangeNotifier {
     }
   }
 
-  //
-  //
-  //
-  //
-  //
-
   updatePomodoroAfterSettingsChanges() async {
     pomodoro = await _pomodoroRepository.getPomodoro();
 
@@ -281,33 +275,9 @@ class PomodoroController extends ChangeNotifier {
   String convertSecondsToMinutes({required int pomodoroDuration}) {
     return Helper.convertSecondsToMinutes(durationInSeconds: pomodoroDuration);
   }
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-
-  // savePomodoroStatusPeriodic() async {
-  //   Timer.periodic(const Duration(seconds: 30), (timer) {
-  //     if (pomodoroState == PomodoroState.running) {
-  //       savePomodoroStatus(saveCurrentPomodoroTime: true);
-  //     }
-  //   });
-  // }
 
   savePomodoroStatus() async {
-    // pomodoro.creationDate = DateTime.now().subtract(const Duration(days: 1));
     await _pomodoroRepository.savePomodoroStatus(pomodoro: pomodoro);
-    print(pomodoro.elapsedPomodoroTime);
   }
 
   setPomodoroTask({required String taskId}) async {
@@ -329,6 +299,21 @@ class PomodoroController extends ChangeNotifier {
     await savePomodoroStatus();
     notifyListeners();
   }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
 
   int getCurrentPomodoroTaskTime({required bool pomodoroComplete}) {
     int currentPomodoroTaskTime = 0;

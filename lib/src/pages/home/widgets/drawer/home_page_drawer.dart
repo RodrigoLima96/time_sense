@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '/src/pages/home/widgets/widgets.dart';
-import '/src/pages/pages.dart';
-import '/src/shared/widgets/widgets.dart';
-
 import '../../../../shared/utils/utils.dart';
+
+import '/src/routes/routes.dart';
+import '/src/pages/home/widgets/widgets.dart';
+import '/src/shared/widgets/widgets.dart';
 
 class HomePageDrawer extends StatelessWidget {
   const HomePageDrawer({super.key});
@@ -56,28 +56,24 @@ class HomePageDrawer extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const UserPage()),
-                );
+                Navigator.of(AppRoutes.navigatorKey!.currentContext!)
+                    .pushNamed('/user');
               },
             ),
             DrawerIcon(
               icon: 'assets/icons/tasks-icon.svg',
               text: 'Tarefas',
               press: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) =>  const TasksPage()));
+                Navigator.of(AppRoutes.navigatorKey!.currentContext!)
+                    .pushNamed('/tasks');
               },
             ),
             DrawerIcon(
               icon: 'assets/icons/settings-icon.svg',
               text: 'Configurações',
               press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SettingsPage()),
-                );
+                Navigator.of(AppRoutes.navigatorKey!.currentContext!)
+                    .pushNamed('/settings');
               },
             ),
             const Spacer(),
