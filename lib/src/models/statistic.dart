@@ -2,14 +2,28 @@
 
 import 'package:equatable/equatable.dart';
 
-class Statistics extends Equatable {
+class Statistic extends Equatable {
   final String date;
   int totalFocusingTime;
 
-  Statistics({
+  Statistic({
     required this.date,
     required this.totalFocusingTime,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'date': date,
+      'totalFocusingTime': totalFocusingTime,
+    };
+  }
+
+  factory Statistic.fromMap(Map<String, dynamic> map) {
+    return Statistic(
+      date: map['date'],
+      totalFocusingTime: map['totalFocusingTime'],
+    );
+  }
 
   @override
   List<Object?> get props => [date, totalFocusingTime];

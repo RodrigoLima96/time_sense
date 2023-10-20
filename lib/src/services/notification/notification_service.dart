@@ -51,9 +51,6 @@ class NotificationService {
 
   scheduledNotification({required NotificationModel notification, required Duration duration}) {
     final date = DateTime.now().add(duration);
-
-    print(DateTime.now());
-    print(date);
     localNotificationsPlugin.zonedSchedule(
       notification.id,
       notification.title,

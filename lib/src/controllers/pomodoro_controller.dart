@@ -93,6 +93,7 @@ class PomodoroController extends ChangeNotifier {
     } else {
       await resetDailyPomodoroCycle();
 
+      await scheduledOrCancelNotification(duration: null);
       await scheduledOrCancelNotification(duration: pomodoro.pomodoroTime);
 
       pomodoro.initDate = DateTime.now();
@@ -200,7 +201,11 @@ class PomodoroController extends ChangeNotifier {
       final String formattedDate = dateFormat.format(pomodoro.creationDate!);
 
       await _pomodoroRepository.savePomodoroTime(
-          date: formattedDate, totalFocusingTime: pomodoro.pomodoroTime);
+        statistic: Statistic(
+          date: formattedDate,
+          totalFocusingTime: pomodoro.pomodoroTime,
+        ),
+      );
     }
     pomodoro = PomodoroHelper.getCompletePomodoroStatus(pomodoro: pomodoro);
     pomodoro.pomodoroTime = PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
@@ -252,8 +257,11 @@ class PomodoroController extends ChangeNotifier {
         final String formattedDate = dateFormat.format(pomodoro.creationDate!);
 
         await _pomodoroRepository.savePomodoroTime(
+          statistic: Statistic(
             date: formattedDate,
-            totalFocusingTime: pomodoro.elapsedPomodoroTime);
+            totalFocusingTime: pomodoro.elapsedPomodoroTime,
+          ),
+        );
       }
       pomodoro = PomodoroHelper.getResetDailyPomodoroStatus(pomodoro: pomodoro);
       elapsedPomodoroTime = 0;

@@ -38,25 +38,17 @@ class PomodoroRepository {
     await _databaseService.savePomodoroStatus(pomodoroMap: pomodoroMap);
   }
 
-  Future<void> savePomodoroTime(
-      {required String date, required int totalFocusingTime}) async {
-    Map<String, dynamic> statisticMap = {
-      'date': date,
-      'totalFocusingTime': totalFocusingTime,
-    };
+  Future<void> savePomodoroTime({required Statistic statistic}) async {
+    final statisticResult =
+        await _databaseService.getStatistic(date: statistic.date);
 
-    List<Map<String, dynamic>> statistic =
-        await _databaseService.getStatistic(date: date);
-
-    if (statistic.isEmpty) {
-      _databaseService.createStatistic(statisticMap: statisticMap);
+    if (statisticResult.isEmpty) {
+      _databaseService.createStatistic(statisticMap: statistic.toMap());
     } else {
-      int currentTotalTime = statistic[0]['totalFocusingTime'];
+      int currentTotalTime = statisticResult[0]['totalFocusingTime'];
 
-      statisticMap['totalFocusingTime'] =  (
-              statisticMap['totalFocusingTime'] ?? 0) +
-          currentTotalTime;
-      _databaseService.updateStatistic(statisticMap: statisticMap);
+      statistic.totalFocusingTime += currentTotalTime;
+      _databaseService.updateStatistic(statisticMap: statistic.toMap());
     }
   }
 }
