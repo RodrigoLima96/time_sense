@@ -49,7 +49,8 @@ class NotificationService {
     );
   }
 
-  scheduledNotification({required NotificationModel notification, required Duration duration}) {
+  scheduledNotification(
+      {required NotificationModel notification, required Duration duration}) {
     final date = DateTime.now().add(duration);
     localNotificationsPlugin.zonedSchedule(
       notification.id,
@@ -70,9 +71,6 @@ class NotificationService {
   }
 
   requestNotificationPermission() async {
-    PermissionStatus status = await Permission.notification.request();
-    if (status.isGranted) {
-    } else {}
-    // openAppSettings();
+    await Permission.notification.request();
   }
 }

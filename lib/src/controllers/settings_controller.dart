@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '/src/controllers/helpers/helpers.dart';
 import '/src/models/models.dart';
@@ -12,6 +13,9 @@ class SettingsController extends ChangeNotifier {
   int selectedSettingOptionValue = 0;
   String selectedSettingOptionName = '';
   String lastSettingOptionName = '';
+
+  bool notificationsAllowed = false;
+  bool changeNotificationsPermission = false;
 
   late Settings settings;
   late Settings oldSettings;
@@ -30,6 +34,8 @@ class SettingsController extends ChangeNotifier {
         SettingsHelper.convertSettingsTime(settings: settings, toMinutes: true);
 
     oldSettings = SettingsHelper.getSettingsCopy(settings: settings);
+
+    await checkNotificationPermission();
 
     settingsPageState = SettingsPageState.loaded;
     notifyListeners();
@@ -111,5 +117,16 @@ class SettingsController extends ChangeNotifier {
     selectedSettingOptionName = "";
     lastSettingOptionName = "";
     enableButtons = false;
+  }
+
+  checkNotificationPermission() async {
+    PermissionStatus status = await Permission.notification.status;
+    notificationsAllowed = status.isGranted ? true : false;
+    changeNotificationsPermission = false;
+    notifyListeners();
+  }
+
+  chageNotificationPermission() {
+    openAppSettings();
   }
 }

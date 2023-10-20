@@ -8,11 +8,12 @@ import '../../../controllers/controllers.dart';
 import '../../../shared/utils/utils.dart';
 import 'widgets.dart';
 
-class SettingsOptionWidget extends StatelessWidget {
+class SettingsOptionWidget extends StatefulWidget {
   final String text;
   final String setting;
   final double margin;
   final String settingType;
+  final bool? notification;
   double? width;
 
   SettingsOptionWidget({
@@ -21,23 +22,53 @@ class SettingsOptionWidget extends StatelessWidget {
     required this.setting,
     this.margin = 40,
     required this.settingType,
+    this.notification,
     this.width,
   });
+
+  @override
+  State<SettingsOptionWidget> createState() => _SettingsOptionWidgetState();
+}
+
+class _SettingsOptionWidgetState extends State<SettingsOptionWidget>
+    with WidgetsBindingObserver {
+  late SettingsController settingsController;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed &&
+        settingsController.changeNotificationsPermission) {
+      await settingsController.checkNotificationPermission();
+    }
+    super.didChangeAppLifecycleState(state);
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    final settingsController = context.watch<SettingsController>();
+    settingsController = context.watch<SettingsController>();
 
     final bool showDetails =
-        settingsController.showSettinsDetails(settingType: settingType);
+        settingsController.showSettinsDetails(settingType: widget.settingType);
 
     return Column(
       children: [
         Container(
           height: 40,
-          width: width ?? size.width * 0.85,
+          width: widget.width ?? size.width * 0.85,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             color: secondaryColor,
@@ -49,12 +80,12 @@ class SettingsOptionWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(text, style: textBold),
+                  Text(widget.text, style: textBold),
                   Row(
                     children: [
                       Container(
                         margin: const EdgeInsets.only(right: 15),
-                        child: Text(setting, style: textBold),
+                        child: Text(widget.setting, style: textBold),
                       ),
                       Transform.rotate(
                         angle: showDetails ? 4.68 : 3.2,
@@ -72,16 +103,19 @@ class SettingsOptionWidget extends StatelessWidget {
               ),
             ),
             onTap: () {
-              settingsController.selectSettingOption(settingType: settingType);
+              settingsController.selectSettingOption(
+                  settingType: widget.settingType);
             },
           ),
         ),
         showDetails
-            ? ChangeSettingValueWidget(
-                settingType: settingType,
-              )
+            ? widget.notification == null
+                ? ChangeSettingValueWidget(
+                    settingType: widget.settingType,
+                  )
+                : const ChangeNotificationOption()
             : const SizedBox(),
-        SizedBox(height: showDetails ? 0 : margin),
+        SizedBox(height: showDetails ? 0 : widget.margin),
       ],
     );
   }

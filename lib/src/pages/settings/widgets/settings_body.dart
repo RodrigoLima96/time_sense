@@ -40,14 +40,19 @@ class SettingsBody extends StatelessWidget {
                 ),
                 SettingsOptionWidget(
                   text: 'pomodoros até a pausa longa',
-                  setting:
-                      '${settingsController.settings.shortBreakCount}',
+                  setting: '${settingsController.settings.shortBreakCount}',
                   settingType: 'shortBreakCount',
                 ),
                 SettingsOptionWidget(
                   text: 'Sessões diárias',
                   setting: '${settingsController.settings.dailySessions}',
                   settingType: 'dailySessions',
+                ),
+                SettingsOptionWidget(
+                  text: 'Permitir Notificações',
+                  setting: settingsController.notificationsAllowed ? 'Sim' : 'Não',
+                  settingType: 'notification',
+                  notification: true,
                 ),
                 const Spacer(),
                 const SettingsOptionsButtons(),
