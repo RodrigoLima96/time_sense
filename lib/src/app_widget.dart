@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         Provider(create: (context) => SettingsRepository(context.read())),
         Provider(create: (context) => TaskRepository(context.read())),
         Provider(create: (context) => NotificationService()),
-        ChangeNotifierProvider(create: (context) => PomodoroController(context.read())),
+        ChangeNotifierProvider(create: (context) => PomodoroController(context.read(), context.read())),
         ChangeNotifierProvider(create: (context) => TasksController(context.read())),
         ChangeNotifierProvider(create: (context) => SettingsController(context.read())),
       ],

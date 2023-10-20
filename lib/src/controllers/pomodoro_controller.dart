@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '/src/services/services.dart';
 import 'helpers/helpers.dart';
 import '../models/models.dart';
 import '../repositories/repositories.dart';
@@ -13,6 +15,8 @@ enum PomodoroPageState { loading, loaded }
 class PomodoroController extends ChangeNotifier {
   CountDownController countDownController = CountDownController();
   final PomodoroRepository _pomodoroRepository;
+  final NotificationService _notificationService;
+
   late Pomodoro pomodoro;
   int elapsedPomodoroTime = 0;
   bool showSecondButton = false;
@@ -27,6 +31,7 @@ class PomodoroController extends ChangeNotifier {
 
   PomodoroController(
     this._pomodoroRepository,
+    this._notificationService,
   ) {
     getPomodoroStatus();
   }
@@ -87,6 +92,9 @@ class PomodoroController extends ChangeNotifier {
       await resetDailyPomodoroCycle();
     } else {
       await resetDailyPomodoroCycle();
+
+      await scheduledOrCancelNotification(duration: pomodoro.pomodoroTime);
+
       pomodoro.initDate = DateTime.now();
       countDownController.restart(duration: pomodoro.pomodoroTime);
       pomodoroState = PomodoroState.running;
@@ -105,6 +113,7 @@ class PomodoroController extends ChangeNotifier {
 
   pausePomodoro() async {
     countDownController.pause();
+    await scheduledOrCancelNotification(duration: null);
     pomodoroState = PomodoroState.paused;
     pomodoro.status = PomodoroState.paused.name;
     showSecondButton = true;
@@ -129,6 +138,9 @@ class PomodoroController extends ChangeNotifier {
       countDownController.resume();
     }
     pomodoro.initDate = DateTime.now();
+    int remainingTime = pomodoro.pomodoroTime - pomodoro.elapsedPomodoroTime;
+    await scheduledOrCancelNotification(duration: remainingTime);
+
     pomodoroState = PomodoroState.running;
     pomodoro.status = PomodoroState.running.name;
     elapsedPomodoroTime = pomodoro.elapsedPomodoroTime;
@@ -145,6 +157,8 @@ class PomodoroController extends ChangeNotifier {
   restartPomodoro() async {
     await resetDailyPomodoroCycle();
     pomodoro.initDate = DateTime.now();
+    await scheduledOrCancelNotification(
+        duration: pomodoro.settings!.pomodoroTime);
     elapsedPomodoroTime = 0;
     pomodoro.elapsedPomodoroTime = 0;
     countDownController.restart(duration: pomodoro.settings!.pomodoroTime);
@@ -162,7 +176,7 @@ class PomodoroController extends ChangeNotifier {
   cancelPomodoro({required bool isBreak}) async {
     countDownController.restart(duration: pomodoro.settings!.pomodoroTime);
     countDownController.pause();
-
+    await scheduledOrCancelNotification(duration: null);
     pomodoro = PomodoroHelper.getCancelPomodoroStatus(
         pomodoro: pomodoro, isBreak: isBreak);
     elapsedPomodoroTime = 0;
@@ -298,6 +312,20 @@ class PomodoroController extends ChangeNotifier {
     }
     await savePomodoroStatus();
     notifyListeners();
+  }
+
+  scheduledOrCancelNotification({required int? duration}) async {
+    if (duration != null) {
+      final NotificationModel notification =
+          PomodoroHelper.getPomodoroNotification(pomodoro: pomodoro);
+
+      await _notificationService.scheduledNotification(
+        notification: notification,
+        duration: Duration(seconds: duration),
+      );
+    } else {
+      await _notificationService.cancelNotification();
+    }
   }
 
   //

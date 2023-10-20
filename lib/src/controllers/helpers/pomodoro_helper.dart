@@ -267,4 +267,22 @@ class PomodoroHelper {
 
     return currentDate != inputDate;
   }
+
+  static NotificationModel getPomodoroNotification(
+      {required Pomodoro pomodoro}) {
+    final String title = !pomodoro.shortBreak && !pomodoro.longBreak
+        ? 'Pomodoro concluído!'
+        : 'Pausa Concluída!';
+
+    final bool sessionCompleted =
+        pomodoro.pomodoroSession + 1 == pomodoro.settings!.dailySessions;
+
+    final String body = !pomodoro.shortBreak && !pomodoro.longBreak
+        ? !sessionCompleted
+            ? 'Ótimo trabalho! É hora de uma pausa!'
+            : 'Parabéns! Você concluiu sua meta diária!'
+        : 'Hora de voltar ao trabalho!';
+
+    return NotificationModel(id: 1, title: title, body: body);
+  }
 }
