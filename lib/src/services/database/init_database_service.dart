@@ -128,9 +128,9 @@ class InitDatabaseService {
   )
 
   VALUES (
-    10,
-    5,
-    7,
+    1200,
+    300,
+    600,
     2,
     4
   );
