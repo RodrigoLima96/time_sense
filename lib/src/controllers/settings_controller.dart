@@ -45,7 +45,7 @@ class SettingsController extends ChangeNotifier {
     return showSettingsDetails && selectedSettingOptionName == settingType;
   }
 
-  selectSettingOption({required String settingType}) {
+  selectSettingOption({required String settingType, bool? exit}) {
     settings = SettingsHelper.getLastSettingsValues(
       settings: settings,
       lastSettingOptionName: lastSettingOptionName,
@@ -119,11 +119,11 @@ class SettingsController extends ChangeNotifier {
     enableButtons = false;
   }
 
-  checkNotificationPermission({bool? isInit}) async {
+  checkNotificationPermission() async {
     PermissionStatus status = await Permission.notification.status;
     notificationsAllowed = status.isGranted ? true : false;
     changeNotificationsPermission = false;
-    isInit == null ? null : selectSettingOption(settingType: 'dailySessions');
+    resetPageOptions();
     notifyListeners();
   }
 

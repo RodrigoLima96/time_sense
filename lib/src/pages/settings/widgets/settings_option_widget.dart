@@ -33,6 +33,7 @@ class SettingsOptionWidget extends StatefulWidget {
 class _SettingsOptionWidgetState extends State<SettingsOptionWidget>
     with WidgetsBindingObserver {
   late SettingsController settingsController;
+  late bool showDetails;
 
   @override
   void initState() {
@@ -42,6 +43,9 @@ class _SettingsOptionWidgetState extends State<SettingsOptionWidget>
 
   @override
   void dispose() {
+    if (showDetails) {
+      settingsController.resetPageOptions();
+    }
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -50,7 +54,7 @@ class _SettingsOptionWidgetState extends State<SettingsOptionWidget>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed &&
         settingsController.changeNotificationsPermission) {
-      await settingsController.checkNotificationPermission(isInit: false);
+      await settingsController.checkNotificationPermission();
     }
     super.didChangeAppLifecycleState(state);
   }
@@ -61,7 +65,7 @@ class _SettingsOptionWidgetState extends State<SettingsOptionWidget>
 
     settingsController = context.watch<SettingsController>();
 
-    final bool showDetails =
+    showDetails =
         settingsController.showSettinsDetails(settingType: widget.settingType);
 
     return Column(
