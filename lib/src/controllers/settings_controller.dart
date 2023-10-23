@@ -119,10 +119,11 @@ class SettingsController extends ChangeNotifier {
     enableButtons = false;
   }
 
-  checkNotificationPermission() async {
+  checkNotificationPermission({bool? isInit}) async {
     PermissionStatus status = await Permission.notification.status;
     notificationsAllowed = status.isGranted ? true : false;
     changeNotificationsPermission = false;
+    isInit == null ? null : selectSettingOption(settingType: 'dailySessions');
     notifyListeners();
   }
 

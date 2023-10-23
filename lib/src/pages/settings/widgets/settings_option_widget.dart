@@ -50,7 +50,7 @@ class _SettingsOptionWidgetState extends State<SettingsOptionWidget>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed &&
         settingsController.changeNotificationsPermission) {
-      await settingsController.checkNotificationPermission();
+      await settingsController.checkNotificationPermission(isInit: false);
     }
     super.didChangeAppLifecycleState(state);
   }
