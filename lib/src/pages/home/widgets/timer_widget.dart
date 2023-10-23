@@ -20,7 +20,6 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    pomodoroController = context.read<PomodoroController>();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -32,8 +31,14 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.resumed) {
+    if (state == AppLifecycleState.hidden) {
       if (pomodoroController.pomodoroState == PomodoroState.running) {
+        pomodoroController.appHidden = true;
+      }
+    }
+    if (state == AppLifecycleState.resumed) {
+      if (pomodoroController.pomodoroState == PomodoroState.running &&
+          pomodoroController.appHidden) {
         Phoenix.rebirth(context);
       }
     }
@@ -44,7 +49,7 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     // final taskController = context.read<TasksController>();
-    final pomodoroController = context.watch<PomodoroController>();
+    pomodoroController = context.watch<PomodoroController>();
 
     final Pomodoro pomodoro = pomodoroController.pomodoro;
     final pomodoroTime = pomodoro.pomodoroTime;

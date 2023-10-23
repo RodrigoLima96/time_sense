@@ -13,7 +13,7 @@ enum PomodoroState { notStarted, running, paused, rebootpaused }
 enum PomodoroPageState { loading, loaded }
 
 class PomodoroController extends ChangeNotifier {
-  CountDownController countDownController = CountDownController();
+  var countDownController = CountDownController();
   final PomodoroRepository _pomodoroRepository;
   final NotificationService _notificationService;
 
@@ -21,6 +21,7 @@ class PomodoroController extends ChangeNotifier {
   int elapsedPomodoroTime = 0;
   bool showSecondButton = false;
   bool showMenuButton = false;
+  bool appHidden = false;
   final dateFormat = DateFormat('dd/MM/yyyy');
 
   PomodoroState pomodoroState = PomodoroState.notStarted;
@@ -55,7 +56,7 @@ class PomodoroController extends ChangeNotifier {
     if (elapsedPomodoroTime >= pomodoro.pomodoroTime) {
       completePomodoro();
     } else {
-      setPomodoroStatus(pomodoroStatus: pomodoro.status);
+      await setPomodoroStatus(pomodoroStatus: pomodoro.status);
       setPomodoroSessionsState();
       pomodoroPageState = PomodoroPageState.loaded;
       notifyListeners();
