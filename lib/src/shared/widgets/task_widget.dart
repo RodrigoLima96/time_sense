@@ -1,7 +1,9 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import '../../controllers/controllers.dart';
 import '/src/models/models.dart';
 
 import '../utils/utils.dart';
@@ -13,17 +15,19 @@ class TaskWidget extends StatelessWidget {
   final String backIcon;
   final Function frontFunction;
   final Function widgetFunction;
+  Function? pausePomodoro;
   final Function backFunction;
   final bool showFrontIcon;
   final bool pomodoroTask;
 
-  const TaskWidget({
+   TaskWidget({
     super.key,
     required this.frontIcon,
     required this.backIcon,
     required this.frontFunction,
     required this.backFunction,
     required this.widgetFunction,
+    this.pausePomodoro,
     required this.task,
     required this.showFrontIcon,
     required this.pomodoroTask,
@@ -115,18 +119,39 @@ class TaskWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                onTap: () {
-                  showDeleteConfirmationDialog(
+                onTap: () async {
+                  int elapsedTaskTime = 0;
+                  dynamic pomodoroController;
+                  if (pomodoroTask) {
+                    pomodoroController = context.read<PomodoroController>();
+                    elapsedTaskTime = pomodoroController
+                        .getCurrentPomodoroTaskTime(pomodoroComplete: false);
+
+                    pausePomodoro!();
+                  }
+                  if ((pomodoroTask && elapsedTaskTime > 0) ||
+                      (!pomodoroTask && task.showDetails)) {
+                    showDeleteConfirmationDialog(
                       context: context,
                       text: pomodoroTask
                           ? 'Salvar tempo de foco da tarefa?'
                           : 'Excluir tarefa permanentemente?',
-                          icon: !pomodoroTask ? 'assets/icons/delete-icon.svg' : null,
-                      onDelete: () {
+                      icon:
+                          !pomodoroTask ? 'assets/icons/delete-icon.svg' : null,
+                      confirmFunction: () {
                         task.showDetails || pomodoroTask
                             ? backFunction()
                             : null;
-                      });
+                      },
+                      deniedFunction: () async {
+                        pomodoroTask
+                            ? await pomodoroController.removePomodoroTask()
+                            : null;
+                      },
+                    );
+                  } else if (pomodoroTask && elapsedTaskTime < 1) {
+                    await pomodoroController.removePomodoroTask();
+                  }
                 },
               ),
             ],

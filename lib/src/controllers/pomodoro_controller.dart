@@ -212,7 +212,7 @@ class PomodoroController extends ChangeNotifier {
     notifyListeners();
   }
 
-  completePomodoro() async {
+  completePomodoro({int? elapsedTaskTime}) async {
     pomodoroPageState = PomodoroPageState.loading;
 
     if (!pomodoro.shortBreak && !pomodoro.longBreak) {
@@ -225,6 +225,7 @@ class PomodoroController extends ChangeNotifier {
         ),
       );
     }
+    pomodoro.task!.totalFocusingTime += elapsedTaskTime ?? 0;
     pomodoro = PomodoroHelper.getCompletePomodoroStatus(pomodoro: pomodoro);
     pomodoro.pomodoroTime = PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
 
@@ -330,10 +331,13 @@ class PomodoroController extends ChangeNotifier {
 
   removePomodoroTask() async {
     pomodoro.taskPomodoroStartTime = null;
+    pomodoro.elapsedTaskTime = null;
     pomodoro.taskId = null;
     pomodoro.task = null;
 
-    if (pomodoroState == PomodoroState.running) {
+    if (pomodoroState == PomodoroState.running &&
+        !pomodoro.shortBreak &&
+        !pomodoro.longBreak) {
       pausePomodoro();
     }
     await savePomodoroStatus();

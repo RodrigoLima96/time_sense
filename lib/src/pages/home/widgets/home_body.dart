@@ -32,7 +32,9 @@ class HomeBody extends StatelessWidget {
                           color: primaryColor,
                           press: () {
                             if (pomodoroController.pomodoroState ==
-                                PomodoroState.running) {
+                                    PomodoroState.running &&
+                                !pomodoroController.pomodoro.shortBreak &&
+                                !pomodoroController.pomodoro.longBreak) {
                               pomodoroController.pausePomodoro();
                             }
                             showHomeBottomSheet(context);
@@ -48,7 +50,8 @@ class HomeBody extends StatelessWidget {
                           pomodoroTask: true,
                           frontFunction: () async {
                             int currentPomodoroTaskTime =
-                                pomodoroController.getCurrentPomodoroTaskTime(pomodoroComplete: false);
+                                pomodoroController.getCurrentPomodoroTaskTime(
+                                    pomodoroComplete: false);
                             await taskController.savePomodoroTaskTime(
                               taskId: pomodoroController.pomodoro.task!.id,
                               taskTime: currentPomodoroTaskTime,
@@ -59,19 +62,27 @@ class HomeBody extends StatelessWidget {
                           },
                           backFunction: () async {
                             int currentPomodoroTaskTime =
-                                pomodoroController.getCurrentPomodoroTaskTime(pomodoroComplete: false);
+                                pomodoroController.getCurrentPomodoroTaskTime(
+                                    pomodoroComplete: false);
                             if (currentPomodoroTaskTime > 0) {
-                             await taskController.savePomodoroTaskTime(
+                              await taskController.savePomodoroTaskTime(
                                 taskId: pomodoroController.pomodoro.task!.id,
                                 taskTime: currentPomodoroTaskTime,
                                 isCompleted: false,
                               );
                             }
-
                             pomodoroController.removePomodoroTask();
                           },
                           widgetFunction: () {
                             pomodoroController.showPomodoroTaskDetails();
+                          },
+                          pausePomodoro: () async {
+                            if (pomodoroController.pomodoroState ==
+                                    PomodoroState.running &&
+                                !pomodoroController.pomodoro.shortBreak &&
+                                !pomodoroController.pomodoro.longBreak) {
+                              await pomodoroController.pausePomodoro();
+                            }
                           },
                         ),
                 ),

@@ -6,7 +6,8 @@ import 'package:time_sense/src/shared/utils/constants.dart';
 
 Future<void> showDeleteConfirmationDialog({
   required BuildContext context,
-  required Function onDelete,
+  required Function confirmFunction,
+  required Function deniedFunction,
   String? icon,
   required String text,
 }) async {
@@ -55,13 +56,14 @@ Future<void> showDeleteConfirmationDialog({
                 TextButton(
                   child: const Text('Não', style: textBold),
                   onPressed: () {
+                    deniedFunction();
                     Navigator.of(context).pop();
                   },
                 ),
                 TextButton(
                   child: const Text('Sim', style: textBold),
                   onPressed: () {
-                    onDelete();
+                    confirmFunction();
                     Navigator.of(context).pop();
                   },
                 ),

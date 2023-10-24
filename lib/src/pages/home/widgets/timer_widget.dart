@@ -48,7 +48,7 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    // final taskController = context.read<TasksController>();
+    final taskController = context.read<TasksController>();
     pomodoroController = context.watch<PomodoroController>();
 
     final Pomodoro pomodoro = pomodoroController.pomodoro;
@@ -73,17 +73,19 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
       isReverse: true,
       autoStart: pomodoro.status == PomodoroState.running.name ? true : false,
       onComplete: () async {
-        // if (!pomodoro.shortBreak && !pomodoro.longBreak) {
-        //   int currentPomodoroTaskTime = pomodoroController
-        //       .getCurrentPomodoroTaskTime(pomodoroComplete: true);
-        //   await taskController.savePomodoroTaskTime(
-        //     taskId: pomodoroController.pomodoro.task!.id,
-        //     taskTime: currentPomodoroTaskTime,
-        //     isCompleted: false,
-        //   );
-        // }
+        int? currentPomodoroTaskTime;
+        if (!pomodoro.shortBreak && !pomodoro.longBreak) {
+          currentPomodoroTaskTime = pomodoroController
+              .getCurrentPomodoroTaskTime(pomodoroComplete: true);
+          await taskController.savePomodoroTaskTime(
+            taskId: pomodoroController.pomodoro.task!.id,
+            taskTime: currentPomodoroTaskTime,
+            isCompleted: false,
+          );
+        }
 
-        await pomodoroController.completePomodoro();
+        await pomodoroController.completePomodoro(
+            elapsedTaskTime: currentPomodoroTaskTime);
       },
       timeFormatterFunction: (defaultFormatterFunction, duration) {
         if (pomodoroController.pomodoroState == PomodoroState.notStarted ||
