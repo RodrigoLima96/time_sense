@@ -49,7 +49,8 @@ class InitDatabaseService {
       initDate TEXT,
       completeDate TEXT,
       taskId TEXT,
-      taskPomodoroStartTime INTEGER
+      taskPomodoroStartTime INTEGER,
+      elapsedTaskTime INTEGER
     );
   ''';
 
@@ -97,7 +98,8 @@ class InitDatabaseService {
     initDate,
     completeDate,
     taskId,
-    taskPomodoroStartTime
+    taskPomodoroStartTime,
+    elapsedTaskTime
   )
 
   VALUES (
@@ -110,6 +112,7 @@ class InitDatabaseService {
     0,
     0,
     1,
+    null,
     null,
     null,
     null,

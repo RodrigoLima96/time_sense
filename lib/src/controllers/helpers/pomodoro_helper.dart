@@ -15,20 +15,6 @@ class PomodoroHelper {
     }
   }
 
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-
   static int getPomodoroTime({required Pomodoro pomodoro}) {
     if (pomodoro.shortBreak) {
       return pomodoro.settings!.shortBreakDuration;
@@ -133,6 +119,7 @@ class PomodoroHelper {
     pomodoro.elapsedPomodoroTime = 0;
     pomodoro.initDate = null;
     pomodoro.taskPomodoroStartTime = null;
+    pomodoro.elapsedTaskTime = null;
     pomodoro.status = PomodoroState.notStarted.name;
 
     if (!pomodoro.shortBreak && !pomodoro.longBreak) {
@@ -161,6 +148,7 @@ class PomodoroHelper {
     pomodoro.initDate = null;
     pomodoro.elapsedPomodoroTime = 0;
     pomodoro.taskPomodoroStartTime = null;
+    pomodoro.elapsedTaskTime = null;
     pomodoro.status = PomodoroState.notStarted.name;
 
     if (isBreak) {
@@ -284,5 +272,29 @@ class PomodoroHelper {
         : 'Hora de voltar ao trabalho!';
 
     return NotificationModel(id: 1, title: title, body: body);
+  }
+
+  static int getElapsedTaskTime({
+    required int pomodoroTime,
+    required int taskPomodoroStartTime,
+    required String? remainingPomodoroTime,
+  }) {
+    int elapsedTaskTime = 0;
+
+    if (remainingPomodoroTime != null && remainingPomodoroTime.isNotEmpty) {
+      final List<String> timeParts = remainingPomodoroTime.split(':');
+      if (timeParts.length == 2) {
+        final int minutesRemaining = int.parse(timeParts[0]);
+        final int secondsRemaining = int.parse(timeParts[1]);
+
+        int remainingTimeInSeconds = (minutesRemaining * 60) + secondsRemaining;
+
+        elapsedTaskTime = pomodoroTime - remainingTimeInSeconds;
+
+        elapsedTaskTime -= taskPomodoroStartTime;
+      }
+    }
+
+    return elapsedTaskTime;
   }
 }

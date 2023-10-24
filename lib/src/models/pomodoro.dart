@@ -17,6 +17,7 @@ class Pomodoro {
   String? taskId;
   Task? task;
   int? taskPomodoroStartTime;
+  int? elapsedTaskTime;
 
   Pomodoro({
     required this.id,
@@ -35,6 +36,7 @@ class Pomodoro {
     required this.settings,
     required this.taskId,
     required this.taskPomodoroStartTime,
+    required this.elapsedTaskTime,
   });
 
   Map<String, dynamic> toMap() {
@@ -55,6 +57,7 @@ class Pomodoro {
       'longBreak': longBreak ? 1 : 0,
       'settings': settings,
       'taskPomodoroStartTime': taskPomodoroStartTime,
+      'elapsedTaskTime': elapsedTaskTime,
     };
   }
 
@@ -81,6 +84,7 @@ class Pomodoro {
       shortBreakCount: map['shortBreakCount'],
       settings: map['settings'],
       taskPomodoroStartTime: map['taskPomodoroStartTime'],
+      elapsedTaskTime: map['elapsedTaskTime'],
     );
   }
 }

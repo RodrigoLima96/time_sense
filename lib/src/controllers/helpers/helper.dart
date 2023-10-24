@@ -34,9 +34,6 @@ class Helper {
   }
 
   static bool checkIfTaskPomodoroStartTime({required Pomodoro pomodoro}) {
-    return pomodoro.taskPomodoroStartTime == null &&
-        pomodoro.task != null &&
-        !pomodoro.shortBreak &&
-        !pomodoro.longBreak;
+    return pomodoro.task != null && !pomodoro.shortBreak && !pomodoro.longBreak;
   }
 }

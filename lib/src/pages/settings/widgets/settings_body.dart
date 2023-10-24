@@ -15,50 +15,52 @@ class SettingsBody extends StatelessWidget {
     final settingsController = context.watch<SettingsController>();
 
     return settingsController.settingsPageState == SettingsPageState.loaded
-        ? SizedBox(
-            width: size.width,
-            height: size.height,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SettingsOptionWidget(
-                  text: 'Tempo de foco',
-                  setting: '${settingsController.settings.pomodoroTime} min',
-                  settingType: 'pomodoroTime',
-                ),
-                SettingsOptionWidget(
-                  text: 'Pausa curta',
-                  setting:
-                      '${settingsController.settings.shortBreakDuration} min',
-                  settingType: 'shortBreakDuration',
-                ),
-                SettingsOptionWidget(
-                  text: 'Pausa longa',
-                  setting:
-                      '${settingsController.settings.longBreakDuration} min',
-                  settingType: 'longBreakDuration',
-                ),
-                SettingsOptionWidget(
-                  text: 'pomodoros até a pausa longa',
-                  setting: '${settingsController.settings.shortBreakCount}',
-                  settingType: 'shortBreakCount',
-                ),
-                SettingsOptionWidget(
-                  text: 'Sessões diárias',
-                  setting: '${settingsController.settings.dailySessions}',
-                  settingType: 'dailySessions',
-                ),
-                SettingsOptionWidget(
-                  text: 'Permitir Notificações',
-                  setting: settingsController.notificationsAllowed ? 'Sim' : 'Não',
-                  settingType: 'notification',
-                  notification: true,
-                ),
-                const Spacer(),
-                const SettingsOptionsButtons(),
-              ],
+        ? SingleChildScrollView(
+          child: SizedBox(
+              width: size.width,
+              height: size.height,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SettingsOptionWidget(
+                    text: 'Tempo de foco',
+                    setting: '${settingsController.settings.pomodoroTime} min',
+                    settingType: 'pomodoroTime',
+                  ),
+                  SettingsOptionWidget(
+                    text: 'Pausa curta',
+                    setting:
+                        '${settingsController.settings.shortBreakDuration} min',
+                    settingType: 'shortBreakDuration',
+                  ),
+                  SettingsOptionWidget(
+                    text: 'Pausa longa',
+                    setting:
+                        '${settingsController.settings.longBreakDuration} min',
+                    settingType: 'longBreakDuration',
+                  ),
+                  SettingsOptionWidget(
+                    text: 'pomodoros até a pausa longa',
+                    setting: '${settingsController.settings.shortBreakCount}',
+                    settingType: 'shortBreakCount',
+                  ),
+                  SettingsOptionWidget(
+                    text: 'Sessões diárias',
+                    setting: '${settingsController.settings.dailySessions}',
+                    settingType: 'dailySessions',
+                  ),
+                  SettingsOptionWidget(
+                    text: 'Permitir Notificações',
+                    setting: settingsController.notificationsAllowed ? 'Sim' : 'Não',
+                    settingType: 'notification',
+                    notification: true,
+                  ),
+                  const SizedBox(height: 100),
+                  const SettingsOptionsButtons(),
+                ],
+              ),
             ),
-          )
+        )
         : const SizedBox();
   }
 }
