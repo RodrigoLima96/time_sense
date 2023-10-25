@@ -15,7 +15,7 @@ class TasksList extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     final tasksController = context.watch<TasksController>();
-    final pomodoroController = context.watch<PomodoroController>();
+    final pomodoroController = context.read<PomodoroController>();
     bool isPending = tasksController.isPendingTasksPage;
 
     final tasksList = isPending
@@ -46,22 +46,12 @@ class TasksList extends StatelessWidget {
                     pomodoroTask: false,
                     showFrontIcon: false,
                     frontFunction: () {
-                      if (pomodoroController.pomodoro.taskId == task.id) {
-                        int currentPomodoroTaskTime =
-                            pomodoroController.getCurrentPomodoroTaskTime(
-                                pomodoroComplete: false);
-                        tasksController.savePomodoroTaskTime(
-                          taskId: pomodoroController.pomodoro.task!.id,
-                          taskTime: currentPomodoroTaskTime,
-                          isCompleted: true,
-                        );
-
-                        pomodoroController.removePomodoroTask();
-                      } else {
-                        tasksController.setTaskAscompleteOrPending(
-                          taskId: task.id,
-                        );
-                      }
+                      pomodoroController.pomodoro.taskId == task.id
+                          ? pomodoroController.removePomodoroTask()
+                          : null;
+                      tasksController.setTaskAscompleteOrPending(
+                        taskId: task.id,
+                      );
                     },
                     backFunction: () {
                       tasksController.deleteTask(taskId: task.id);

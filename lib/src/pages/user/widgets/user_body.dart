@@ -32,7 +32,7 @@ class UserBody extends StatelessWidget {
             ),
             Container(
               margin: const EdgeInsets.only(top: 50),
-              child: const TotalFocusingTimeWidget(
+              child:  TotalFocusingTimeWidget(
                 hours: 89,
                 minutes: 23,
                 seconds: 2,
@@ -62,7 +62,7 @@ class UserBody extends StatelessWidget {
             ),
             Container(
               margin: const EdgeInsets.only(top: 50),
-              child: const TotalFocusingTimeWidget(
+              child: TotalFocusingTimeWidget(
                 hours: 1,
                 minutes: 11,
                 seconds: 23,

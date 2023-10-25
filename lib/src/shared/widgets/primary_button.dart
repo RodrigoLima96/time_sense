@@ -44,7 +44,7 @@ class PrimaryButton extends StatelessWidget {
               Text(
                 text,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: whiteColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),

@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:time_sense/src/shared/utils/constants.dart';
 
+import 'widgets.dart';
+
 Future<void> showDeleteConfirmationDialog({
   required BuildContext context,
   required Function confirmFunction,
   required Function deniedFunction,
+  Map<String, int>? taskTime,
   String? icon,
   required String text,
 }) async {
@@ -31,23 +34,18 @@ Future<void> showDeleteConfirmationDialog({
               ? SvgPicture.asset(icon, color: Colors.red.shade300)
               : Text(text, style: textRegular),
           content: icon == null
-              ? RichText(
-                  text: TextSpan(
-                    style: DefaultTextStyle.of(context).style,
-                    children: const <TextSpan>[
-                      TextSpan(
-                        text: '23',
-                        style: textBold,
-                      ),
-                      TextSpan(text: ' minutos, ', style: textRegular),
-                      TextSpan(
-                        text: '13',
-                        style: textBold,
-                      ),
-                      TextSpan(text: ' segundos', style: textRegular),
-                    ],
+              ? SizedBox(
+                height: 50,
+                child: TotalFocusingTimeWidget(
+                    hours: taskTime!['hour']!,
+                    minutes: taskTime['minutes']!,
+                    totalSeconds: taskTime['totalSeconds']!,
+                    seconds: taskTime['seconds']!,
+                    text: 'Tempo de foco',
+                    taskPending: true,
+                    removePomodoroTask: true,
                   ),
-                )
+              )
               : Text(text, style: textRegular),
           actions: <Widget>[
             Row(

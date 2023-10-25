@@ -76,7 +76,7 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
         int? currentPomodoroTaskTime;
         if (!pomodoro.shortBreak && !pomodoro.longBreak) {
           currentPomodoroTaskTime = pomodoroController
-              .getCurrentPomodoroTaskTime(pomodoroComplete: true);
+              .getCurrentPomodoroTaskTime();
           await taskController.savePomodoroTaskTime(
             taskId: pomodoroController.pomodoro.task!.id,
             taskTime: currentPomodoroTaskTime,

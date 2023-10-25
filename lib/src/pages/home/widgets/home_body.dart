@@ -50,8 +50,7 @@ class HomeBody extends StatelessWidget {
                           pomodoroTask: true,
                           frontFunction: () async {
                             int currentPomodoroTaskTime =
-                                pomodoroController.getCurrentPomodoroTaskTime(
-                                    pomodoroComplete: false);
+                                pomodoroController.getCurrentPomodoroTaskTime();
                             await taskController.savePomodoroTaskTime(
                               taskId: pomodoroController.pomodoro.task!.id,
                               taskTime: currentPomodoroTaskTime,
@@ -62,8 +61,7 @@ class HomeBody extends StatelessWidget {
                           },
                           backFunction: () async {
                             int currentPomodoroTaskTime =
-                                pomodoroController.getCurrentPomodoroTaskTime(
-                                    pomodoroComplete: false);
+                                pomodoroController.getCurrentPomodoroTaskTime();
                             if (currentPomodoroTaskTime > 0) {
                               await taskController.savePomodoroTaskTime(
                                 taskId: pomodoroController.pomodoro.task!.id,

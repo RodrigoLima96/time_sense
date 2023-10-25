@@ -44,7 +44,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                 hintStyle: TextStyle(
                     color:
                         tasksController.textFieldlHintText == "Criar tarefa..."
-                            ? Colors.white.withOpacity(0.5)
+                            ? whiteColor.withOpacity(0.5)
                             : Colors.red.shade300,
                     fontWeight: FontWeight.normal),
                 border: InputBorder.none,

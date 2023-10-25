@@ -20,7 +20,7 @@ class TaskWidget extends StatelessWidget {
   final bool showFrontIcon;
   final bool pomodoroTask;
 
-   TaskWidget({
+  TaskWidget({
     super.key,
     required this.frontIcon,
     required this.backIcon,
@@ -121,12 +121,14 @@ class TaskWidget extends StatelessWidget {
                 ),
                 onTap: () async {
                   int elapsedTaskTime = 0;
+                  Map<String, int>? taskTime;
                   dynamic pomodoroController;
                   if (pomodoroTask) {
                     pomodoroController = context.read<PomodoroController>();
-                    elapsedTaskTime = pomodoroController
-                        .getCurrentPomodoroTaskTime(pomodoroComplete: false);
-
+                    elapsedTaskTime =
+                        pomodoroController.getCurrentPomodoroTaskTime();
+                    taskTime = pomodoroController.convertTaskTime(
+                        elapsedTaskTime: elapsedTaskTime);
                     pausePomodoro!();
                   }
                   if ((pomodoroTask && elapsedTaskTime > 0) ||
@@ -148,6 +150,7 @@ class TaskWidget extends StatelessWidget {
                             ? await pomodoroController.removePomodoroTask()
                             : null;
                       },
+                      taskTime: taskTime,
                     );
                   } else if (pomodoroTask && elapsedTaskTime < 1) {
                     await pomodoroController.removePomodoroTask();
