@@ -69,14 +69,16 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
       textStyle: textBold.copyWith(
         fontSize: 45.0,
       ),
-      textFormat: CountdownTextFormat.MM_SS,
+      textFormat: pomodoroTime <= 3600
+          ? CountdownTextFormat.MM_SS
+          : CountdownTextFormat.HH_MM_SS,
       isReverse: true,
       autoStart: pomodoro.status == PomodoroState.running.name ? true : false,
       onComplete: () async {
         int? currentPomodoroTaskTime;
         if (!pomodoro.shortBreak && !pomodoro.longBreak) {
-          currentPomodoroTaskTime = pomodoroController
-              .getCurrentPomodoroTaskTime();
+          currentPomodoroTaskTime =
+              pomodoroController.getCurrentPomodoroTaskTime();
           await taskController.savePomodoroTaskTime(
             taskId: pomodoroController.pomodoro.task!.id,
             taskTime: currentPomodoroTaskTime,
