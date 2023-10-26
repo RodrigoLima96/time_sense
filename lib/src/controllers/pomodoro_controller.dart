@@ -16,6 +16,7 @@ class PomodoroController extends ChangeNotifier {
   var countDownController = CountDownController();
   final PomodoroRepository _pomodoroRepository;
   final NotificationService _notificationService;
+  final TaskRepository _taskRepository;
 
   late Pomodoro pomodoro;
   int elapsedPomodoroTime = 0;
@@ -33,6 +34,7 @@ class PomodoroController extends ChangeNotifier {
   PomodoroController(
     this._pomodoroRepository,
     this._notificationService,
+    this._taskRepository,
   ) {
     getPomodoroStatus();
   }
@@ -54,6 +56,14 @@ class PomodoroController extends ChangeNotifier {
     elapsedPomodoroTime += pomodoro.elapsedPomodoroTime;
 
     if (elapsedPomodoroTime >= pomodoro.pomodoroTime) {
+      if (!pomodoro.shortBreak &&
+          !pomodoro.longBreak &&
+          pomodoro.task != null) {
+        final currentPomodoroTaskTime =
+            pomodoro.pomodoroTime - pomodoro.taskPomodoroStartTime!;
+        pomodoro.task!.totalFocusingTime += currentPomodoroTaskTime;
+        await _taskRepository.updateTask(task: pomodoro.task!);
+      }
       completePomodoro();
     } else {
       await setPomodoroStatus(pomodoroStatus: pomodoro.status);
@@ -120,8 +130,7 @@ class PomodoroController extends ChangeNotifier {
 
     Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro) &&
             pomodoro.taskPomodoroStartTime != null
-        ? pomodoro.elapsedTaskTime =
-            getCurrentPomodoroTaskTime()
+        ? pomodoro.elapsedTaskTime = getCurrentPomodoroTaskTime()
         : null;
 
     await scheduledOrCancelNotification(duration: null);
