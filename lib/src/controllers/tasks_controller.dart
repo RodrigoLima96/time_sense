@@ -171,7 +171,7 @@ class TasksController extends ChangeNotifier {
   }
 
   updateTaskTime({required Task pomodoroTask}) {
-    final taskIndex = pendingTaskList.indexWhere((task) => task.id == task.id);
+    final taskIndex = pendingTaskList.indexWhere((task) => task.id == pomodoroTask.id);
     pendingTaskList[taskIndex].totalFocusingTime !=
             pomodoroTask.totalFocusingTime
         ? pendingTaskList[taskIndex].totalFocusingTime =

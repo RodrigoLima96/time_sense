@@ -19,7 +19,7 @@ class PomodoroRepository {
       final taskResult =
           await _databaseService.getTaskById(taskId: pomodoro.taskId!);
       final Task task = Task.fromMap(taskResult);
-
+      task.showDetails = false;
       pomodoro.task = task;
     }
     return pomodoro;
@@ -28,6 +28,7 @@ class PomodoroRepository {
   Future<Task> getTaskById({required String taskId}) async {
     final taskResult = await _databaseService.getTaskById(taskId: taskId);
     final Task task = Task.fromMap(taskResult);
+    task.showDetails = false;
     return task;
   }
 

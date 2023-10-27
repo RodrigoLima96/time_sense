@@ -62,6 +62,7 @@ class PomodoroController extends ChangeNotifier {
         final currentPomodoroTaskTime =
             pomodoro.pomodoroTime - pomodoro.taskPomodoroStartTime!;
         pomodoro.task!.totalFocusingTime += currentPomodoroTaskTime;
+        pomodoro.task!.showDetails = false;
         await _taskRepository.updateTask(task: pomodoro.task!);
       }
       completePomodoro();
@@ -111,9 +112,10 @@ class PomodoroController extends ChangeNotifier {
       pomodoro.initDate = DateTime.now();
       countDownController.restart(duration: pomodoro.pomodoroTime);
 
-      Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
-          ? pomodoro.taskPomodoroStartTime = 0
-          : null;
+      if (Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)) {
+        pomodoro.taskPomodoroStartTime = 0;
+        pomodoro.task!.showDetails = false;
+      }
 
       pomodoroState = PomodoroState.running;
       pomodoro.status = PomodoroState.running.name;
@@ -161,10 +163,12 @@ class PomodoroController extends ChangeNotifier {
     pomodoro.initDate = DateTime.now();
     int remainingTime = pomodoro.pomodoroTime - pomodoro.elapsedPomodoroTime;
 
-    Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro) &&
-            pomodoro.taskPomodoroStartTime == null
-        ? pomodoro.taskPomodoroStartTime = pomodoro.elapsedPomodoroTime
-        : null;
+    if (Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)) {
+      pomodoro.taskPomodoroStartTime == null
+          ? pomodoro.taskPomodoroStartTime = pomodoro.elapsedPomodoroTime
+          : null;
+      pomodoro.task!.showDetails = false;
+    }
 
     await scheduledOrCancelNotification(duration: remainingTime);
 
@@ -190,9 +194,10 @@ class PomodoroController extends ChangeNotifier {
     pomodoro.shortBreak = false;
     showSecondButton = true;
 
-    Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)
-        ? pomodoro.taskPomodoroStartTime = 0
-        : null;
+    if (Helper.checkIfTaskPomodoroStartTime(pomodoro: pomodoro)) {
+      pomodoro.taskPomodoroStartTime = 0;
+      pomodoro.task!.showDetails = false;
+    }
 
     setPomodoroSessionsState();
     await savePomodoroStatus();
@@ -267,7 +272,7 @@ class PomodoroController extends ChangeNotifier {
   saveTaskAndPomodoroTime() async {
     if (pomodoro.elapsedPomodoroTime > 0) {
       final String formattedDate = dateFormat.format(pomodoro.creationDate!);
-      
+
       await _pomodoroRepository.savePomodoroTime(
         statistic: Statistic(
           date: formattedDate,
@@ -279,6 +284,7 @@ class PomodoroController extends ChangeNotifier {
     int currentPomodoroTaskTime = getCurrentPomodoroTaskTime();
     if (currentPomodoroTaskTime > 0) {
       pomodoro.task!.totalFocusingTime += currentPomodoroTaskTime;
+      pomodoro.task!.showDetails = false;
       await _taskRepository.updateTask(task: pomodoro.task!);
     }
   }
