@@ -15,10 +15,10 @@ class TasksPageBody extends StatefulWidget {
 
 class _TasksPageBodyState extends State<TasksPageBody> {
   late TasksController tasksController;
-  
+
   @override
   void dispose() {
-    tasksController.setTaskShowDetails();
+    tasksController.resetPageInfo();
     super.dispose();
   }
 
@@ -26,7 +26,6 @@ class _TasksPageBodyState extends State<TasksPageBody> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     tasksController = context.watch<TasksController>();
-
     final tasksListLength = tasksController.isPendingTasksPage
         ? tasksController.pendingTaskList.length
         : tasksController.completeTaskList.length;

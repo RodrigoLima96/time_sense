@@ -78,7 +78,7 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
         await pomodoroController.completePomodoro();
         pomodoroController.pomodoro.task != null
             ? taskController.updateTaskTime(
-                task: pomodoroController.pomodoro.task!)
+                pomodoroTask: pomodoroController.pomodoro.task!)
             : null;
       },
       timeFormatterFunction: (defaultFormatterFunction, duration) {

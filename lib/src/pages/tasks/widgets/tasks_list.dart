@@ -16,6 +16,10 @@ class TasksList extends StatelessWidget {
 
     final tasksController = context.watch<TasksController>();
     final pomodoroController = context.read<PomodoroController>();
+
+    if(pomodoroController.pomodoro.task != null) {
+      tasksController.updateTaskTime(pomodoroTask: pomodoroController.pomodoro.task!);
+    }
     bool isPending = tasksController.isPendingTasksPage;
 
     final tasksList = isPending

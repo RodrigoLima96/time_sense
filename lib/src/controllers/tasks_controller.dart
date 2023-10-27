@@ -68,6 +68,7 @@ class TasksController extends ChangeNotifier {
         completionDate: null,
         showDetails: false,
       );
+      resetPageInfo();
       await taskRepository.saveNewTask(task: newTask);
       pendingTaskList.add(newTask);
       notifyListeners();
@@ -169,9 +170,13 @@ class TasksController extends ChangeNotifier {
     isCompleted ? notifyListeners() : null;
   }
 
-  updateTaskTime({required Task task}){
+  updateTaskTime({required Task pomodoroTask}) {
     final taskIndex = pendingTaskList.indexWhere((task) => task.id == task.id);
-    pendingTaskList[taskIndex].totalFocusingTime = task.totalFocusingTime;
+    pendingTaskList[taskIndex].totalFocusingTime !=
+            pomodoroTask.totalFocusingTime
+        ? pendingTaskList[taskIndex].totalFocusingTime =
+            pomodoroTask.totalFocusingTime
+        : null;
   }
 
   setTaskShowDetails() {
@@ -180,5 +185,11 @@ class TasksController extends ChangeNotifier {
     for (var task in targetList) {
       task.showDetails = false;
     }
+  }
+
+  resetPageInfo() {
+    setTaskShowDetails();
+    isPendingTasksPage = true;
+    pageTitleText = 'Tarefas pendentes';
   }
 }
