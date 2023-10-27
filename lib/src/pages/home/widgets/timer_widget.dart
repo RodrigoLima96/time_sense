@@ -75,19 +75,11 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
       isReverse: true,
       autoStart: pomodoro.status == PomodoroState.running.name ? true : false,
       onComplete: () async {
-        int? currentPomodoroTaskTime;
-        if (!pomodoro.shortBreak && !pomodoro.longBreak) {
-          currentPomodoroTaskTime =
-              pomodoroController.getCurrentPomodoroTaskTime();
-          await taskController.savePomodoroTaskTime(
-            taskId: pomodoroController.pomodoro.task!.id,
-            taskTime: currentPomodoroTaskTime,
-            isCompleted: false,
-          );
-        }
-
-        await pomodoroController.completePomodoro(
-            elapsedTaskTime: currentPomodoroTaskTime);
+        await pomodoroController.completePomodoro();
+        pomodoroController.pomodoro.task != null
+            ? taskController.updateTaskTime(
+                task: pomodoroController.pomodoro.task!)
+            : null;
       },
       timeFormatterFunction: (defaultFormatterFunction, duration) {
         if (pomodoroController.pomodoroState == PomodoroState.notStarted ||

@@ -88,6 +88,7 @@ class PomodoroController extends ChangeNotifier {
             convertSecondsToMinutes(pomodoroDuration: remainingTime);
         showSecondButton = true;
         await resetDailyPomodoroCycle();
+
       case 'notStarted':
         showMenuButton = true;
         await resetDailyPomodoroCycle();
@@ -218,20 +219,12 @@ class PomodoroController extends ChangeNotifier {
     notifyListeners();
   }
 
-  completePomodoro({int? elapsedTaskTime}) async {
+  completePomodoro() async {
     pomodoroPageState = PomodoroPageState.loading;
 
     if (!pomodoro.shortBreak && !pomodoro.longBreak) {
-      final String formattedDate = dateFormat.format(pomodoro.creationDate!);
-
-      await _pomodoroRepository.savePomodoroTime(
-        statistic: Statistic(
-          date: formattedDate,
-          totalFocusingTime: pomodoro.pomodoroTime,
-        ),
-      );
+      await saveTaskAndPomodoroTime();
     }
-    pomodoro.task!.totalFocusingTime += elapsedTaskTime ?? 0;
     pomodoro = PomodoroHelper.getCompletePomodoroStatus(pomodoro: pomodoro);
     pomodoro.pomodoroTime = PomodoroHelper.getPomodoroTime(pomodoro: pomodoro);
 
@@ -271,6 +264,25 @@ class PomodoroController extends ChangeNotifier {
     return buttonsInfo;
   }
 
+  saveTaskAndPomodoroTime() async {
+    if (pomodoro.elapsedPomodoroTime > 0) {
+      final String formattedDate = dateFormat.format(pomodoro.creationDate!);
+      
+      await _pomodoroRepository.savePomodoroTime(
+        statistic: Statistic(
+          date: formattedDate,
+          totalFocusingTime: pomodoro.elapsedPomodoroTime,
+        ),
+      );
+    }
+
+    int currentPomodoroTaskTime = getCurrentPomodoroTaskTime();
+    if (currentPomodoroTaskTime > 0) {
+      pomodoro.task!.totalFocusingTime += currentPomodoroTaskTime;
+      await _taskRepository.updateTask(task: pomodoro.task!);
+    }
+  }
+
   resetDailyPomodoroCycle() async {
     final resetPomodoro = PomodoroHelper.checkResetDailyPomodoroCycle(
         creationDate: pomodoro.creationDate!);
@@ -279,14 +291,7 @@ class PomodoroController extends ChangeNotifier {
       if (!pomodoro.shortBreak &&
           !pomodoro.longBreak &&
           pomodoro.status == PomodoroState.paused.name) {
-        final String formattedDate = dateFormat.format(pomodoro.creationDate!);
-
-        await _pomodoroRepository.savePomodoroTime(
-          statistic: Statistic(
-            date: formattedDate,
-            totalFocusingTime: pomodoro.elapsedPomodoroTime,
-          ),
-        );
+        await saveTaskAndPomodoroTime();
       }
       pomodoro = PomodoroHelper.getResetDailyPomodoroStatus(pomodoro: pomodoro);
       elapsedPomodoroTime = 0;

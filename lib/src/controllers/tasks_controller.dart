@@ -169,6 +169,11 @@ class TasksController extends ChangeNotifier {
     isCompleted ? notifyListeners() : null;
   }
 
+  updateTaskTime({required Task task}){
+    final taskIndex = pendingTaskList.indexWhere((task) => task.id == task.id);
+    pendingTaskList[taskIndex].totalFocusingTime = task.totalFocusingTime;
+  }
+
   setTaskShowDetails() {
     final targetList = isPendingTasksPage ? pendingTaskList : completeTaskList;
 
