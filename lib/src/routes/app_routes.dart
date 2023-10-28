@@ -10,7 +10,7 @@ class AppRoutes {
     '/user': (_) => const UserPage(),
   };
 
-  static String initial = '/home';
+  static String initial = '/user';
 
   static GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
 }

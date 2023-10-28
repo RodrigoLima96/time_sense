@@ -1,16 +1,17 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 import '../utils/utils.dart';
 
 class UserCircleAvatar extends StatelessWidget {
-  final String urlImage;
+  final List<int>? image;
   final double width;
   final double height;
   final double borderWidth;
 
   const UserCircleAvatar({
     super.key,
-    required this.urlImage,
+    required this.image,
     required this.width,
     required this.height,
     required this.borderWidth,
@@ -25,12 +26,17 @@ class UserCircleAvatar extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(color: primaryColor, width: borderWidth),
       ),
-      child: CircleAvatar(
-        radius: 20,
-        backgroundImage: NetworkImage(
-          urlImage,
-        ),
-      ),
+      child: image != null
+          ? CircleAvatar(
+              radius: 20,
+              backgroundColor: whiteColor,
+              backgroundImage: MemoryImage(Uint8List.fromList(image!)))
+          // AssetImage('assets/images/default_user.png'))
+          : const CircleAvatar(
+              radius: 20,
+              backgroundColor: whiteColor,
+              backgroundImage: AssetImage('assets/images/default_user.png'),
+            ),
     );
   }
 }

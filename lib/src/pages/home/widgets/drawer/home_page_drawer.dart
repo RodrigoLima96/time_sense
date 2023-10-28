@@ -40,8 +40,7 @@ class HomePageDrawer extends StatelessWidget {
               child: Row(
                 children: [
                   const UserCircleAvatar(
-                    urlImage:
-                        'https://lh3.googleusercontent.com/a/ACg8ocLaTq8NZFKl6beN5lRJwu5wUK7oumdHghVdQBwVEuZMayw=s288-c-no',
+                    image: null,
                     width: 44,
                     height: 44,
                     borderWidth: 2.5,

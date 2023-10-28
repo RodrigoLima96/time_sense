@@ -100,4 +100,15 @@ class DatabaseService {
       whereArgs: [taskId],
     );
   }
+
+  getUser() async {
+    Database db = await _databaseService.database;
+    final user = await db.query('user');
+    return user[0];
+  }
+
+  updateUser({required Map<String, dynamic> user}) async {
+    Database db = await _databaseService.database;
+    await db.update('user', user);
+  }
 }

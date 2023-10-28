@@ -29,9 +29,11 @@ class InitDatabaseService {
     await db.execute(_settings);
     await db.execute(_tasks);
     await db.execute(_statistics);
+    await db.execute(_user);
 
     await db.execute(_initialPomodoroData);
     await db.execute(_initialSettingsData);
+    await db.execute(_initialUserData);
   }
 
   String get _pomodoro => '''
@@ -83,6 +85,15 @@ class InitDatabaseService {
     )
   ''';
 
+  String get _user => '''
+    CREATE TABLE user (
+      name TEXT,
+      image BLOB,
+      totalFocusTime INTEGER,
+      totalTasksDone INTEGER
+    )
+  ''';
+
   String get _initialPomodoroData => '''
   INSERT INTO pomodoro (
     id,
@@ -131,11 +142,27 @@ class InitDatabaseService {
   )
 
   VALUES (
-    1200,
-    300,
-    600,
+    10,
+    5,
+    7,
     2,
     4
+  );
+''';
+
+  String get _initialUserData => '''
+  INSERT INTO user (
+    name,
+    image,
+    totalFocusTime,
+    totalTasksDone
+  )
+
+  VALUES (
+    null,
+    null,
+    null,
+    null
   );
 ''';
 }

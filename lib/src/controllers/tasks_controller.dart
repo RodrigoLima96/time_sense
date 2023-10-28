@@ -18,7 +18,7 @@ class TasksController extends ChangeNotifier {
   String pageTitleText = "Tarefas pendentes";
   String textFieldlHintText = "Criar tarefa...";
 
-  final TaskRepository taskRepository;
+  final TaskRepository _taskRepository;
 
   List<Task> pendingTaskList = [];
   List<Task> completeTaskList = [];
@@ -26,18 +26,18 @@ class TasksController extends ChangeNotifier {
   int? lastPendingTaskSelectedIndex;
   int? lastCompleteTaskSelectedIndex;
 
-  TasksController(this.taskRepository) {
+  TasksController(this._taskRepository) {
     getTasksByStatus(status: 'pending');
   }
 
   getTasksByStatus({required String status}) async {
     switch (status) {
       case 'pending':
-        pendingTaskList = await taskRepository.getTasks(tasksStatus: 'pending');
+        pendingTaskList = await _taskRepository.getTasks(tasksStatus: 'pending');
       case 'complete':
         if (completeTaskList.isEmpty) {
           completeTaskList =
-              await taskRepository.getTasks(tasksStatus: 'complete');
+              await _taskRepository.getTasks(tasksStatus: 'complete');
         }
     }
     taskskBottomSheetState = TaskskBottomSheetState.loaded;
@@ -69,7 +69,7 @@ class TasksController extends ChangeNotifier {
         showDetails: false,
       );
       resetPageInfo();
-      await taskRepository.saveNewTask(task: newTask);
+      await _taskRepository.saveNewTask(task: newTask);
       pendingTaskList.add(newTask);
       notifyListeners();
     }
@@ -101,7 +101,7 @@ class TasksController extends ChangeNotifier {
       sourceList[taskIndex].showDetails = false;
 
       targetList.add(sourceList[taskIndex]);
-      await taskRepository.updateTask(task: sourceList[taskIndex]);
+      await _taskRepository.updateTask(task: sourceList[taskIndex]);
       sourceList.removeAt(taskIndex);
       lastPendingTaskSelectedIndex = null;
       lastCompleteTaskSelectedIndex = null;
@@ -116,7 +116,7 @@ class TasksController extends ChangeNotifier {
       completeTaskList.removeWhere((task) => task.id == taskId);
     }
 
-    await taskRepository.deleteTask(taskId: taskId);
+    await _taskRepository.deleteTask(taskId: taskId);
     lastPendingTaskSelectedIndex = null;
     lastCompleteTaskSelectedIndex = null;
     notifyListeners();
@@ -161,7 +161,7 @@ class TasksController extends ChangeNotifier {
     pendingTaskList[taskIndex].totalFocusingTime += taskTime;
     pendingTaskList[taskIndex].showDetails = false;
 
-    await taskRepository.updateTask(task: pendingTaskList[taskIndex]);
+    await _taskRepository.updateTask(task: pendingTaskList[taskIndex]);
     if (isCompleted) {
       completeTaskList.add(pendingTaskList[taskIndex]);
       pendingTaskList.removeAt(taskIndex);

@@ -8,7 +8,7 @@ import '/src/repositories/settings_repository.dart';
 enum SettingsPageState { loading, loaded }
 
 class SettingsController extends ChangeNotifier {
-  final SettingsRepository settingsRepository;
+  final SettingsRepository _settingsRepository;
 
   int selectedSettingOptionValue = 0;
   String selectedSettingOptionName = '';
@@ -24,12 +24,12 @@ class SettingsController extends ChangeNotifier {
   bool showSettingsDetails = false;
   SettingsPageState settingsPageState = SettingsPageState.loading;
 
-  SettingsController(this.settingsRepository) {
+  SettingsController(this._settingsRepository) {
     getCurrentSettings();
   }
 
   getCurrentSettings() async {
-    settings = await settingsRepository.getSettings();
+    settings = await _settingsRepository.getSettings();
     settings =
         SettingsHelper.convertSettingsTime(settings: settings, toMinutes: true);
 
@@ -104,7 +104,7 @@ class SettingsController extends ChangeNotifier {
       settings = SettingsHelper.convertSettingsTime(
           settings: settings, toMinutes: false);
 
-      await settingsRepository.saveSettings(settings: settings);
+      await _settingsRepository.saveSettings(settings: settings);
       await getCurrentSettings();
       resetPageOptions();
       notifyListeners();
