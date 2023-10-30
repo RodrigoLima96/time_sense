@@ -39,11 +39,12 @@ class HomePageDrawer extends StatelessWidget {
             GestureDetector(
               child: Row(
                 children: [
-                  const UserCircleAvatar(
+                  UserCircleAvatar(
                     image: null,
                     width: 44,
                     height: 44,
                     borderWidth: 2.5,
+                    function: () {},
                   ),
                   Container(
                     margin: const EdgeInsets.only(left: 8),

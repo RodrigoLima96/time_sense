@@ -1,8 +1,8 @@
 class User {
   String? name;
   List<int>? image;
-  int? totalFocusTime;
-  int? totalTasksDone;
+  int totalFocusTime;
+  int totalTasksDone;
 
   User({
     required this.name,

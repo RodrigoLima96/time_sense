@@ -8,6 +8,7 @@ class UserCircleAvatar extends StatelessWidget {
   final double width;
   final double height;
   final double borderWidth;
+  final Function function;
 
   const UserCircleAvatar({
     super.key,
@@ -15,28 +16,34 @@ class UserCircleAvatar extends StatelessWidget {
     required this.width,
     required this.height,
     required this.borderWidth,
+    required this.function,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: primaryColor, width: borderWidth),
+    return GestureDetector(
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: primaryColor, width: borderWidth),
+        ),
+        child: image != null
+            ? CircleAvatar(
+                radius: 20,
+                backgroundColor: whiteColor,
+                backgroundImage: MemoryImage(Uint8List.fromList(image!)))
+            // AssetImage('assets/images/default_user.png'))
+            : const CircleAvatar(
+                radius: 20,
+                backgroundColor: whiteColor,
+                backgroundImage: AssetImage('assets/images/default_user.png'),
+              ),
       ),
-      child: image != null
-          ? CircleAvatar(
-              radius: 20,
-              backgroundColor: whiteColor,
-              backgroundImage: MemoryImage(Uint8List.fromList(image!)))
-          // AssetImage('assets/images/default_user.png'))
-          : const CircleAvatar(
-              radius: 20,
-              backgroundColor: whiteColor,
-              backgroundImage: AssetImage('assets/images/default_user.png'),
-            ),
+      onTap: () {
+        function();
+      },
     );
   }
 }

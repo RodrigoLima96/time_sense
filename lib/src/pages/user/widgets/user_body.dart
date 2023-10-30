@@ -28,11 +28,9 @@ class UserBody extends StatelessWidget {
                     width: 80,
                     height: 80,
                     borderWidth: 4,
+                    function: userController.updateImage,
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 14),
-                    child: Text(userController.user.name!, style: textBold),
-                  ),
+                  const UsernameWidget(),
                   userController.totalFocusTime!['totalSeconds']! > 0
                       ? Container(
                           margin: const EdgeInsets.only(top: 50),
@@ -56,7 +54,7 @@ class UserBody extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 50),
                     child: TasksCompletedWidget(
-                      totalTasks: userController.user.totalTasksDone!,
+                      totalTasks: userController.user.totalTasksDone,
                       text: 'Total de tarefas concluídas',
                     ),
                   ),

@@ -10,6 +10,7 @@ enum UserPageState { loading, loaded }
 class UserController extends ChangeNotifier {
   final UserRepository _userRepository;
   late User user;
+  bool showTextFormField = false;
   UserPageState userPageState = UserPageState.loading;
   Map<String, int>? totalFocusTime;
   List<int>? image;
@@ -20,34 +21,43 @@ class UserController extends ChangeNotifier {
 
   getUser() async {
     user = await _userRepository.getUser();
-
-    totalFocusTime = Helper.convertTaskTime(totalSeconds: user.totalFocusTime!);
+    totalFocusTime = Helper.convertTaskTime(totalSeconds: user.totalFocusTime);
     userPageState = UserPageState.loaded;
-    await updateUser();
     notifyListeners();
   }
 
-  updateUser() async {
-    image = await pickImage();
+  updateUser({int? focusTime, int? tasksDone}) async {
+    user.totalFocusTime += focusTime ?? 0;
+    user.totalTasksDone += tasksDone ?? 0;
 
-    user = User(
-      name: 'Rodrigo Lima',
-      image: image,
-      totalFocusTime: 139234,
-      totalTasksDone: 72,
-    );
+    user.totalTasksDone = user.totalTasksDone < 0 ? 0 : user.totalTasksDone;
 
-    totalFocusTime = Helper.convertTaskTime(totalSeconds: user.totalFocusTime!);
+    totalFocusTime = Helper.convertTaskTime(totalSeconds: user.totalFocusTime);
     await _userRepository.updateUser(user: user);
   }
 
-  pickImage() async {
+  updateImage() async {
     final ImagePicker imagePicker = ImagePicker();
 
     XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
 
     if (file != null) {
-      return await file.readAsBytes();
+      user.image = await file.readAsBytes();
+      await _userRepository.updateUser(user: user);
+      notifyListeners();
     }
+  }
+
+  showOrHideTextFormField() {
+    showTextFormField = !showTextFormField;
+    notifyListeners();
+  }
+
+  updateUsername({required String name}) async {
+    if (name != "") {
+      user.name = name.trimRight();
+      await _userRepository.updateUser(user: user);
+    }
+    showOrHideTextFormField();
   }
 }
