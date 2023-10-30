@@ -36,30 +36,13 @@ class HomePageDrawer extends StatelessWidget {
               onTap: () => Navigator.of(context).pop(),
             ),
             const SizedBox(height: 30),
-            GestureDetector(
-              child: Row(
-                children: [
-                  UserCircleAvatar(
-                    image: null,
-                    width: 44,
-                    height: 44,
-                    borderWidth: 2.5,
-                    function: () {},
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 8),
-                    child: const Text(
-                      'Perfil',
-                      style: textBold,
-                    ),
-                  )
-                ],
-              ),
-              onTap: () {
-                Navigator.of(AppRoutes.navigatorKey!.currentContext!)
-                    .pushNamed('/user');
-              },
-            ),
+            DrawerIcon(
+                icon: 'assets/icons/profile-icon.svg',
+                text: 'Perfil',
+                press: () {
+                  Navigator.of(AppRoutes.navigatorKey!.currentContext!)
+                      .pushNamed('/user');
+                }),
             DrawerIcon(
               icon: 'assets/icons/tasks-icon.svg',
               text: 'Tarefas',
