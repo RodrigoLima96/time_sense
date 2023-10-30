@@ -4,16 +4,11 @@ import 'package:provider/provider.dart';
 import '../../../controllers/controllers.dart';
 import '../../../shared/utils/utils.dart';
 
-class UsernameWidget extends StatefulWidget {
+class UsernameWidget extends StatelessWidget {
   const UsernameWidget({
     super.key,
   });
 
-  @override
-  State<UsernameWidget> createState() => _UsernameWidgetState();
-}
-
-class _UsernameWidgetState extends State<UsernameWidget> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController textFieldController = TextEditingController();

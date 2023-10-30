@@ -19,6 +19,7 @@ class TasksController extends ChangeNotifier {
   String textFieldlHintText = "Criar tarefa...";
 
   final TaskRepository _taskRepository;
+  final UserRepository _userRepository;
 
   List<Task> pendingTaskList = [];
   List<Task> completeTaskList = [];
@@ -26,14 +27,15 @@ class TasksController extends ChangeNotifier {
   int? lastPendingTaskSelectedIndex;
   int? lastCompleteTaskSelectedIndex;
 
-  TasksController(this._taskRepository) {
+  TasksController(this._taskRepository, this._userRepository) {
     getTasksByStatus(status: 'pending');
   }
 
   getTasksByStatus({required String status}) async {
     switch (status) {
       case 'pending':
-        pendingTaskList = await _taskRepository.getTasks(tasksStatus: 'pending');
+        pendingTaskList =
+            await _taskRepository.getTasks(tasksStatus: 'pending');
       case 'complete':
         if (completeTaskList.isEmpty) {
           completeTaskList =
@@ -99,6 +101,9 @@ class TasksController extends ChangeNotifier {
     if (taskIndex != -1) {
       sourceList[taskIndex].pending = !sourceList[taskIndex].pending;
       sourceList[taskIndex].showDetails = false;
+      await _userRepository.updateUserStatistics(
+        tasksDone: !sourceList[taskIndex].pending ? 1 : -1,
+      );
 
       targetList.add(sourceList[taskIndex]);
       await _taskRepository.updateTask(task: sourceList[taskIndex]);
@@ -114,6 +119,9 @@ class TasksController extends ChangeNotifier {
       pendingTaskList.removeWhere((task) => task.id == taskId);
     } else {
       completeTaskList.removeWhere((task) => task.id == taskId);
+      await _userRepository.updateUserStatistics(
+        tasksDone: -1,
+      );
     }
 
     await _taskRepository.deleteTask(taskId: taskId);
@@ -165,13 +173,17 @@ class TasksController extends ChangeNotifier {
     if (isCompleted) {
       completeTaskList.add(pendingTaskList[taskIndex]);
       pendingTaskList.removeAt(taskIndex);
+      await _userRepository.updateUserStatistics(
+        tasksDone: 1,
+      );
     }
 
     isCompleted ? notifyListeners() : null;
   }
 
   updateTaskTime({required Task pomodoroTask}) {
-    final taskIndex = pendingTaskList.indexWhere((task) => task.id == pomodoroTask.id);
+    final taskIndex =
+        pendingTaskList.indexWhere((task) => task.id == pomodoroTask.id);
     pendingTaskList[taskIndex].totalFocusingTime !=
             pomodoroTask.totalFocusingTime
         ? pendingTaskList[taskIndex].totalFocusingTime =

@@ -20,20 +20,11 @@ class UserController extends ChangeNotifier {
   }
 
   getUser() async {
+    userPageState = UserPageState.loading;
     user = await _userRepository.getUser();
     totalFocusTime = Helper.convertTaskTime(totalSeconds: user.totalFocusTime);
     userPageState = UserPageState.loaded;
     notifyListeners();
-  }
-
-  updateUser({int? focusTime, int? tasksDone}) async {
-    user.totalFocusTime += focusTime ?? 0;
-    user.totalTasksDone += tasksDone ?? 0;
-
-    user.totalTasksDone = user.totalTasksDone < 0 ? 0 : user.totalTasksDone;
-
-    totalFocusTime = Helper.convertTaskTime(totalSeconds: user.totalFocusTime);
-    await _userRepository.updateUser(user: user);
   }
 
   updateImage() async {

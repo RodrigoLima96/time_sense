@@ -17,6 +17,7 @@ class PomodoroController extends ChangeNotifier {
   final PomodoroRepository _pomodoroRepository;
   final NotificationService _notificationService;
   final TaskRepository _taskRepository;
+  final UserRepository _userRepository;
 
   late Pomodoro pomodoro;
   int elapsedPomodoroTime = 0;
@@ -35,6 +36,7 @@ class PomodoroController extends ChangeNotifier {
     this._pomodoroRepository,
     this._notificationService,
     this._taskRepository,
+    this._userRepository,
   ) {
     getPomodoroStatus();
   }
@@ -269,17 +271,22 @@ class PomodoroController extends ChangeNotifier {
     return buttonsInfo;
   }
 
-  saveTaskAndPomodoroTime() async {
-    if (pomodoro.elapsedPomodoroTime > 0) {
-      final String formattedDate = dateFormat.format(pomodoro.creationDate!);
+  saveTaskAndPomodoroTime({bool? isPaused}) async {
+    final String formattedDate = dateFormat.format(pomodoro.creationDate!);
 
-      await _pomodoroRepository.savePomodoroTime(
-        statistic: Statistic(
-          date: formattedDate,
-          totalFocusingTime: pomodoro.elapsedPomodoroTime,
-        ),
-      );
-    }
+    await _pomodoroRepository.savePomodoroTime(
+      statistic: Statistic(
+        date: formattedDate,
+        totalFocusingTime: isPaused == null
+            ? pomodoro.pomodoroTime
+            : pomodoro.elapsedPomodoroTime,
+      ),
+    );
+
+    await _userRepository.updateUserStatistics(
+      focusTime:
+          isPaused == null ? pomodoro.pomodoroTime : pomodoro.pomodoroTime,
+    );
 
     int currentPomodoroTaskTime = getCurrentPomodoroTaskTime();
     if (currentPomodoroTaskTime > 0) {

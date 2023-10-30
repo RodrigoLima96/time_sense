@@ -6,8 +6,19 @@ import 'package:time_sense/src/pages/user/widgets/widgets.dart';
 import '../../../shared/utils/utils.dart';
 import '../../../shared/widgets/widgets.dart';
 
-class UserBody extends StatelessWidget {
+class UserBody extends StatefulWidget {
   const UserBody({super.key});
+
+  @override
+  State<UserBody> createState() => _UserBodyState();
+}
+
+class _UserBodyState extends State<UserBody> {
+  @override
+  void initState() {
+    context.read<UserController>().getUser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
