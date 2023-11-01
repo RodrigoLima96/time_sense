@@ -77,27 +77,7 @@ class _UserBodyState extends State<UserBody> {
                           child:
                               const Text('Total por data', style: textRegular),
                         ),
-                        const CalendarPickerWidget(),
-                        Container(
-                          margin: const EdgeInsets.only(top: 50),
-                          child: TotalFocusingTimeWidget(
-                            hours:
-                                userController.totalFocusTimeByDate!['hour']!,
-                            minutes: userController
-                                .totalFocusTimeByDate!['minutes']!,
-                            totalSeconds: userController
-                                .totalFocusTimeByDate!['totalSeconds']!,
-                            seconds: userController
-                                .totalFocusTimeByDate!['seconds']!,
-                            text: 'Foco',
-                            taskPending: true,
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 50),
-                          child: const TasksCompletedWidget(
-                              totalTasks: 3, text: 'Tarefas'),
-                        ),
+                        const StatisticsByDate(),
                       ],
                     ),
                 ],

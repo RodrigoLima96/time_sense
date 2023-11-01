@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 
 import '../models/models.dart';
 import '../repositories/repositories.dart';
@@ -15,8 +14,8 @@ class UserController extends ChangeNotifier {
   UserPageState userPageState = UserPageState.loading;
   Map<String, int>? totalFocusTime;
   Map<String, int>? totalFocusTimeByDate;
-  List<int>? image;
-  final dateFormat = DateFormat('yyyy-MM-dd');
+  int totalTasksDoneByDate = 0;
+  String calendarButtonText = 'Hoje';
 
   UserController(this._userRepository) {
     getUser();
@@ -25,7 +24,7 @@ class UserController extends ChangeNotifier {
   getUser() async {
     userPageState = UserPageState.loading;
     user = await _userRepository.getUser();
-    await getUserStatisticsByDate();
+    await getUserStatisticsByDate(dates: null);
     totalFocusTime = Helper.convertTaskTime(totalSeconds: user.totalFocusTime);
     userPageState = UserPageState.loaded;
     notifyListeners();
@@ -56,12 +55,13 @@ class UserController extends ChangeNotifier {
     showOrHideTextFormField();
   }
 
-  getUserStatisticsByDate() async {
-    const String initDate = '2023-10-31';
-    const String endDate = '2023-11-01';
+  getUserStatisticsByDate({required List<DateTime?>? dates}) async {
+    List<String> listDates = UserHelper.getStatisticsDates(dates: dates);
+
+    calendarButtonText = UserHelper.getCalendarButtonText(listDates);
 
     final statistics = await _userRepository.getStatisticsByDate(
-        initDate: initDate, endDate: endDate);
+        initDate: listDates[0], endDate: listDates[1]);
 
     totalFocusTimeByDate =
         Helper.convertTaskTime(totalSeconds: statistics['totalFocusTime']);
