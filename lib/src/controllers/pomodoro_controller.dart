@@ -24,7 +24,7 @@ class PomodoroController extends ChangeNotifier {
   bool showSecondButton = false;
   bool showMenuButton = false;
   bool appHidden = false;
-  final dateFormat = DateFormat('dd/MM/yyyy');
+  final dateFormat = DateFormat('yyyy-MM-dd');
 
   PomodoroState pomodoroState = PomodoroState.notStarted;
   PomodoroPageState pomodoroPageState = PomodoroPageState.loading;
@@ -285,7 +285,7 @@ class PomodoroController extends ChangeNotifier {
 
     await _userRepository.updateUserStatistics(
       focusTime:
-          isPaused == null ? pomodoro.pomodoroTime : pomodoro.pomodoroTime,
+          isPaused == null ? pomodoro.pomodoroTime : pomodoro.elapsedPomodoroTime,
     );
 
     int currentPomodoroTaskTime = getCurrentPomodoroTaskTime();
@@ -304,7 +304,7 @@ class PomodoroController extends ChangeNotifier {
       if (!pomodoro.shortBreak &&
           !pomodoro.longBreak &&
           pomodoro.status == PomodoroState.paused.name) {
-        await saveTaskAndPomodoroTime();
+        await saveTaskAndPomodoroTime(isPaused: true);
       }
       pomodoro = PomodoroHelper.getResetDailyPomodoroStatus(pomodoro: pomodoro);
       elapsedPomodoroTime = 0;

@@ -35,14 +35,12 @@ class DatabaseService {
     await db.update('pomodoro', pomodoroMap);
   }
 
-  getStatistic({required String date}) async {
+  getStatistics({required String initDate, String? endDate}) async {
     Database db = await _databaseService.database;
 
-    final statistic = await db.query(
-      'statistics',
-      where: 'date = ?',
-      whereArgs: [date],
-    );
+    final String queryEndDate = endDate ?? initDate;
+    final statistic = await db.rawQuery(
+        "SELECT * FROM statistics where date >= '$initDate' and date <= '$queryEndDate'");
 
     return statistic;
   }

@@ -81,7 +81,9 @@ class _UserBodyState extends State<UserBody> {
                           margin: const EdgeInsets.only(top: 15),
                           child: PrimaryButton(
                             text: 'hoje',
-                            press: () {},
+                            press: () async {
+                              await userController.getUserStatisticsByDate();
+                            },
                             color: secondaryColor,
                             height: 6,
                             backIcon: 'assets/icons/arrow-back-icon.svg',
@@ -90,11 +92,12 @@ class _UserBodyState extends State<UserBody> {
                         Container(
                           margin: const EdgeInsets.only(top: 50),
                           child: TotalFocusingTimeWidget(
-                            hours: 1,
-                            minutes: 11,
-                            seconds: 23,
-                            totalSeconds: 4372,
-                            text: 'foco',
+                            hours: userController.totalFocusTimeByDate!['hour']!,
+                            minutes: userController.totalFocusTimeByDate!['minutes']!,
+                            totalSeconds:
+                                userController.totalFocusTimeByDate!['totalSeconds']!,
+                            seconds: userController.totalFocusTimeByDate!['seconds']!,
+                            text: 'Foco',
                             taskPending: true,
                           ),
                         ),

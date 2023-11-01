@@ -41,7 +41,7 @@ class PomodoroRepository {
 
   Future<void> savePomodoroTime({required Statistic statistic}) async {
     final statisticResult =
-        await _databaseService.getStatistic(date: statistic.date);
+        await _databaseService.getStatistics(initDate: statistic.date);
 
     if (statisticResult.isEmpty) {
       _databaseService.createStatistic(statisticMap: statistic.toMap());
