@@ -65,6 +65,5 @@ class UserController extends ChangeNotifier {
 
     totalFocusTimeByDate =
         Helper.convertTaskTime(totalSeconds: statistics['totalFocusTime']);
-    print(totalFocusTimeByDate);
   }
 }

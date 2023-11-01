@@ -67,7 +67,7 @@ class TaskWidget extends StatelessWidget {
                                 child: SvgPicture.asset(
                                   frontIcon,
                                   color: task.showDetails
-                                      ? Colors.black
+                                      ? blackColor
                                       : primaryColor,
                                   width: 20,
                                   height: 20,
@@ -112,7 +112,7 @@ class TaskWidget extends StatelessWidget {
                           ? 'assets/icons/delete-icon.svg'
                           : backIcon,
                       color: pomodoroTask && task.showDetails
-                          ? Colors.black
+                          ? blackColor
                           : backIconColor,
                       width: 20,
                       height: 20,

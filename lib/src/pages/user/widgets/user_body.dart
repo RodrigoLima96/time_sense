@@ -77,26 +77,18 @@ class _UserBodyState extends State<UserBody> {
                           child:
                               const Text('Total por data', style: textRegular),
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 15),
-                          child: PrimaryButton(
-                            text: 'hoje',
-                            press: () async {
-                              await userController.getUserStatisticsByDate();
-                            },
-                            color: secondaryColor,
-                            height: 6,
-                            backIcon: 'assets/icons/arrow-back-icon.svg',
-                          ),
-                        ),
+                        const CalendarPickerWidget(),
                         Container(
                           margin: const EdgeInsets.only(top: 50),
                           child: TotalFocusingTimeWidget(
-                            hours: userController.totalFocusTimeByDate!['hour']!,
-                            minutes: userController.totalFocusTimeByDate!['minutes']!,
-                            totalSeconds:
-                                userController.totalFocusTimeByDate!['totalSeconds']!,
-                            seconds: userController.totalFocusTimeByDate!['seconds']!,
+                            hours:
+                                userController.totalFocusTimeByDate!['hour']!,
+                            minutes: userController
+                                .totalFocusTimeByDate!['minutes']!,
+                            totalSeconds: userController
+                                .totalFocusTimeByDate!['totalSeconds']!,
+                            seconds: userController
+                                .totalFocusTimeByDate!['seconds']!,
                             text: 'Foco',
                             taskPending: true,
                           ),

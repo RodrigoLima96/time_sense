@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'routes/routes.dart';
@@ -25,12 +26,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SettingsController(context.read())),
         ChangeNotifierProvider(create: (context) => UserController(context.read())),
       ],
-      child:  MaterialApp(
+      child: MaterialApp(
         title: 'Time Sense',
         debugShowCheckedModeBanner: false,
         routes: AppRoutes.list,
         initialRoute: AppRoutes.initial,
         navigatorKey: AppRoutes.navigatorKey,
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        supportedLocales: const [
+          Locale('pt', ''),
+        ],
       ),
     );
   }
