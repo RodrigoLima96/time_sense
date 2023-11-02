@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:time_sense/src/controllers/helpers/helpers.dart';
 import 'package:time_sense/src/repositories/repositories.dart';
 import 'package:uuid/uuid.dart';
@@ -26,6 +27,7 @@ class TasksController extends ChangeNotifier {
   Map<String, int>? taskFocusTime;
   int? lastPendingTaskSelectedIndex;
   int? lastCompleteTaskSelectedIndex;
+  final dateFormat = DateFormat('yyyy-MM-dd');
 
   TasksController(this._taskRepository, this._userRepository) {
     getTasksByStatus(status: 'pending');
@@ -101,6 +103,9 @@ class TasksController extends ChangeNotifier {
     if (taskIndex != -1) {
       sourceList[taskIndex].pending = !sourceList[taskIndex].pending;
       sourceList[taskIndex].showDetails = false;
+      sourceList[taskIndex].completionDate = !sourceList[taskIndex].pending
+          ? dateFormat.format(DateTime.now())
+          : null;
       await _userRepository.updateUserStatistics(
         tasksDone: !sourceList[taskIndex].pending ? 1 : -1,
       );
@@ -167,6 +172,8 @@ class TasksController extends ChangeNotifier {
 
     pendingTaskList[taskIndex].pending = isCompleted ? false : true;
     pendingTaskList[taskIndex].totalFocusingTime += taskTime;
+    pendingTaskList[taskIndex].completionDate =
+        dateFormat.format(DateTime.now());
     pendingTaskList[taskIndex].showDetails = false;
 
     await _taskRepository.updateTask(task: pendingTaskList[taskIndex]);

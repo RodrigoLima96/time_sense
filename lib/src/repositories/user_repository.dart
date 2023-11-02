@@ -40,4 +40,11 @@ class UserRepository {
 
     return totalFocusTime;
   }
+
+  Future<int> getTotalTasksByDate(
+      {required String initDate, required String? endDate}) async {
+    final totoalTasks = await _databaseService.getTotalTasksByDate(
+        initDate: initDate, endDate: endDate);
+    return totoalTasks;
+  }
 }

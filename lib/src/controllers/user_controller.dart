@@ -71,6 +71,9 @@ class UserController extends ChangeNotifier {
     final totalFocusTime = await _userRepository.getStatisticsByDate(
         initDate: listDates[0], endDate: listDates[1]);
 
+    totalTasksDoneByDate = await _userRepository.getTotalTasksByDate(
+        initDate: listDates[0], endDate: listDates[1]);
+
     totalFocusTimeByDate = Helper.convertTaskTime(totalSeconds: totalFocusTime);
   }
 }

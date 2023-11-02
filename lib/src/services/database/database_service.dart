@@ -45,6 +45,16 @@ class DatabaseService {
     return statistic;
   }
 
+  getTotalTasksByDate({required String initDate, String? endDate}) async {
+    Database db = await _databaseService.database;
+
+    final String queryEndDate = endDate ?? initDate;
+    final tasks = await db.rawQuery(
+        "SELECT * FROM tasks where completionDate >= '$initDate' and completionDate <= '$queryEndDate'");
+
+    return tasks.length;
+  }
+
   createStatistic({required Map<String, dynamic> statisticMap}) async {
     Database db = await _databaseService.database;
     await db.insert('statistics', statisticMap);

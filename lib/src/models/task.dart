@@ -4,7 +4,7 @@ class Task {
   bool pending;
   int totalFocusingTime;
   final DateTime? creationDate;
-  final DateTime? completionDate;
+  String? completionDate;
   bool showDetails;
 
   Task({
@@ -38,9 +38,7 @@ class Task {
       creationDate: map['creationDate'] != null
           ? DateTime.parse(map['creationDate'])
           : null,
-      completionDate: map['completionDate'] != "null"
-          ? DateTime.parse(map['completionDate'])
-          : null,
+      completionDate: map['completionDate'],
       showDetails: map['showDetails'] == 1,
     );
   }

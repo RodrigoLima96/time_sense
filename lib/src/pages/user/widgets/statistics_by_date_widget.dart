@@ -79,7 +79,8 @@ class _StatisticsByDateWidgetState extends State<StatisticsByDateWidget> {
         ),
         Container(
           margin: const EdgeInsets.only(top: 50),
-          child: const TasksCompletedWidget(totalTasks: 3, text: 'Tarefas'),
+          child: TasksCompletedWidget(
+              totalTasks: userController.totalTasksDoneByDate, text: 'Tarefas'),
         ),
       ],
     );
