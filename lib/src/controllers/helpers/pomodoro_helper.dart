@@ -208,17 +208,28 @@ class PomodoroHelper {
   }) {
     int elapsedTime;
 
-    if (remainingPomodoroTime == "00:00") {
+    if (remainingPomodoroTime == "00:00" ||
+        remainingPomodoroTime == "00:00:00") {
       return 0;
     }
+
     List<String> timeParts = remainingPomodoroTime!.split(':');
 
-    if (timeParts.length == 2) {
+    if (timeParts.length == 2 || timeParts.length == 3) {
+      int hours = 0;
       int minutes = int.parse(timeParts[0]);
       int seconds = int.parse(timeParts[1]);
 
-      int remainingPomodoroTime = minutes * 60 + seconds;
-      elapsedTime = pomodoroTime - remainingPomodoroTime;
+      if (timeParts.length == 3) {
+        hours = int.parse(timeParts[0]);
+        minutes = int.parse(timeParts[1]);
+        seconds = int.parse(timeParts[2]);
+      }
+
+      int remainingPomodoroTimeInSeconds =
+          hours * 3600 + minutes * 60 + seconds;
+      elapsedTime = pomodoroTime - remainingPomodoroTimeInSeconds;
+
       if (elapsedTime < 0) {
         elapsedTime = 0;
       }
@@ -283,15 +294,27 @@ class PomodoroHelper {
 
     if (remainingPomodoroTime != null && remainingPomodoroTime.isNotEmpty) {
       final List<String> timeParts = remainingPomodoroTime.split(':');
-      if (timeParts.length == 2) {
-        final int minutesRemaining = int.parse(timeParts[0]);
-        final int secondsRemaining = int.parse(timeParts[1]);
 
-        int remainingTimeInSeconds = (minutesRemaining * 60) + secondsRemaining;
+      if (timeParts.length == 2 || timeParts.length == 3) {
+        int hours = 0;
+        int minutesRemaining = int.parse(timeParts[0]);
+        int secondsRemaining = int.parse(timeParts[1]);
+
+        if (timeParts.length == 3) {
+          hours = int.parse(timeParts[0]);
+          minutesRemaining = int.parse(timeParts[1]);
+          secondsRemaining = int.parse(timeParts[2]);
+        }
+
+        int remainingTimeInSeconds =
+            (hours * 3600) + (minutesRemaining * 60) + secondsRemaining;
 
         elapsedTaskTime = pomodoroTime - remainingTimeInSeconds;
-
         elapsedTaskTime -= taskPomodoroStartTime;
+
+        if (elapsedTaskTime < 0) {
+          elapsedTaskTime = 0;
+        }
       }
     }
 
