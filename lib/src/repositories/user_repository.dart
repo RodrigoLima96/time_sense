@@ -28,7 +28,7 @@ class UserRepository {
     await _databaseService.updateUser(user: user.toMap());
   }
 
-  Future<Map<String, dynamic>> getStatisticsByDate(
+  Future<int> getStatisticsByDate(
       {required String initDate, required String? endDate}) async {
     final statistics = await _databaseService.getStatistics(
         initDate: initDate, endDate: endDate);
@@ -38,11 +38,6 @@ class UserRepository {
       totalFocusTime += map['totalFocusingTime'] as int;
     }
 
-    final userStatistics = {
-      'date': '$initDate até $endDate',
-      'totalFocusTime': totalFocusTime,
-    };
-
-    return userStatistics;
+    return totalFocusTime;
   }
 }

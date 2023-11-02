@@ -77,7 +77,7 @@ class _UserBodyState extends State<UserBody> {
                           child:
                               const Text('Total por data', style: textRegular),
                         ),
-                        const StatisticsByDate(),
+                        const StatisticsByDateWidget(),
                       ],
                     ),
                 ],

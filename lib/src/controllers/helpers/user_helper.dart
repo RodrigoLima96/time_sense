@@ -36,9 +36,13 @@ class UserHelper {
       return 'hoje';
     } else {
       if (dates[0] != dates[1]) {
-        return '${dates[0]} até ${dates[1]}';
+        return '${convertDate(dates[0])}  -  ${convertDate(dates[1])}';
       }
-      return dates[0];
+      return convertDate(dates[0]).toString();
     }
+  }
+
+  static String convertDate(String date) {
+    return DateFormat('dd/MM/yyyy').format(DateTime.parse(date));
   }
 }

@@ -16,6 +16,7 @@ class UserController extends ChangeNotifier {
   Map<String, int>? totalFocusTimeByDate;
   int totalTasksDoneByDate = 0;
   String calendarButtonText = 'Hoje';
+  List<DateTime?> dialogCalendarPickerValue = [];
 
   UserController(this._userRepository) {
     getUser();
@@ -24,7 +25,7 @@ class UserController extends ChangeNotifier {
   getUser() async {
     userPageState = UserPageState.loading;
     user = await _userRepository.getUser();
-    await getUserStatisticsByDate(dates: null);
+    await getUserStatisticsByDate(dates: null, initWidget: true);
     totalFocusTime = Helper.convertTaskTime(totalSeconds: user.totalFocusTime);
     userPageState = UserPageState.loaded;
     notifyListeners();
@@ -55,15 +56,21 @@ class UserController extends ChangeNotifier {
     showOrHideTextFormField();
   }
 
-  getUserStatisticsByDate({required List<DateTime?>? dates}) async {
+  getUserStatisticsByDate(
+      {required List<DateTime?>? dates, bool? initWidget}) async {
     List<String> listDates = UserHelper.getStatisticsDates(dates: dates);
-
     calendarButtonText = UserHelper.getCalendarButtonText(listDates);
 
-    final statistics = await _userRepository.getStatisticsByDate(
+    dialogCalendarPickerValue = initWidget != null
+        ? [DateTime.now().add(const Duration(days: -1))]
+        : [
+            dates![0],
+            dates.length > 1 ? dates[1] : null,
+          ];
+
+    final totalFocusTime = await _userRepository.getStatisticsByDate(
         initDate: listDates[0], endDate: listDates[1]);
 
-    totalFocusTimeByDate =
-        Helper.convertTaskTime(totalSeconds: statistics['totalFocusTime']);
+    totalFocusTimeByDate = Helper.convertTaskTime(totalSeconds: totalFocusTime);
   }
 }

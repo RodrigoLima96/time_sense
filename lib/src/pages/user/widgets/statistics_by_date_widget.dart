@@ -7,21 +7,16 @@ import '../../../shared/utils/utils.dart';
 import '../../../shared/widgets/widgets.dart';
 import 'widgets.dart';
 
-class StatisticsByDate extends StatefulWidget {
-  const StatisticsByDate({super.key});
+class StatisticsByDateWidget extends StatefulWidget {
+  const StatisticsByDateWidget({super.key});
 
   @override
-  State<StatisticsByDate> createState() => _StatisticsByDateState();
+  State<StatisticsByDateWidget> createState() => _StatisticsByDateWidgetState();
 }
 
-class _StatisticsByDateState extends State<StatisticsByDate> {
+class _StatisticsByDateWidgetState extends State<StatisticsByDateWidget> {
   @override
   Widget build(BuildContext context) {
-    List<DateTime?> dialogCalendarPickerValue = [
-      DateTime(2023, 11, 02),
-      DateTime(2023, 11, 05),
-    ];
-
     final userController = context.watch<UserController>();
 
     return Column(
@@ -53,7 +48,7 @@ class _StatisticsByDateState extends State<StatisticsByDate> {
                     ),
                     dialogSize: const Size(325, 400),
                     borderRadius: BorderRadius.circular(15),
-                    value: dialogCalendarPickerValue,
+                    value: userController.dialogCalendarPickerValue,
                     dialogBackgroundColor: primaryColor,
                   );
                   if (dates != null) {
