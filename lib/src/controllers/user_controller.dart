@@ -55,7 +55,7 @@ class UserController extends ChangeNotifier {
 
   showOrHideTextFormField() {
     showTextFormField = !showTextFormField;
-    notifyListeners();
+    // notifyListeners();
   }
 
   updateUsername({required String name}) async {

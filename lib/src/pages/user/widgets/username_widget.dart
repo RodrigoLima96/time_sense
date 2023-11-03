@@ -4,11 +4,16 @@ import 'package:provider/provider.dart';
 import '../../../controllers/controllers.dart';
 import '../../../shared/utils/utils.dart';
 
-class UsernameWidget extends StatelessWidget {
+class UsernameWidget extends StatefulWidget {
   const UsernameWidget({
     super.key,
   });
 
+  @override
+  State<UsernameWidget> createState() => _UsernameWidgetState();
+}
+
+class _UsernameWidgetState extends State<UsernameWidget> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController textFieldController = TextEditingController();
@@ -28,16 +33,20 @@ class UsernameWidget extends StatelessWidget {
                 child: TextFormField(
                   autofocus: userController.showTextFormField,
                   controller: textFieldController,
-                  onTapOutside: (event) {
+                  onTapOutside: (event) async {
                     if (!userController.showTextFormField) {
                       FocusScope.of(context).unfocus();
                     }
-                    userController.updateUsername(
-                        name: textFieldController.text);
+                    await userController.updateUsername(
+                      name: textFieldController.text,
+                    );
+                    setState(() {});
                   },
-                  onEditingComplete: () {
-                    userController.updateUsername(
-                        name: textFieldController.text);
+                  onEditingComplete: () async {
+                    await userController.updateUsername(
+                      name: textFieldController.text,
+                    );
+                    setState(() {});
                   },
                   textAlign: TextAlign.center,
                   decoration: const InputDecoration(
@@ -61,6 +70,7 @@ class UsernameWidget extends StatelessWidget {
               ),
               onTap: () {
                 userController.showOrHideTextFormField();
+                setState(() {});
               },
             ),
     );
