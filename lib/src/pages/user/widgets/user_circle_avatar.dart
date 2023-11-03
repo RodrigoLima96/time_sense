@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../utils/utils.dart';
+import '../../../controllers/controllers.dart';
+import '../../../shared/utils/utils.dart';
 
 class UserCircleAvatar extends StatelessWidget {
   final List<int>? image;
@@ -20,7 +22,7 @@ class UserCircleAvatar extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return GestureDetector(
       child: Container(
         width: width,
@@ -34,7 +36,6 @@ class UserCircleAvatar extends StatelessWidget {
                 radius: 20,
                 backgroundColor: whiteColor,
                 backgroundImage: MemoryImage(Uint8List.fromList(image!)))
-            // AssetImage('assets/images/default_user.png'))
             : const CircleAvatar(
                 radius: 20,
                 backgroundColor: whiteColor,

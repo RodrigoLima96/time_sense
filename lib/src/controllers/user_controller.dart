@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -17,6 +19,7 @@ class UserController extends ChangeNotifier {
   int totalTasksDoneByDate = 0;
   String calendarButtonText = 'Hoje';
   List<DateTime?> dialogCalendarPickerValue = [];
+  List<int>? image;
 
   UserController(this._userRepository) {
     getUser();
@@ -25,19 +28,26 @@ class UserController extends ChangeNotifier {
   getUser() async {
     userPageState = UserPageState.loading;
     user = await _userRepository.getUser();
+    image ??= user.image;
     await getUserStatisticsByDate(dates: null, initWidget: true);
     totalFocusTime = Helper.convertTaskTime(totalSeconds: user.totalFocusTime);
     userPageState = UserPageState.loaded;
     notifyListeners();
   }
 
-  updateImage() async {
+  Future<void> updateImage() async {
     final ImagePicker imagePicker = ImagePicker();
 
-    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+    final XFile? file =
+        await imagePicker.pickImage(source: ImageSource.gallery);
 
     if (file != null) {
-      user.image = await file.readAsBytes();
+      final resizedImageBytes = await UserHelper.reduceImageSize(
+        imageFile: File(file.path),
+      );
+      user.image = resizedImageBytes;
+      image = user.image;
+
       await _userRepository.updateUser(user: user);
       notifyListeners();
     }

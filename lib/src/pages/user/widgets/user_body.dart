@@ -35,9 +35,9 @@ class _UserBodyState extends State<UserBody> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   UserCircleAvatar(
-                    image: userController.user.image,
-                    width: 80,
-                    height: 80,
+                    image: userController.image,
+                    width: 110,
+                    height: 110,
                     borderWidth: 4,
                     function: userController.updateImage,
                   ),

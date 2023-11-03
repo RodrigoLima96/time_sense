@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:intl/intl.dart';
 
 class UserHelper {
@@ -40,6 +42,14 @@ class UserHelper {
       }
       return convertDate(dates[0]).toString();
     }
+  }
+
+  static reduceImageSize({required File imageFile}) async {
+    var reducedImage = await FlutterImageCompress.compressWithFile(
+      imageFile.absolute.path,
+      quality: 50,
+    );
+    return reducedImage;
   }
 
   static String convertDate(String date) {
