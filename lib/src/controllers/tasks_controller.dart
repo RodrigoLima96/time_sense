@@ -39,10 +39,8 @@ class TasksController extends ChangeNotifier {
         pendingTaskList =
             await _taskRepository.getTasks(tasksStatus: 'pending');
       case 'complete':
-        if (completeTaskList.isEmpty) {
-          completeTaskList =
-              await _taskRepository.getTasks(tasksStatus: 'complete');
-        }
+        completeTaskList =
+            await _taskRepository.getTasks(tasksStatus: 'complete');
     }
     taskskBottomSheetState = TaskskBottomSheetState.loaded;
     tasksPageState = TasksPageState.loaded;
@@ -83,9 +81,7 @@ class TasksController extends ChangeNotifier {
     isPendingTasksPage = !isPendingTasksPage;
     if (!isPendingTasksPage) {
       pageTitleText = 'Tarefas concluídas';
-      if (completeTaskList.isEmpty) {
-        await getTasksByStatus(status: 'complete');
-      }
+      await getTasksByStatus(status: 'complete');
     } else {
       pageTitleText = 'Tarefas pendentes';
     }
