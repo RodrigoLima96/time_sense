@@ -163,11 +163,15 @@ class TasksController extends ChangeNotifier {
     required String taskId,
     required int taskTime,
     required bool isCompleted,
+    required bool pomodoroNotStarted,
   }) async {
     final taskIndex = pendingTaskList.indexWhere((task) => task.id == taskId);
 
     pendingTaskList[taskIndex].pending = isCompleted ? false : true;
-    pendingTaskList[taskIndex].totalFocusingTime += taskTime;
+    pendingTaskList[taskIndex].totalFocusingTime = !pomodoroNotStarted
+        ? taskTime += pendingTaskList[taskIndex].totalFocusingTime
+        : taskTime;
+
     pendingTaskList[taskIndex].completionDate =
         dateFormat.format(DateTime.now());
     pendingTaskList[taskIndex].showDetails = false;

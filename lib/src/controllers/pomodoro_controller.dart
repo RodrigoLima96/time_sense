@@ -284,8 +284,9 @@ class PomodoroController extends ChangeNotifier {
     );
 
     await _userRepository.updateUserStatistics(
-      focusTime:
-          isPaused == null ? pomodoro.pomodoroTime : pomodoro.elapsedPomodoroTime,
+      focusTime: isPaused == null
+          ? pomodoro.pomodoroTime
+          : pomodoro.elapsedPomodoroTime,
     );
 
     int currentPomodoroTaskTime = getCurrentPomodoroTaskTime();
@@ -413,6 +414,17 @@ class PomodoroController extends ChangeNotifier {
     } else {
       return 0;
     }
+  }
+
+  int getCompletePomodoroTaskTime() {
+    int pomodoroTaskTime = 0;
+
+    if (pomodoroState == PomodoroState.notStarted) {
+      pomodoroTaskTime = pomodoro.task!.totalFocusingTime;
+    } else {
+      pomodoroTaskTime = getCurrentPomodoroTaskTime();
+    }
+    return pomodoroTaskTime;
   }
 
   convertTaskTime({required int elapsedTaskTime}) {

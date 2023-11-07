@@ -49,24 +49,32 @@ class HomeBody extends StatelessWidget {
                           showFrontIcon: true,
                           pomodoroTask: true,
                           frontFunction: () async {
-                            int currentPomodoroTaskTime =
-                                pomodoroController.getCurrentPomodoroTaskTime();
+                            int pomodoroTaskTime = pomodoroController
+                                .getCompletePomodoroTaskTime();
+                            final bool pomodoroNotStarted =
+                                pomodoroController.pomodoroState ==
+                                    PomodoroState.notStarted;
+
                             await taskController.savePomodoroTaskTime(
                               taskId: pomodoroController.pomodoro.task!.id,
-                              taskTime: currentPomodoroTaskTime,
+                              taskTime: pomodoroTaskTime,
                               isCompleted: true,
+                              pomodoroNotStarted: pomodoroNotStarted,
                             );
-
                             pomodoroController.removePomodoroTask();
                           },
                           backFunction: () async {
-                            int currentPomodoroTaskTime =
-                                pomodoroController.getCurrentPomodoroTaskTime();
+                            final bool pomodoroNotStarted =
+                                pomodoroController.pomodoroState ==
+                                    PomodoroState.notStarted;
+                            int currentPomodoroTaskTime = pomodoroController
+                                .getCompletePomodoroTaskTime();
                             if (currentPomodoroTaskTime > 0) {
                               await taskController.savePomodoroTaskTime(
                                 taskId: pomodoroController.pomodoro.task!.id,
                                 taskTime: currentPomodoroTaskTime,
                                 isCompleted: false,
+                                pomodoroNotStarted: pomodoroNotStarted,
                               );
                             }
                             pomodoroController.removePomodoroTask();
