@@ -172,9 +172,9 @@ class TasksController extends ChangeNotifier {
         ? taskTime += pendingTaskList[taskIndex].totalFocusingTime
         : taskTime;
 
-    pendingTaskList[taskIndex].completionDate =
-        dateFormat.format(DateTime.now());
     pendingTaskList[taskIndex].showDetails = false;
+    pendingTaskList[taskIndex].completionDate = isCompleted ?
+        dateFormat.format(DateTime.now()) : null;
 
     await _taskRepository.updateTask(task: pendingTaskList[taskIndex]);
     if (isCompleted) {

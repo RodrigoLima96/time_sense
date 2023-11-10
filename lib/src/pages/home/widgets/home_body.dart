@@ -39,20 +39,23 @@ class _HomeBodyState extends State<HomeBody> {
                         : 1,
                   ),
                   child: pomodoroController.pomodoro.task == null
-                      ? PrimaryButton(
-                          color: primaryColor,
-                          press: () {
-                            if (pomodoroController.pomodoroState ==
-                                    PomodoroState.running &&
-                                !pomodoroController.pomodoro.shortBreak &&
-                                !pomodoroController.pomodoro.longBreak) {
-                              pomodoroController.pausePomodoro();
-                            }
-                            showHomeBottomSheet(context);
-                          },
-                          text: 'Selecionar uma tarefa',
-                          height: 15,
-                        )
+                      ? Container(
+                        alignment: Alignment.topCenter,
+                        child: PrimaryButton(
+                            color: primaryColor,
+                            press: () {
+                              if (pomodoroController.pomodoroState ==
+                                      PomodoroState.running &&
+                                  !pomodoroController.pomodoro.shortBreak &&
+                                  !pomodoroController.pomodoro.longBreak) {
+                                pomodoroController.pausePomodoro();
+                              }
+                              showHomeBottomSheet(context);
+                            },
+                            text: 'Selecionar uma tarefa',
+                            height: 15,
+                          ),
+                      )
                       : TaskWidget(
                           frontIcon: 'assets/icons/circle-icon.svg',
                           backIcon: 'assets/icons/exit-icon.svg',
