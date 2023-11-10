@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
-
 import 'package:time_sense/src/controllers/controllers.dart';
 
 import '../../../shared/utils/utils.dart';
@@ -15,10 +15,9 @@ class HomeButtons extends StatelessWidget {
     Map<String, Map<String, dynamic>> buttonsInfos =
         controller.getButtonsInfo();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Animate(
+        child: Container(
           margin: controller.showSecondButton
               ? const EdgeInsets.only(right: 40)
               : const EdgeInsets.only(right: 0),
@@ -32,20 +31,23 @@ class HomeButtons extends StatelessWidget {
             width: 25,
           ),
         ),
-        controller.showSecondButton
-            ? Container(
-                margin: const EdgeInsets.only(left: 40),
-                child: PrimaryButton(
-                  color: primaryColor,
-                  press: () async {
-                    buttonsInfos['second_button']!['function']();
-                  },
-                  text: buttonsInfos['second_button']!['text'],
-                  height: 13,
-                ),
-              )
-            : const SizedBox(),
-      ],
-    );
+      ),
+      controller.showSecondButton
+          ? Animate(
+            effects: [SlideEffect(duration: 500.milliseconds)],
+            child: Container(
+              margin: const EdgeInsets.only(left: 40),
+              child: PrimaryButton(
+                color: primaryColor,
+                press: () async {
+                  buttonsInfos['second_button']!['function']();
+                },
+                text: buttonsInfos['second_button']!['text'],
+                height: 13,
+              ),
+            ),
+          )
+          : const SizedBox(),
+    ]);
   }
 }

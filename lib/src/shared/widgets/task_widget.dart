@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import '../../controllers/controllers.dart';
@@ -161,11 +162,14 @@ class TaskWidget extends StatelessWidget {
           ),
         ),
         task.showDetails
-            ? TaskFocusTimeWidget(
-                taskId: task.id,
-                pomodoroTask: pomodoroTask,
-                taskPending: task.pending,
-              )
+            ? Animate(
+              effects:  [const FadeEffect(), SlideEffect(duration: 200.milliseconds)],
+              child: TaskFocusTimeWidget(
+                  taskId: task.id,
+                  pomodoroTask: pomodoroTask,
+                  taskPending: task.pending,
+                ),
+            )
             : const SizedBox(),
       ],
     );

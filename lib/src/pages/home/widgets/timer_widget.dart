@@ -1,5 +1,6 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 
@@ -55,40 +56,43 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
     final pomodoroTime = pomodoro.pomodoroTime;
     final elapsedPomodoroTime = pomodoroController.elapsedPomodoroTime;
 
-    return CircularCountDownTimer(
-      duration: pomodoroTime,
-      initialDuration: elapsedPomodoroTime,
-      controller: pomodoroController.countDownController,
-      width: size.width * 0.8,
-      height: size.height * 0.35,
-      ringColor: secondaryColor,
-      fillColor: primaryColor,
-      backgroundColor: backgroundColor,
-      strokeWidth: 10,
-      strokeCap: StrokeCap.round,
-      textStyle: textBold.copyWith(
-        fontSize: 45.0,
+    return Animate(
+    effects: [FadeEffect(duration: 800.milliseconds)],
+      child: CircularCountDownTimer(
+        duration: pomodoroTime,
+        initialDuration: elapsedPomodoroTime,
+        controller: pomodoroController.countDownController,
+        width: size.width * 0.8,
+        height: size.height * 0.35,
+        ringColor: secondaryColor,
+        fillColor: primaryColor,
+        backgroundColor: backgroundColor,
+        strokeWidth: 10,
+        strokeCap: StrokeCap.round,
+        textStyle: textBold.copyWith(
+          fontSize: 45.0,
+        ),
+        textFormat: pomodoroTime <= 3600
+            ? CountdownTextFormat.MM_SS
+            : CountdownTextFormat.HH_MM_SS,
+        isReverse: true,
+        autoStart: pomodoro.status == PomodoroState.running.name ? true : false,
+        onComplete: () async {
+          await pomodoroController.completePomodoro();
+          pomodoroController.pomodoro.task != null
+              ? taskController.updateTaskTime(
+                  pomodoroTask: pomodoroController.pomodoro.task!)
+              : null;
+        },
+        timeFormatterFunction: (defaultFormatterFunction, duration) {
+          if (pomodoroController.pomodoroState == PomodoroState.notStarted ||
+              pomodoroController.pomodoroState == PomodoroState.rebootpaused) {
+            return pomodoroController.remainingPomodoroTimeInMinutes;
+          } else {
+            return Function.apply(defaultFormatterFunction, [duration]);
+          }
+        },
       ),
-      textFormat: pomodoroTime <= 3600
-          ? CountdownTextFormat.MM_SS
-          : CountdownTextFormat.HH_MM_SS,
-      isReverse: true,
-      autoStart: pomodoro.status == PomodoroState.running.name ? true : false,
-      onComplete: () async {
-        await pomodoroController.completePomodoro();
-        pomodoroController.pomodoro.task != null
-            ? taskController.updateTaskTime(
-                pomodoroTask: pomodoroController.pomodoro.task!)
-            : null;
-      },
-      timeFormatterFunction: (defaultFormatterFunction, duration) {
-        if (pomodoroController.pomodoroState == PomodoroState.notStarted ||
-            pomodoroController.pomodoroState == PomodoroState.rebootpaused) {
-          return pomodoroController.remainingPomodoroTimeInMinutes;
-        } else {
-          return Function.apply(defaultFormatterFunction, [duration]);
-        }
-      },
     );
   }
 }
