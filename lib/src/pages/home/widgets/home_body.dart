@@ -8,8 +8,15 @@ import '../../../shared/utils/utils.dart';
 import '../../../shared/widgets/widgets.dart';
 import 'widgets.dart';
 
-class HomeBody extends StatelessWidget {
-  const HomeBody({super.key});
+class HomeBody extends StatefulWidget {
+   const HomeBody({super.key});
+
+  @override
+  State<HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<HomeBody> {
+  bool taped = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +30,14 @@ class HomeBody extends StatelessWidget {
             width: double.infinity,
             child: Stack(
               children: [
-                Positioned(
-                  top: 50,
-                  left: 0,
-                  right: 0,
+                AnimatedPadding(
+                  duration: Duration(milliseconds: 500),
+                  padding: EdgeInsets.only(
+                    top: pomodoroController.pomodoroState ==
+                            PomodoroState.notStarted
+                        ? 40
+                        : 1,
+                  ),
                   child: pomodoroController.pomodoro.task == null
                       ? PrimaryButton(
                           color: primaryColor,
