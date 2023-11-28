@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:time_sense/src/pages/settings/widgets/widgets.dart';
 import 'package:time_sense/src/pages/tasks/widgets/widgets.dart';
@@ -35,19 +36,19 @@ class _TasksPageBodyState extends State<TasksPageBody> {
       height: size.height,
       child: Column(
         children: [
-          const TasksStatusWidget(),
+          const TasksStatusWidget().animate().fade(delay: 200.ms),
           Container(
             margin: const EdgeInsets.only(top: 20, bottom: 15),
             child: Text(
               tasksListLength.toString(),
               style: textBold.copyWith(color: primaryColor, fontSize: 16),
             ),
-          ),
+          ).animate().fade(delay: 200.ms),
           const Expanded(
             child: SingleChildScrollView(
               child: TasksList(),
             ),
-          )
+          ).animate().fade(delay: 200.ms)
         ],
       ),
     );

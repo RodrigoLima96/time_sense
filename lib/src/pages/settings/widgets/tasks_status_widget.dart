@@ -1,15 +1,21 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controllers/controllers.dart';
 import '../../../shared/utils/utils.dart';
 
-class TasksStatusWidget extends StatelessWidget {
+class TasksStatusWidget extends StatefulWidget {
   const TasksStatusWidget({super.key});
 
+  @override
+  State<TasksStatusWidget> createState() => _TasksStatusWidgetState();
+}
+
+class _TasksStatusWidgetState extends State<TasksStatusWidget> {
   @override
   Widget build(BuildContext context) {
     final tasksController = context.watch<TasksController>();
@@ -17,8 +23,10 @@ class TasksStatusWidget extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(50),
       onTap: () {
-        tasksController.changeIsPendingTasksPage();
-        tasksController.setTaskShowDetails();
+        setState(() {
+          tasksController.changeIsPendingTasksPage();
+          tasksController.setTaskShowDetails();
+        });
       },
       child: Container(
         height: 40,
@@ -43,6 +51,6 @@ class TasksStatusWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ).animate(target: tasksController.pageTitleText == 'Tarefas pendentes' ? 1 : 0).flip(end: 1).flip(end: 1);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controllers/controllers.dart';
@@ -17,8 +18,9 @@ class TasksList extends StatelessWidget {
     final tasksController = context.watch<TasksController>();
     final pomodoroController = context.read<PomodoroController>();
 
-    if(pomodoroController.pomodoro.task != null) {
-      tasksController.updateTaskTime(pomodoroTask: pomodoroController.pomodoro.task!);
+    if (pomodoroController.pomodoro.task != null) {
+      tasksController.updateTaskTime(
+          pomodoroTask: pomodoroController.pomodoro.task!);
     }
     bool isPending = tasksController.isPendingTasksPage;
 
@@ -71,8 +73,8 @@ class TasksList extends StatelessWidget {
                   ),
                 );
               },
-            ),
-          )
+            ).animate(target: isPending ? 0 : 1).
+            shake(rotation: 0.01))
         : Container(
             margin: const EdgeInsets.only(top: 100),
             child: Center(
