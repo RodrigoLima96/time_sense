@@ -14,6 +14,7 @@ class TasksController extends ChangeNotifier {
   TaskskBottomSheetState taskskBottomSheetState =
       TaskskBottomSheetState.loading;
   TasksPageState tasksPageState = TasksPageState.loading;
+  Key animateTaskListKey = UniqueKey();
 
   bool isPendingTasksPage = true;
   String pageTitleText = "Tarefas pendentes";
@@ -173,8 +174,8 @@ class TasksController extends ChangeNotifier {
         : taskTime;
 
     pendingTaskList[taskIndex].showDetails = false;
-    pendingTaskList[taskIndex].completionDate = isCompleted ?
-        dateFormat.format(DateTime.now()) : null;
+    pendingTaskList[taskIndex].completionDate =
+        isCompleted ? dateFormat.format(DateTime.now()) : null;
 
     await _taskRepository.updateTask(task: pendingTaskList[taskIndex]);
     if (isCompleted) {
@@ -210,5 +211,9 @@ class TasksController extends ChangeNotifier {
     setTaskShowDetails();
     isPendingTasksPage = true;
     pageTitleText = 'Tarefas pendentes';
+  }
+
+  resetTaskListAnimation() {
+    animateTaskListKey = UniqueKey();
   }
 }

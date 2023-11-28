@@ -73,8 +73,8 @@ class TasksList extends StatelessWidget {
                   ),
                 );
               },
-            ).animate(target: isPending ? 0 : 1).
-            shake(rotation: 0.01))
+            ),
+          ).animate(key: tasksController.animateTaskListKey).fade(duration: 500.ms)
         : Container(
             margin: const EdgeInsets.only(top: 100),
             child: Center(

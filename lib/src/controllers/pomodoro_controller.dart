@@ -18,6 +18,7 @@ class PomodoroController extends ChangeNotifier {
   final NotificationService _notificationService;
   final TaskRepository _taskRepository;
   final UserRepository _userRepository;
+  Key animatePomodoroKey = UniqueKey();
 
   late Pomodoro pomodoro;
   int elapsedPomodoroTime = 0;
@@ -430,5 +431,9 @@ class PomodoroController extends ChangeNotifier {
   convertTaskTime({required int elapsedTaskTime}) {
     return taskFocusTime =
         Helper.convertTaskTime(totalSeconds: elapsedTaskTime);
+  }
+
+  resetPomodoroAnimation() {
+    animatePomodoroKey = UniqueKey();
   }
 }

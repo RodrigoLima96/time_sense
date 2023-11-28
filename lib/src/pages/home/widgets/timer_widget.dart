@@ -57,7 +57,8 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
     final elapsedPomodoroTime = pomodoroController.elapsedPomodoroTime;
 
     return Animate(
-    effects: [FadeEffect(duration: 800.milliseconds)],
+      effects: [ScaleEffect(duration: 200.ms), FadeEffect(duration: 500.ms)],
+      key: pomodoroController.animatePomodoroKey,
       child: CircularCountDownTimer(
         duration: pomodoroTime,
         initialDuration: elapsedPomodoroTime,
@@ -83,6 +84,7 @@ class _TimerWidgetState extends State<TimerWidget> with WidgetsBindingObserver {
               ? taskController.updateTaskTime(
                   pomodoroTask: pomodoroController.pomodoro.task!)
               : null;
+          pomodoroController.resetPomodoroAnimation();
         },
         timeFormatterFunction: (defaultFormatterFunction, duration) {
           if (pomodoroController.pomodoroState == PomodoroState.notStarted ||

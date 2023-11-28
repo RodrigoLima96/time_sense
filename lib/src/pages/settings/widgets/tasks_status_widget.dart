@@ -24,8 +24,9 @@ class _TasksStatusWidgetState extends State<TasksStatusWidget> {
       borderRadius: BorderRadius.circular(50),
       onTap: () {
         setState(() {
-          tasksController.changeIsPendingTasksPage();
           tasksController.setTaskShowDetails();
+          tasksController.changeIsPendingTasksPage();
+          tasksController.resetTaskListAnimation();
         });
       },
       child: Container(
