@@ -19,6 +19,7 @@ class SettingsController extends ChangeNotifier {
 
   late Settings settings;
   late Settings oldSettings;
+  Key animateSettingstKey = UniqueKey();
 
   bool enableButtons = false;
   bool showSettingsDetails = false;
@@ -88,6 +89,7 @@ class SettingsController extends ChangeNotifier {
 
     enableButtons = SettingsHelper.enableButtons(
         oldSettings: oldSettings, settings: settings);
+    resetTaskListAnimation();
     notifyListeners();
   }
 
@@ -129,5 +131,9 @@ class SettingsController extends ChangeNotifier {
 
   chageNotificationPermission() {
     openAppSettings();
+  }
+
+  resetTaskListAnimation() {
+    animateSettingstKey = UniqueKey();
   }
 }

@@ -163,7 +163,7 @@ class TaskWidget extends StatelessWidget {
         ),
         task.showDetails
             ? Animate(
-              effects:  [const FadeEffect(), SlideEffect(duration: 200.milliseconds)],
+              effects:  [const FadeEffect(), SlideEffect(duration: 200.ms)],
               child: TaskFocusTimeWidget(
                   taskId: task.id,
                   pomodoroTask: pomodoroTask,

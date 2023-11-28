@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
@@ -74,7 +75,7 @@ class _ChangeSettingValueWidgetState extends State<ChangeSettingValueWidget> {
           Text(
             settingsController.selectedSettingOptionValue.toString(),
             style: textBold.copyWith(fontSize: 30),
-          ),
+          ).animate(key: settingsController.animateSettingstKey).shake(),
           const SizedBox(width: 50),
           GestureDetector(
             onTap: () {
@@ -113,6 +114,6 @@ class _ChangeSettingValueWidgetState extends State<ChangeSettingValueWidget> {
           )
         ],
       ),
-    );
+    ).animate().fade().slide(duration: 200.ms);
   }
 }

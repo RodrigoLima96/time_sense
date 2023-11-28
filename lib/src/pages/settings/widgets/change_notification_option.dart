@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:time_sense/src/shared/utils/utils.dart';
 
@@ -25,6 +26,6 @@ class ChangeNotificationOption extends StatelessWidget {
           settingsController.chageNotificationPermission();
         },
       ),
-    );
+    ).animate().fade().slide(duration: 200.ms);
   }
 }
