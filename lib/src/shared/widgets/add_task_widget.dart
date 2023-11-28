@@ -41,7 +41,11 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
             Expanded(
               child: TextFormField(
                 controller: textFieldController,
-                onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                  tasksController.changeTextFieldlHintText(
+                      text: "Criar tarefa...");
+                },
                 decoration: InputDecoration(
                   hintText: tasksController.textFieldlHintText,
                   hintStyle: TextStyle(
