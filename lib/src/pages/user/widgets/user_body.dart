@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
-import 'package:time_sense/src/controllers/controllers.dart';
-import 'package:time_sense/src/pages/user/widgets/widgets.dart';
+
+import '/src/controllers/controllers.dart';
+import '/src/pages/user/widgets/widgets.dart';
 
 import '../../../shared/utils/utils.dart';
 import '../../../shared/widgets/widgets.dart';
@@ -40,8 +42,8 @@ class _UserBodyState extends State<UserBody> {
                     height: 110,
                     borderWidth: 4,
                     function: userController.updateImage,
-                  ),
-                  const UsernameWidget(),
+                  ).animate(delay: 1000.ms).scale(duration: 500.ms).fade(duration: 900.ms),
+                  const UsernameWidget().animate(delay: 1200.ms).scale(duration: 500.ms).fade(duration: 900.ms),
                   userController.totalFocusTime!['totalSeconds']! > 0
                       ? Container(
                           margin: const EdgeInsets.only(top: 50),
@@ -54,21 +56,21 @@ class _UserBodyState extends State<UserBody> {
                             text: 'Tempo total de foco',
                             taskPending: true,
                           ),
-                        )
+                        ).animate(delay: 500.ms).slideX().fade(duration: 900.ms)
                       : const Padding(
                           padding: EdgeInsets.only(top: 10),
                           child: Text(
                             'Sem tempo de foco ainda',
                             style: textRegular,
                           ),
-                        ),
+                        ).animate(delay: 500.ms).slideX().fade(duration: 900.ms),
                   Container(
                     margin: const EdgeInsets.only(top: 50),
                     child: TasksCompletedWidget(
                       totalTasks: userController.user.totalTasksDone,
                       text: 'Total de tarefas concluídas',
                     ),
-                  ),
+                  ).animate(delay: 500.ms).slideX().fade(duration: 900.ms),
                   if (userController.totalFocusTime!['totalSeconds']! > 0)
                     Column(
                       children: [
@@ -79,7 +81,7 @@ class _UserBodyState extends State<UserBody> {
                         ),
                         const StatisticsByDateWidget(),
                       ],
-                    ),
+                    ).animate(delay: 500.ms).slideX().fade(duration: 900.ms),
                 ],
               ),
             ),
