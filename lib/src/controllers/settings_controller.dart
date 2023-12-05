@@ -25,9 +25,7 @@ class SettingsController extends ChangeNotifier {
   bool showSettingsDetails = false;
   SettingsPageState settingsPageState = SettingsPageState.loading;
 
-  SettingsController(this._settingsRepository) {
-    getCurrentSettings();
-  }
+  SettingsController(this._settingsRepository);
 
   getCurrentSettings() async {
     settings = await _settingsRepository.getSettings();

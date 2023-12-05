@@ -36,7 +36,6 @@ class TaskWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     final Color widgetColor = task.showDetails ? primaryColor : secondaryColor;
 
     Color backIconColor = task.showDetails ? Colors.red.shade300 : primaryColor;
@@ -44,7 +43,7 @@ class TaskWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: size.height * 0.05,
+          height: 40,
           margin: const EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),

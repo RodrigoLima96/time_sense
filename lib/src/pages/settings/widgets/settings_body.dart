@@ -6,8 +6,23 @@ import 'package:provider/provider.dart';
 import 'package:time_sense/src/controllers/settings_controller.dart';
 import 'package:time_sense/src/pages/settings/widgets/widgets.dart';
 
-class SettingsBody extends StatelessWidget {
+class SettingsBody extends StatefulWidget {
   const SettingsBody({super.key});
+
+  @override
+  State<SettingsBody> createState() => _SettingsBodyState();
+}
+
+class _SettingsBodyState extends State<SettingsBody> {
+  @override
+  void initState() {
+    _loadSettingsState();
+    super.initState();
+  }
+
+  _loadSettingsState() async {
+    await context.read<SettingsController>().getCurrentSettings();
+  }
 
   @override
   Widget build(BuildContext context) {
