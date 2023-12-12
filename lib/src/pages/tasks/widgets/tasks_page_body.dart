@@ -36,6 +36,7 @@ class _TasksPageBodyState extends State<TasksPageBody> {
       height: size.height,
       child: Column(
         children: [
+          const SizedBox(height: 10),
           const TasksStatusWidget().animate().fade(delay: 200.ms),
           Container(
             margin: const EdgeInsets.only(top: 20, bottom: 15),

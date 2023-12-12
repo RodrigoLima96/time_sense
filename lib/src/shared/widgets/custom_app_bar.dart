@@ -24,14 +24,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       backgroundColor: backgroundColor,
       centerTitle: false,
-      leadingWidth: 40,
+      leadingWidth: 60,
       leading: Container(
-        margin: const EdgeInsets.only(left: 15),
         child: pomodoroController.showMenuButton
-            ? GestureDetector(
-                child: SvgPicture.asset(
-                  icon,
-                  color: primaryColor,
+            ? InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                child: Container(
+                  padding: const EdgeInsets.only(left: 5, top: 5),
+                  margin: const EdgeInsets.all(15),
+                  child: SvgPicture.asset(
+                    icon,
+                    color: primaryColor,
+                  ),
                 ),
                 onTap: () {
                   function();

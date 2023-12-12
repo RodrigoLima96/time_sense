@@ -18,9 +18,9 @@ class DrawerIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        margin: const EdgeInsets.only(top: 30),
+    return InkWell(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
           children: [
             SvgPicture.asset(

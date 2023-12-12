@@ -14,27 +14,30 @@ class HomePageDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Drawer(
       backgroundColor: backgroundColor,
-      width: size.width * 0.6,
+      width: 200,
       elevation: 0,
       child: Container(
         margin: const EdgeInsets.only(left: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 50),
-            GestureDetector(
-              child: SvgPicture.asset(
-                'assets/icons/arrow-back-icon.svg',
-                color: primaryColor,
-                width: 20,
+            const SizedBox(height: 40),
+            InkWell(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                child: SvgPicture.asset(
+                  'assets/icons/arrow-back-icon.svg',
+                  color: primaryColor,
+                  height: 20,
+                ),
               ),
               onTap: () => Navigator.of(context).pop(),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 50),
             DrawerIcon(
                 icon: 'assets/icons/profile-icon.svg',
                 text: 'Perfil',
@@ -42,6 +45,7 @@ class HomePageDrawer extends StatelessWidget {
                   Navigator.of(AppRoutes.navigatorKey!.currentContext!)
                       .pushNamed('/user');
                 }),
+            const SizedBox(height: 15),
             DrawerIcon(
               icon: 'assets/icons/tasks-icon.svg',
               text: 'Tarefas',
@@ -50,6 +54,7 @@ class HomePageDrawer extends StatelessWidget {
                     .pushNamed('/tasks');
               },
             ),
+            const SizedBox(height: 15),
             DrawerIcon(
               icon: 'assets/icons/settings-icon.svg',
               text: 'Configurações',
