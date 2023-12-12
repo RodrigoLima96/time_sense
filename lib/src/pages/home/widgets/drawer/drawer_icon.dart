@@ -19,6 +19,8 @@ class DrawerIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
