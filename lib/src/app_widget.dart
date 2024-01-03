@@ -34,7 +34,8 @@ class MyApp extends StatelessWidget {
         navigatorKey: AppRoutes.navigatorKey,
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         supportedLocales: const [
-          Locale('pt', ''),
+          Locale('en', ''),
+          // Locale('pt', ''),
         ],
       ),
     );

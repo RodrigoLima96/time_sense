@@ -53,14 +53,14 @@ class _UserBodyState extends State<UserBody> {
                             totalSeconds:
                                 userController.totalFocusTime!['totalSeconds']!,
                             seconds: userController.totalFocusTime!['seconds']!,
-                            text: 'Tempo total de foco',
+                            text: 'Total focus time',
                             taskPending: true,
                           ),
                         ).animate(delay: 500.ms).slideX().fade(duration: 900.ms)
                       : const Padding(
                           padding: EdgeInsets.only(top: 10),
                           child: Text(
-                            'Sem tempo de foco ainda',
+                            'No focus time yet',
                             style: textRegular,
                           ),
                         ).animate(delay: 500.ms).slideX().fade(duration: 900.ms),
@@ -68,7 +68,7 @@ class _UserBodyState extends State<UserBody> {
                     margin: const EdgeInsets.only(top: 50),
                     child: TasksCompletedWidget(
                       totalTasks: userController.user.totalTasksDone,
-                      text: 'Total de tarefas concluídas',
+                      text: 'Total Completed Tasks',
                     ),
                   ).animate(delay: 500.ms).slideX().fade(duration: 900.ms),
                   if (userController.totalFocusTime!['totalSeconds']! > 0)
@@ -77,7 +77,7 @@ class _UserBodyState extends State<UserBody> {
                         Container(
                           margin: const EdgeInsets.only(top: 50),
                           child:
-                              const Text('Total por data', style: textRegular),
+                              const Text('Total by date', style: textRegular),
                         ),
                         const StatisticsByDateWidget(),
                       ],

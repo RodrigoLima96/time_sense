@@ -41,39 +41,39 @@ class _SettingsBodyState extends State<SettingsBody> {
                   Column(
                     children: [
                       SettingsOptionWidget(
-                        text: 'Tempo de foco',
+                        text: 'Focus time',
                         setting:
                             '${settingsController.settings.pomodoroTime} min',
                         settingType: 'pomodoroTime',
                       ),
                       SettingsOptionWidget(
-                        text: 'Pausa curta',
+                        text: 'Short break',
                         setting:
                             '${settingsController.settings.shortBreakDuration} min',
                         settingType: 'shortBreakDuration',
                       ),
                       SettingsOptionWidget(
-                        text: 'Pausa longa',
+                        text: 'Long break',
                         setting:
                             '${settingsController.settings.longBreakDuration} min',
                         settingType: 'longBreakDuration',
                       ),
                       SettingsOptionWidget(
-                        text: 'pomodoros até a pausa longa',
+                        text: 'pomodoros until long break',
                         setting:
                             '${settingsController.settings.shortBreakCount}',
                         settingType: 'shortBreakCount',
                       ),
                       SettingsOptionWidget(
-                        text: 'Sessões diárias',
+                        text: 'Daily sessions',
                         setting: '${settingsController.settings.dailySessions}',
                         settingType: 'dailySessions',
                       ),
                       SettingsOptionWidget(
-                        text: 'Permitir Notificações',
+                        text: 'Allow Notifications',
                         setting: settingsController.notificationsAllowed
-                            ? 'Sim'
-                            : 'Não',
+                            ? 'Yes'
+                            : 'No',
                         settingType: 'notification',
                         notification: true,
                       ),

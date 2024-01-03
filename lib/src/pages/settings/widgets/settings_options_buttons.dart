@@ -22,7 +22,7 @@ class SettingsOptionsButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           PrimaryButton(
-            text: 'Cancelar',
+            text: 'Cancel',
             press: () {
               settingsController.cancelChanges();
             },
@@ -32,7 +32,7 @@ class SettingsOptionsButtons extends StatelessWidget {
           ),
           const SizedBox(width: 70),
           PrimaryButton(
-            text: 'Salvar',
+            text: 'Save',
             press: () async {
               await settingsController.saveSettings();
               await pomodoroController.updatePomodoroAfterSettingsChanges();

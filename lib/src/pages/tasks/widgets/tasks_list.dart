@@ -29,7 +29,7 @@ class TasksList extends StatelessWidget {
         : tasksController.completeTaskList;
 
     final String taskListEmptyText =
-        isPending ? 'Nenhuma tarefa pendente' : 'Nenhuma tarefa concluída';
+        isPending ? 'No pending tasks' : 'No completed tasks';
 
     return tasksList.isNotEmpty
         ? SizedBox(

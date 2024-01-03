@@ -44,13 +44,13 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                 onTapOutside: (event) {
                   FocusScope.of(context).unfocus();
                   tasksController.changeTextFieldlHintText(
-                      text: "Criar tarefa...");
+                      text: "Create task...");
                 },
                 decoration: InputDecoration(
                   hintText: tasksController.textFieldlHintText,
                   hintStyle: TextStyle(
                       color: tasksController.textFieldlHintText ==
-                              "Criar tarefa..."
+                              "Create task..."
                           ? whiteColor.withOpacity(0.5)
                           : Colors.red.shade300,
                       fontWeight: FontWeight.normal),
@@ -60,13 +60,13 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                 onChanged: (value) {
                   if (value.isEmpty) {
                     tasksController.changeTextFieldlHintText(
-                        text: "Criar tarefa...");
+                        text: "Create task...");
                   }
                 },
               )
                   .animate(
                       target: tasksController.textFieldlHintText ==
-                                  "Digite o nome da tarefa..." &&
+                                  "Enter the task name..." &&
                               textFieldController.text == ''
                           ? 1
                           : 0)
@@ -91,7 +91,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                       text: textFieldController.text);
 
                   if (tasksController.textFieldlHintText !=
-                      'Digite o nome da tarefa...') {
+                      'Enter the task name...') {
                     FocusScope.of(context).unfocus();
                   }
                   textFieldController.text = "";

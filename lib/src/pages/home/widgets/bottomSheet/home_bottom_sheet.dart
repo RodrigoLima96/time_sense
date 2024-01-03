@@ -63,7 +63,7 @@ class HomeBottomSheet extends StatelessWidget {
                                 margin: const EdgeInsets.only(top: 100),
                                 child: const Center(
                                   child: Text(
-                                    'Nenhuma tarefa criada ainda...',
+                                    'No tasks created',
                                     style: textBold,
                                   ),
                                 ),
@@ -74,9 +74,9 @@ class HomeBottomSheet extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(bottom: 20, top: 20),
                 child: PrimaryButton(
-                  text: 'Fechar',
+                  text: 'Close',
                   press: () {
-                    tasksController.textFieldlHintText = "Criar tarefa...";
+                    tasksController.textFieldlHintText = "Create task...";
                     Navigator.pop(context);
                   },
                   color: primaryColor,

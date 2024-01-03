@@ -39,10 +39,10 @@ class PomodoroHelper {
         return {
           'first_button': {
             'text': !pomodoro.shortBreak && !pomodoro.longBreak
-                ? 'Começar Foco'
+                ? 'Start Focus'
                 : pomodoro.shortBreak
-                    ? 'Começar pausa'
-                    : 'Começar pausa longa',
+                    ? 'Start Break'
+                    : 'Start Long Break',
             'function': () {
               initPomodoro();
             },
@@ -51,15 +51,15 @@ class PomodoroHelper {
       case PomodoroState.running:
         return {
           'first_button': {
-            'text': 'Pausar',
+            'text': 'Pause',
             'function': () {
               pausePomodoro();
             },
           },
           'second_button': {
             'text': !pomodoro.shortBreak && !pomodoro.longBreak
-                ? 'Reiniciar'
-                : 'Pular pausa',
+                ? 'Restart'
+                : 'Skip Pause',
             'function': () {
               !pomodoro.shortBreak && !pomodoro.longBreak
                   ? restartPomodoro()
@@ -70,15 +70,15 @@ class PomodoroHelper {
       case PomodoroState.paused:
         return {
           'first_button': {
-            'text': 'Retomar',
+            'text': 'Resume',
             'function': () {
               resumePomodoro();
             },
           },
           'second_button': {
             'text': !pomodoro.shortBreak && !pomodoro.longBreak
-                ? 'Cancelar'
-                : 'Pular pausa',
+                ? 'Cancel'
+                : 'Skip Pause',
             'function': () {
               cancelPomodoro(
                 isBreak:
@@ -90,15 +90,15 @@ class PomodoroHelper {
       case PomodoroState.rebootpaused:
         return {
           'first_button': {
-            'text': 'Retomar',
+            'text': 'Resume',
             'function': () {
               resumePomodoro();
             },
           },
           'second_button': {
             'text': pomodoro.shortBreak || pomodoro.longBreak
-                ? 'Pular pausa'
-                : 'Cancelar',
+                ? 'Skip Pause'
+                : 'Cancel',
             'function': () {
               cancelPomodoro(
                   isBreak:
@@ -270,17 +270,17 @@ class PomodoroHelper {
   static NotificationModel getPomodoroNotification(
       {required Pomodoro pomodoro}) {
     final String title = !pomodoro.shortBreak && !pomodoro.longBreak
-        ? 'Pomodoro concluído!'
-        : 'Pausa concluída!';
+        ? 'Pomodoro completed!'
+        : 'Break complete!';
 
     final bool sessionCompleted =
         pomodoro.pomodoroSession + 1 == pomodoro.settings!.dailySessions;
 
     final String body = !pomodoro.shortBreak && !pomodoro.longBreak
         ? !sessionCompleted
-            ? 'Ótimo trabalho! faça uma pausa'
-            : 'Parabéns! você concluiu sua meta diária!'
-        : 'Hora de voltar ao trabalho!';
+            ? 'Great job! take a break'
+            : 'Congratulations! You have completed your daily goal!'
+        : 'Time to get back to work!';
 
     return NotificationModel(id: 1, title: title, body: body);
   }

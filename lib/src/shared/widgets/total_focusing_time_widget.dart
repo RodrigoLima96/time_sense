@@ -42,35 +42,35 @@ class TotalFocusingTimeWidget extends StatelessWidget {
                     style: textBold.copyWith(color: removePomodoroTask == null ? primaryColor : whiteColor))
                 : const SizedBox(),
             hours > 0
-                ? Text(hours > 1 ? 'horas ' : 'hora ', style: textRegular)
+                ? Text(hours > 1 ? 'hours ' : 'hour ', style: textRegular)
                 : const SizedBox(),
             minutes > 0
                 ? Text('$minutes  ',
                     style: textBold.copyWith(color: removePomodoroTask == null ? primaryColor : whiteColor))
                 : const SizedBox(),
             minutes > 0
-                ? Text(minutes > 1 ? 'minutos' : 'minuto', style: textRegular)
+                ? Text(minutes > 1 ? 'minutes' : 'minute', style: textRegular)
                 : const SizedBox(),
             seconds > 0 && totalSeconds > 60
                 ? Text(' $seconds ',
                     style: textBold.copyWith(color: removePomodoroTask == null ? primaryColor : whiteColor))
                 : const SizedBox(),
             seconds > 0 && totalSeconds > 60
-                ? Text(seconds > 1 ? 'segundos' : 'segundo', style: textRegular)
+                ? Text(seconds > 1 ? 'seconds' : 'second', style: textRegular)
                 : const SizedBox(),
             totalSeconds > 0 && totalSeconds < 60
                 ? Text('$totalSeconds ',
                     style: textBold.copyWith(color: removePomodoroTask == null ? primaryColor : whiteColor))
                 : const SizedBox(),
             totalSeconds > 0 && totalSeconds < 60
-                ? Text(totalSeconds > 1 ? 'segundos' : 'segundo',
+                ? Text(totalSeconds > 1 ? 'seconds' : 'second',
                     style: textRegular)
                 : const SizedBox(),
             hours < 1 && minutes < 1 && totalSeconds < 1
                 ? Text(
                     taskPending
-                        ? 'Tarefa não iniciada'
-                        : 'Concluída sem tempo de foco',
+                        ? 'Task not started'
+                        : 'Completed without focus time',
                     style: textBold,
                   )
                 : const SizedBox(),

@@ -17,7 +17,7 @@ class UserController extends ChangeNotifier {
   Map<String, int>? totalFocusTime;
   Map<String, int>? totalFocusTimeByDate;
   int totalTasksDoneByDate = 0;
-  String calendarButtonText = 'Hoje';
+  String calendarButtonText = 'Today';
   List<DateTime?> dialogCalendarPickerValue = [];
   List<int>? image;
 

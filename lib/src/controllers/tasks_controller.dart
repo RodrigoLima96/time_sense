@@ -17,8 +17,8 @@ class TasksController extends ChangeNotifier {
   Key animateTaskListKey = UniqueKey();
 
   bool isPendingTasksPage = true;
-  String pageTitleText = "Tarefas pendentes";
-  String textFieldlHintText = "Criar tarefa...";
+  String pageTitleText = "Pending tasks";
+  String textFieldlHintText = "Create task...";
 
   final TaskRepository _taskRepository;
   final UserRepository _userRepository;
@@ -55,10 +55,10 @@ class TasksController extends ChangeNotifier {
 
   addNewTask({required String text}) async {
     if (text == "") {
-      textFieldlHintText = 'Digite o nome da tarefa...';
+      textFieldlHintText = 'Enter the task name...';
       notifyListeners();
     } else {
-      textFieldlHintText = "Criar tarefa...";
+      textFieldlHintText = "Create task...";
 
       const uuid = Uuid();
 
@@ -81,10 +81,10 @@ class TasksController extends ChangeNotifier {
   changeIsPendingTasksPage() async {
     isPendingTasksPage = !isPendingTasksPage;
     if (!isPendingTasksPage) {
-      pageTitleText = 'Tarefas concluídas';
+      pageTitleText = 'Completed tasks';
       await getTasksByStatus(status: 'complete');
     } else {
-      pageTitleText = 'Tarefas pendentes';
+      pageTitleText = 'Pending tasks';
     }
     notifyListeners();
   }
@@ -210,7 +210,7 @@ class TasksController extends ChangeNotifier {
   resetPageInfo() {
     setTaskShowDetails();
     isPendingTasksPage = true;
-    pageTitleText = 'Tarefas pendentes';
+    pageTitleText = 'Pending tasks';
   }
 
   resetTaskListAnimation() {

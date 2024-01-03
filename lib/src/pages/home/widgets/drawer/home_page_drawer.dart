@@ -40,7 +40,7 @@ class HomePageDrawer extends StatelessWidget {
             const SizedBox(height: 50),
             DrawerIcon(
                 icon: 'assets/icons/profile-icon.svg',
-                text: 'Perfil',
+                text: 'Profile',
                 press: () {
                   Navigator.of(AppRoutes.navigatorKey!.currentContext!)
                       .pushNamed('/user');
@@ -48,7 +48,7 @@ class HomePageDrawer extends StatelessWidget {
             const SizedBox(height: 15),
             DrawerIcon(
               icon: 'assets/icons/tasks-icon.svg',
-              text: 'Tarefas',
+              text: 'Tasks',
               press: () {
                 Navigator.of(AppRoutes.navigatorKey!.currentContext!)
                     .pushNamed('/tasks');
@@ -57,7 +57,7 @@ class HomePageDrawer extends StatelessWidget {
             const SizedBox(height: 15),
             DrawerIcon(
               icon: 'assets/icons/settings-icon.svg',
-              text: 'Configurações',
+              text: 'Settings',
               press: () {
                 Navigator.of(AppRoutes.navigatorKey!.currentContext!)
                     .pushNamed('/settings');
@@ -68,7 +68,7 @@ class HomePageDrawer extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 20),
               child: DrawerIcon(
                 icon: 'assets/icons/exit-icon.svg',
-                text: 'Sair',
+                text: 'Quit',
                 press: () {
                   SystemNavigator.pop();
                 },

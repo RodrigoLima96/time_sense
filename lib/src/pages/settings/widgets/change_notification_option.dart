@@ -17,8 +17,8 @@ class ChangeNotificationOption extends StatelessWidget {
       child: TextButton(
         child: Text(
           settingsController.notificationsAllowed
-              ? 'Desabilitar Notificações'
-              : 'Habilitar Notificações',
+              ? 'Disable Notifications'
+              : 'Enable Notifications',
           style: textBold.copyWith(color: primaryColor),
         ),
         onPressed: () {

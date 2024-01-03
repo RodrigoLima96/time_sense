@@ -72,15 +72,15 @@ class _StatisticsByDateWidgetState extends State<StatisticsByDateWidget> {
                   totalSeconds:
                       userController.totalFocusTimeByDate!['totalSeconds']!,
                   seconds: userController.totalFocusTimeByDate!['seconds']!,
-                  text: 'Foco',
+                  text: 'Focus',
                   taskPending: true,
                 )
-              : const Text('Sem tempo de foco nesse período', style: textBold),
+              : const Text('No focus time during this period', style: textBold),
         ),
         Container(
           margin: const EdgeInsets.only(top: 50),
           child: TasksCompletedWidget(
-              totalTasks: userController.totalTasksDoneByDate, text: 'Tarefas'),
+              totalTasks: userController.totalTasksDoneByDate, text: 'Tasks'),
         ),
       ],
     );

@@ -52,7 +52,7 @@ class _HomeBodyState extends State<HomeBody> {
                               }
                               showHomeBottomSheet(context);
                             },
-                            text: 'Selecionar uma tarefa',
+                            text: 'Select a task',
                             height: 15,
                           ),
                       )

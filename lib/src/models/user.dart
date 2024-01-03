@@ -22,7 +22,7 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      name: map['name'] ?? 'Sem Nome',
+      name: map['name'] ?? 'Username',
       image: map['image'],
       totalFocusTime: map['totalFocusTime'] ?? 0,
       totalTasksDone: map['totalTasksDone'] ?? 0,

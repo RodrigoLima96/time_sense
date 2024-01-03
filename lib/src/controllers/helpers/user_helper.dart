@@ -35,7 +35,7 @@ class UserHelper {
     final String currentDate = dateFormat.format(DateTime.now());
 
     if (dates[0] == dates[1] && dates[0] == currentDate) {
-      return 'hoje';
+      return 'Today';
     } else {
       if (dates[0] != dates[1]) {
         return '${convertDate(dates[0])}  -  ${convertDate(dates[1])}';

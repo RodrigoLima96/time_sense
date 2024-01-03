@@ -136,8 +136,8 @@ class TaskWidget extends StatelessWidget {
                     showDeleteConfirmationDialog(
                       context: context,
                       text: pomodoroTask
-                          ? 'Salvar tempo de foco da tarefa?'
-                          : 'Excluir tarefa permanentemente?',
+                          ? 'Save task focus time?'
+                          : 'Permanently delete task?',
                       icon:
                           !pomodoroTask ? 'assets/icons/delete-icon.svg' : null,
                       confirmFunction: () {

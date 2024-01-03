@@ -23,36 +23,39 @@ Future<void> showDeleteConfirmationDialog({
           borderRadius: BorderRadius.circular(25),
         ),
         backgroundColor: primaryColor,
+        titlePadding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
         title: icon != null
-            ? SvgPicture.asset(icon, color: Colors.red.shade300).animate().shake(delay: 300.ms, rotation: 0.5)
+            ? SvgPicture.asset(icon, color: Colors.red.shade300)
+                .animate()
+                .shake(delay: 300.ms, rotation: 0.5)
             : Text(text, style: textRegular),
         content: icon == null
             ? SizedBox(
-              height: 50,
-              child: TotalFocusingTimeWidget(
+                height: 50,
+                child: TotalFocusingTimeWidget(
                   hours: taskTime!['hour']!,
                   minutes: taskTime['minutes']!,
                   totalSeconds: taskTime['totalSeconds']!,
                   seconds: taskTime['seconds']!,
-                  text: 'Tempo de foco',
+                  text: 'Focus time',
                   taskPending: true,
                   removePomodoroTask: true,
                 ),
-            )
+              )
             : Text(text, style: textRegular),
         actions: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               TextButton(
-                child: const Text('Não', style: textBold),
+                child: const Text('No', style: textBold),
                 onPressed: () {
                   deniedFunction();
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: const Text('Sim', style: textBold),
+                child: const Text('Yes', style: textBold),
                 onPressed: () {
                   confirmFunction();
                   Navigator.of(context).pop();

@@ -52,6 +52,6 @@ class _TasksStatusWidgetState extends State<TasksStatusWidget> {
           ),
         ),
       ),
-    ).animate(target: tasksController.pageTitleText == 'Tarefas pendentes' ? 1 : 0).flip(end: 1).flip(end: 1);
+    ).animate(target: tasksController.pageTitleText == 'Pending tasks' ? 1 : 0).flip(end: 1).flip(end: 1);
   }
 }
