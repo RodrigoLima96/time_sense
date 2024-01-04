@@ -1,16 +1,9 @@
-# time_sense
+<img src="README_FILES/badges/built-with-love.svg" height="28px"/>&nbsp;&nbsp;
+<img src="README_FILES/badges/flutter-dart.svg" height="28px" />&nbsp;&nbsp;
+<img src="README_FILES/badges/Flutter-3.svg" height="28px" />&nbsp;&nbsp;
+<img src="README_FILES/badges/dart-null_safety.svg" height="28px"/>
 
-A new Flutter project.
+# Time Sense
+### Time Sense is an innovative app blending the concepts of a Pomodoro timer and task management. Users can create tasks and complete them within Pomodoro intervals, effectively tracking time spent on each task. This fusion allows for efficient task management while monitoring time allocation for increased productivity.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="README_FILES/images/time_sense.png"/>
