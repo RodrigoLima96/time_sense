@@ -8,11 +8,11 @@
 
 <img src="README_FILES/images/time_sense.png"/>
 
-<div style="text-align: center;">
+<p align="center">
   <a href="https://drive.google.com/file/d/1zZAtIJ8nIhoP1kCrMfPjlv867k4dTmPl/view?usp=drive_link">
     <img src="README_FILES/images/apk_download.png" alt="Time Sense" style="display: inline-block; width: 200px;"/>
   </a>
-</div>
+</p>
 
 
 ## Core Features:
