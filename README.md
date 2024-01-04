@@ -60,3 +60,133 @@
 * [flutter_animate](https://pub.dev/packages/flutter_animate)
 
 </details>
+<br>
+<br>
+
+## Directory Structure
+<details>
+     <summary> Click to expand </summary>
+
+```
+lib
+│   main.dart
+│
+└───src
+    │   app_widget.dart
+    │
+    ├───controllers
+    │   │   controllers.dart
+    │   │   pomodoro_controller.dart
+    │   │   settings_controller.dart
+    │   │   tasks_controller.dart
+    │   │   user_controller.dart
+    │   │
+    │   └───helpers
+    │           helper.dart
+    │           helpers.dart
+    │           pomodoro_helper.dart
+    │           settings_helper.dart
+    │           user_helper.dart
+    │
+    ├───models
+    │       models.dart
+    │       notification.dart
+    │       pomodoro.dart
+    │       settings.dart
+    │       statistic.dart
+    │       task.dart
+    │       user.dart
+    │
+    ├───pages
+    │   │   pages.dart
+    │   │
+    │   ├───home
+    │   │   │   home_page.dart
+    │   │   │
+    │   │   └───widgets
+    │   │       │   home_body.dart
+    │   │       │   home_buttons.dart
+    │   │       │   timer_widget.dart
+    │   │       │   widgets.dart
+    │   │       │
+    │   │       ├───bottomSheet
+    │   │       │       home_bottom_sheet.dart
+    │   │       │       task_container_bottom_sheet.dart
+    │   │       │
+    │   │       ├───drawer
+    │   │       │       drawer_icon.dart
+    │   │       │       home_page_drawer.dart
+    │   │       │
+    │   │       └───sessions
+    │   │               session.dart
+    │   │               sessions_widget.dart
+    │   │
+    │   ├───settings
+    │   │   │   settings_page.dart
+    │   │   │
+    │   │   └───widgets
+    │   │           change_notification_option.dart
+    │   │           change_setting_value_widget.dart
+    │   │           settings_body.dart
+    │   │           settings_options_buttons.dart
+    │   │           settings_option_widget.dart
+    │   │           tasks_status_widget.dart
+    │   │           widgets.dart
+    │   │
+    │   ├───tasks
+    │   │   │   tasks_page.dart
+    │   │   │
+    │   │   └───widgets
+    │   │           tasks_list.dart
+    │   │           tasks_page_body.dart
+    │   │           widgets.dart
+    │   │
+    │   └───user
+    │       │   user_page.dart
+    │       │
+    │       └───widgets
+    │               statistics_by_date_widget.dart
+    │               tasks_complete_widget.dart
+    │               username_widget.dart
+    │               user_body.dart
+    │               user_circle_avatar.dart
+    │               widgets.dart
+    │
+    ├───repositories
+    │       pomodoro_repository.dart
+    │       repositories.dart
+    │       settings_repository.dart
+    │       task_repository.dart
+    │       user_repository.dart
+    │
+    ├───routes
+    │       app_routes.dart
+    │       routes.dart
+    │
+    ├───services
+    │   │   services.dart
+    │   │
+    │   ├───database
+    │   │       database_service.dart
+    │   │       init_database_service.dart
+    │   │
+    │   └───notification
+    │           notification_service.dart
+    │
+    └───shared
+        ├───utils
+        │       constants.dart
+        │       utils.dart
+        │
+        └───widgets
+                add_task_widget.dart
+                confirm_dialog.dart
+                custom_app_bar.dart
+                primary_button.dart
+                task_focus_time_widget.dart
+                task_widget.dart
+                total_focusing_time_widget.dart
+                widgets.dart
+```
+
+</details>
