@@ -130,7 +130,7 @@ class _HomeBodyState extends State<HomeBody> {
         : const Center(child: CircularProgressIndicator());
   }
 
-  PersistentBottomSheetController<dynamic> showHomeBottomSheet(
+  PersistentBottomSheetController showHomeBottomSheet(
       BuildContext context) {
     return showBottomSheet(
       context: context,
