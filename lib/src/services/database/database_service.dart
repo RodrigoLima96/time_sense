@@ -119,4 +119,12 @@ class DatabaseService {
     Database db = await _databaseService.database;
     await db.update('user', user);
   }
+
+  updateLastCallTimeSaveFunction({required String data}) async {
+    Database db = await _databaseService.database;
+    await db.update(
+      'user',
+      {'lastCallTimeSaveFunction': data},
+    );
+  }
 }

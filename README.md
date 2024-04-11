@@ -9,7 +9,7 @@
 <img src="README_FILES/images/time_sense.png"/>
 
 <p align="center">
-  <a href="https://drive.google.com/file/d/1zZAtIJ8nIhoP1kCrMfPjlv867k4dTmPl/view?usp=drive_link">
+  <a href="https://drive.google.com/file/d/1oGPEEIfp7IxNDJ6LgIioYklhvMXYqHFa/view?usp=sharing">
     <img src="README_FILES/images/apk_download.png" alt="Time Sense" style="display: inline-block; width: 200px;"/>
   </a>
 </p>

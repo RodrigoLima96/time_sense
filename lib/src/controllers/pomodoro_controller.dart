@@ -13,6 +13,8 @@ enum PomodoroState { notStarted, running, paused, rebootpaused }
 enum PomodoroPageState { loading, loaded }
 
 class PomodoroController extends ChangeNotifier {
+  DateTime? lastCallTimeSaveFunction;
+
   var countDownController = CountDownController();
   final PomodoroRepository _pomodoroRepository;
   final NotificationService _notificationService;
@@ -273,28 +275,41 @@ class PomodoroController extends ChangeNotifier {
   }
 
   saveTaskAndPomodoroTime({bool? isPaused}) async {
-    final String formattedDate = dateFormat.format(pomodoro.creationDate!);
+    DateTime currentTime = DateTime.now();
+    lastCallTimeSaveFunction = 
+        await _pomodoroRepository.getLastCallTimeSaveFunction();
 
-    await _pomodoroRepository.savePomodoroTime(
-      statistic: Statistic(
-        date: formattedDate,
-        totalFocusingTime: isPaused == null
+    if (lastCallTimeSaveFunction != null &&
+        currentTime.difference(lastCallTimeSaveFunction!) <
+            const Duration(seconds: 10)) {
+      return;
+    } else {
+      await _pomodoroRepository.setLastCallTimeSaveFunction(
+          data: currentTime.toString());
+
+      final String formattedDate = dateFormat.format(pomodoro.creationDate!);
+
+      await _pomodoroRepository.savePomodoroTime(
+        statistic: Statistic(
+          date: formattedDate,
+          totalFocusingTime: isPaused == null
+              ? pomodoro.pomodoroTime
+              : pomodoro.elapsedPomodoroTime,
+        ),
+      );
+
+      await _userRepository.updateUserStatistics(
+        focusTime: isPaused == null
             ? pomodoro.pomodoroTime
             : pomodoro.elapsedPomodoroTime,
-      ),
-    );
+      );
 
-    await _userRepository.updateUserStatistics(
-      focusTime: isPaused == null
-          ? pomodoro.pomodoroTime
-          : pomodoro.elapsedPomodoroTime,
-    );
-
-    int currentPomodoroTaskTime = getCurrentPomodoroTaskTime();
-    if (currentPomodoroTaskTime > 0) {
-      pomodoro.task!.totalFocusingTime += currentPomodoroTaskTime;
-      pomodoro.task!.showDetails = false;
-      await _taskRepository.updateTask(task: pomodoro.task!);
+      int currentPomodoroTaskTime = getCurrentPomodoroTaskTime();
+      if (currentPomodoroTaskTime > 0) {
+        pomodoro.task!.totalFocusingTime += currentPomodoroTaskTime;
+        pomodoro.task!.showDetails = false;
+        await _taskRepository.updateTask(task: pomodoro.task!);
+      }
     }
   }
 

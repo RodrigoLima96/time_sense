@@ -90,7 +90,8 @@ class InitDatabaseService {
       name TEXT,
       image BLOB,
       totalFocusTime INTEGER,
-      totalTasksDone INTEGER
+      totalTasksDone INTEGER,
+      lastCallTimeSaveFunction TEXT
     )
   ''';
 
@@ -155,10 +156,12 @@ class InitDatabaseService {
     name,
     image,
     totalFocusTime,
-    totalTasksDone
+    totalTasksDone,
+    lastCallTimeSaveFunction
   )
 
   VALUES (
+    null,
     null,
     null,
     null,

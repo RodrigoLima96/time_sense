@@ -52,4 +52,16 @@ class PomodoroRepository {
       _databaseService.updateStatistic(statisticMap: statistic.toMap());
     }
   }
+
+  getLastCallTimeSaveFunction() async {
+    final result = await _databaseService.getUser();
+    if (result['lastCallTimeSaveFunction'] != null) {
+      return DateTime.parse(result['lastCallTimeSaveFunction']);
+    }
+    return null;
+  }
+
+  setLastCallTimeSaveFunction({required String data}) async {
+    await _databaseService.updateLastCallTimeSaveFunction(data: data);
+  }
 }
