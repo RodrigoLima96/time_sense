@@ -18,6 +18,7 @@ class HomePage extends StatelessWidget {
     }
 
     return Scaffold(
+      drawerEnableOpenDragGesture: false,
       key: scaffoldKey,
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
